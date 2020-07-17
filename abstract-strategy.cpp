@@ -11,14 +11,42 @@ int main() {
 
         std::vector<std::vector<int>> game_state (N_ROW, std::vector<int> (N_COL, 0));
         std::vector<int> avail_col (N_COL, 1);
+        std::vector<int> difficulty = {2, 5, 8, 11, 14};
         double score, max_score;
-        int col;
+        int col, d_index;
         int result = -1;
         int player = 1;
         char s_play_again;        
 
         std::cout << std::endl << std::endl;
-        std::cout << INDENT << "Connect Four" << std::endl << std::endl;;
+        std::cout << INDENT << "Connect Four" << std::endl << std::endl << std::endl;
+        std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
+        std::cout << INDENT << "1) Very Easy" << std::endl;
+        std::cout << INDENT << "2) Easy" << std::endl;
+        std::cout << INDENT << "3) Medium" << std::endl;
+        std::cout << INDENT << "4) Hard" << std::endl;
+        std::cout << INDENT << "5) Very Hard" << std::endl << std::endl;
+
+        std::cout << INDENT << "Enter a number: ";
+        d_index = -1;
+
+        while (d_index == -1) {
+            if (!(std::cin >> d_index)){
+                std::cout << INDENT << "Invalid input. Please enter a number: ";
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                d_index = -1;
+            } else if (d_index < 1 || d_index > difficulty.size()) {
+                std::cout << INDENT << "Difficulty unavailable. Please enter a number between 1 and " << difficulty.size() << ": ";
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                d_index = -1;
+            }
+        }        
+
+       
+        
+        std::cout << std::endl << std::endl;
         std::cout << INDENT << "Player markers" << std::endl;
         std::cout << INDENT << "You:      " << P1_MARKER << std::endl;
         std::cout << INDENT << "Computer: " << P2_MARKER << std::endl << std::endl;
@@ -52,7 +80,7 @@ int main() {
                     std::cout << ".";
 
                     if (avail_col[j] == 1) {
-                        score = get_score(game_state, avail_col, player, j, 1, max_score);
+                        score = get_score(game_state, avail_col, player, j, 1, difficulty[d_index - 1], max_score);
         
                         if (score > max_score) {
                             max_score = score;

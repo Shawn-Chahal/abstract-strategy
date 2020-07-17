@@ -5,7 +5,6 @@
 const int N_ROW = 6;
 const int N_COL = 7;
 const int CONNECT = 4;
-const int MAX_DEPTH = 10;
 const double S_INITIAL = 1000000.0;
 const double DECAY = 0.9;
 const char P1_MARKER = 'O';
@@ -193,7 +192,7 @@ int check_state(std::vector<std::vector<int>> game_state) {
 }
 
 
-double get_score(std::vector<std::vector<int>> game_state, std::vector<int> avail_col, int player, int col, int depth, double ab) {
+double get_score(std::vector<std::vector<int>> game_state, std::vector<int> avail_col, int player, int col, int depth, int max_depth, double ab) {
 
     game_state = update_state(game_state, player, col);
     avail_col = update_avail_col(game_state, avail_col);
@@ -206,7 +205,7 @@ double get_score(std::vector<std::vector<int>> game_state, std::vector<int> avai
         return -pow(DECAY, depth);
     } else if (result == 0) {
         return 0.0;
-    } else if (depth == MAX_DEPTH) {  
+    } else if (depth == max_depth) {  
         return 0.0;
     } else {
         player = switch_player(player);
@@ -217,7 +216,7 @@ double get_score(std::vector<std::vector<int>> game_state, std::vector<int> avai
 
             for (int j = 0; j < N_COL; j++) {
                 if (avail_col[j] == 1) {
-                    score = get_score(game_state, avail_col, player, j, depth + 1, min_score);
+                    score = get_score(game_state, avail_col, player, j, depth + 1, max_depth, min_score);
 
                     if (score < min_score) {
                         min_score = score;
@@ -235,7 +234,7 @@ double get_score(std::vector<std::vector<int>> game_state, std::vector<int> avai
 
             for (int j = 0; j < N_COL; j++) {
                 if (avail_col[j] == 1) {
-                    score = get_score(game_state, avail_col, player, j, depth + 1, max_score);
+                    score = get_score(game_state, avail_col, player, j, depth + 1, max_depth, max_score);
 
                     if (score > max_score) {
                         max_score = score;
