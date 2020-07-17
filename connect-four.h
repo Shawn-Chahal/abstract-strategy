@@ -8,6 +8,7 @@ const int MAX_DEPTH = 8;
 const int S_INITIAL = 1000000;
 const char P1_MARKER = 'O';
 const char P2_MARKER = 'X';
+const std::string INDENT = "   ";
 
 
 int check_input(int col, std::vector<int> avail_col) {
@@ -31,7 +32,9 @@ int switch_player(int player) {
 
 
 void print_board(std::vector<std::vector<int>> game_state, std::vector<int> avail_col) {
-   
+    
+    std::cout << INDENT;
+    
     for (int j = 0; j < N_COL; j++) {
         if (avail_col[j] == 1) {
             std::cout << "  " << j << " ";
@@ -40,9 +43,10 @@ void print_board(std::vector<std::vector<int>> game_state, std::vector<int> avai
         }
     }
 
-    std::cout << " \n";
-
+    std::cout << " " << std::endl;
+    
     for (int i = 0; i < N_ROW; i++) {
+        std::cout << INDENT;
         for (int j = 0; j < N_COL; j++) {
             switch (game_state[i][j]) {
                 case 0:
@@ -57,13 +61,14 @@ void print_board(std::vector<std::vector<int>> game_state, std::vector<int> avai
             }
         }
 
-        std::cout << "|\n";
+        std::cout << "|" << std::endl;
+        std::cout << INDENT;
 
         for (int j = 0; j < N_COL; j++) {
             std::cout << "----";
         }
 
-        std::cout << "-\n";
+        std::cout << "-" << std::endl;
     }
 }
 

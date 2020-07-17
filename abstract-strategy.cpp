@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cstdio>
 #include "connect-four.h"
 
 
@@ -17,28 +16,35 @@ int main() {
         int player = 1;
         char s_col, s_play_again;        
 
-        std::cout << "\n\nConnect Four\n" << std::endl;
-        std::cout << "Player markers\nYou:      " << P1_MARKER << "\nComputer: " << P2_MARKER << "\n" << std::endl;
+        std::cout << std::endl << std::endl;
+        std::cout << INDENT << "Connect Four" << std::endl << std::endl;;
+        std::cout << INDENT << "Player markers" << std::endl;
+        std::cout << INDENT << "You:      " << P1_MARKER << std::endl;
+        std::cout << INDENT << "Computer: " << P2_MARKER << std::endl << std::endl;
+
         print_board(game_state, avail_col);
 
         while (result == -1) {
 
             if (player == 1) {
-                std::cout << "Your turn. Enter a column number: ";
-                std::cin >> s_col;
-                fflush(stdin);          
-                col = s_col - '0';
+                std::cout << INDENT << "Your turn. Enter a number: ";
+                col = -1;
 
-                while (check_input(col, avail_col) == 0) {
-                    std::cout << "Please enter a valid column number: ";
-                    std::cin >> s_col;
-                    fflush(stdin);
-                    col = s_col - '0';
-                }
-
-                std::cout << "Your move: " << col << std::endl;                
+                while (col == -1) {
+                    if (!(std::cin >> col)){
+                        std::cout << INDENT << "Invalid input. Please enter a number: ";
+                        std::cin.clear();
+                        std::cin.ignore(10000,'\n');
+                        col = -1;
+                    } else if (!check_input(col, avail_col)) {
+                        std::cout << INDENT << "Move unavailable. Please enter an available number:  ";
+                        std::cin.clear();
+                        std::cin.ignore(10000,'\n');
+                        col = -1;
+                    }
+                }              
             } else {
-                std::cout << "Computer is thinking.";
+                std::cout << INDENT << "Computer is thinking.";
                 max_score = -S_INITIAL;
 
                 for (int j = 0; j < N_COL; j++) {
@@ -54,10 +60,12 @@ int main() {
                     }
                 }
                 
-                std::cout << "\nComputer's move: " << col << std::endl;
+                std::cout << std::endl;
+                std::cout << INDENT << "Computer's move: " << col << std::endl;
             }
 
-            std::cout << "\n" << std::endl;
+            std::cout << std::endl;
+            
             game_state = update_state(game_state, player, col);
             avail_col = update_avail_col(game_state, avail_col);
             print_board(game_state, avail_col);
@@ -68,22 +76,23 @@ int main() {
         switch (result) {
 
             case 0:
-                std::cout << "Draw.\n" << std::endl;
+                std::cout << INDENT << "Draw." << std::endl;
                 break;
 
             case 1:
-                std::cout << "You win!\n" << std::endl;
+                std::cout << INDENT << "You win!" << std::endl;
                 break;
 
             case 2:
-                std::cout << "You lose.\n" << std::endl;
+                std::cout << INDENT << "You lose." << std::endl;
                 break;
         }
 
         do {
-            std::cout << "Play again? Y/N: ";
+            std::cout << INDENT << "Play again? Y/N: ";
             std::cin >> s_play_again;
-            fflush(stdin);
+            std::cin.clear();
+            std::cin.ignore(10000,'\n');
 
             if (s_play_again == 'Y' || s_play_again == 'y' ) {
                 play_again = 1;
