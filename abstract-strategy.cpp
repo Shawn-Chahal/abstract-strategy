@@ -11,10 +11,11 @@ int main() {
 
         std::vector<std::vector<int>> game_state (N_ROW, std::vector<int> (N_COL, 0));
         std::vector<int> avail_col (N_COL, 1);
-        int col, score, max_score;
+        double score, max_score;
+        int col;
         int result = -1;
         int player = 1;
-        char s_col, s_play_again;        
+        char s_play_again;        
 
         std::cout << std::endl << std::endl;
         std::cout << INDENT << "Connect Four" << std::endl << std::endl;;
@@ -52,7 +53,7 @@ int main() {
 
                     if (avail_col[j] == 1) {
                         score = get_score(game_state, avail_col, player, j, 1, max_score);
-
+        
                         if (score > max_score) {
                             max_score = score;
                             col = j;

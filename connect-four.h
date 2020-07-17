@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 const int N_ROW = 6;
 const int N_COL = 7;
 const int CONNECT = 4;
-const int MAX_DEPTH = 8;
-const int S_INITIAL = 1000000;
+const int MAX_DEPTH = 10;
+const double S_INITIAL = 1000000.0;
+const double DECAY = 0.9;
 const char P1_MARKER = 'O';
 const char P2_MARKER = 'X';
 const std::string INDENT = "   ";
@@ -96,27 +98,10 @@ std::vector<int> update_avail_col(std::vector<std::vector<int>> game_state, std:
 }
 
 
-int turns_left(std::vector<std::vector<int>> game_state) {
-
-    int turns_remaining = 0;
-
-    for (int i = 0; i < N_ROW; i++) {
-        for (int j = 0; j < N_COL; j++) {
-            if (game_state[i][j] == 0) {
-                turns_remaining++;
-            }
-        }
-    }
-    return turns_remaining;
-}
-
-
 int check_state(std::vector<std::vector<int>> game_state) {
 
     int player, count;
     int check_draw = 0;
-    
-    
 
     for (int i = 0; i < N_ROW; i++) {
         for (int j = 0; j < N_COL; j++) {
@@ -208,26 +193,27 @@ int check_state(std::vector<std::vector<int>> game_state) {
 }
 
 
-int get_score(std::vector<std::vector<int>> game_state, std::vector<int> avail_col, int player, int col, int depth, int ab) {
+double get_score(std::vector<std::vector<int>> game_state, std::vector<int> avail_col, int player, int col, int depth, double ab) {
 
     game_state = update_state(game_state, player, col);
     avail_col = update_avail_col(game_state, avail_col);
     int result = check_state(game_state);
+    double score;
 
     if (result == 2) {
-        return turns_left(game_state);
+        return pow(DECAY, depth);
     } else if (result == 1) {  
-        return -turns_left(game_state);
+        return -pow(DECAY, depth);
     } else if (result == 0) {
-        return 0;
+        return 0.0;
     } else if (depth == MAX_DEPTH) {  
-        return 0;
+        return 0.0;
     } else {
         player = switch_player(player);
 
         if (player == 1) {
-            int score;
-            int min_score = S_INITIAL;
+            
+            double min_score = S_INITIAL;
 
             for (int j = 0; j < N_COL; j++) {
                 if (avail_col[j] == 1) {
@@ -245,8 +231,7 @@ int get_score(std::vector<std::vector<int>> game_state, std::vector<int> avail_c
             return min_score;
         }  else /* if (player == 2) */ {
 
-            int score;
-            int max_score = -S_INITIAL;
+            double max_score = -S_INITIAL;
 
             for (int j = 0; j < N_COL; j++) {
                 if (avail_col[j] == 1) {
