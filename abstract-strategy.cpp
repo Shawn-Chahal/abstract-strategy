@@ -16,11 +16,9 @@ int main() {
 
         double score, max_score;
         int col, d_index;
-        int result = -1;
         int player = 1;
         char s_play_again;
-        std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution(0, game.N_MOVES - 1);        
+             
 
         std::cout << std::endl << std::endl;
         std::cout << game.INDENT << game.NAME << std::endl << std::endl;
@@ -53,7 +51,7 @@ int main() {
 
         game.print_board();
 
-        while (result == -1) {
+        while (game.result == -1) {
 
             if (player == 1) {
                 std::cout << game.INDENT << "Your turn. Enter a number: ";
@@ -73,44 +71,19 @@ int main() {
                     }
                 }              
             } else {
-                std::cout << game.INDENT << "Computer is thinking.";
-                std::vector<int> attempted_moves = std::vector<int>(game.N_MOVES, 0);
-                max_score = -game.S_INITIAL;
-
-                while (!game.check_moves(attempted_moves)) {
-                    int j = distribution(generator);
-
-                    if (j >=0 && j < game.N_MOVES){
-                        if (!attempted_moves[j]) {
-
-                            attempted_moves[j] = 1;
-                            std::cout << ".";
-                            
-                            if (game.available_moves[j] == 1) {
-                                score = game.get_score(game.game_state, game.available_moves, player, j, 1, game.difficulty[d_index - 1], max_score);
                 
-                                if (score > max_score) {
-                                    max_score = score;
-                                    col = j;
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                std::cout << std::endl;
-                std::cout << game.INDENT << "Computer's move: " << col << std::endl;
+                col = game.get_move(player, game.difficulty[d_index - 1]);
+
             }
 
             std::cout << std::endl;
             
 
             game.end_turn(player, col);
-            result = game.get_result(game.game_state);
             player = game.switch_player(player);
         }
         
-        switch (result) {
+        switch (game.result) {
 
             case 0:
                 std::cout << game.INDENT << "Draw." << std::endl;
