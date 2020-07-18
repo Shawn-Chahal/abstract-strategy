@@ -4,9 +4,10 @@
 
 
 
+
+
 class ConnectFour {
-    private:
-        /* data */
+    
     public:
         
         const int N_ROW = 6;
@@ -47,10 +48,10 @@ class ConnectFour {
         }
 
 
-        int check_input(int col) {
+        int check_input(int move) {
         
-            if (col >= 0 && col < N_MOVES) {
-                return available_moves[col];
+            if (move >= 0 && move < N_MOVES) {
+                return available_moves[move];
             } else {
                 return 0;
             }
@@ -109,11 +110,11 @@ class ConnectFour {
         }
 
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int col) {
+        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
 
             for (int row = N_ROW - 1; row >= 0; row--) {
-                if (game_state[row][col] == 0) {
-                    game_state[row][col] = player;
+                if (game_state[row][move] == 0) {
+                    game_state[row][move] = player;
                     break;
                 }
             }   
@@ -227,9 +228,9 @@ class ConnectFour {
         }
 
 
-        double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int col, int depth, int max_depth, double ab) {
+        double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int move, int depth, int max_depth, double ab) {
 
-            game_state = update_state(game_state, player, col);
+            game_state = update_state(game_state, player, move);
             available_moves = update_available_moves(game_state, available_moves);
             double score;
 
@@ -301,13 +302,14 @@ class ConnectFour {
         
         }
 
+
         int get_move(int player) {
 
                 std::cout << INDENT << "Computer is thinking.";
                 std::vector<int> attempted_moves = std::vector<int>(N_MOVES, 0);
                 double max_score = -S_INITIAL;
                 double score;
-                int col;
+                int move;
 
                 while (!check_moves(attempted_moves)) {
                     int j = distribution(generator);
@@ -323,7 +325,7 @@ class ConnectFour {
                 
                                 if (score > max_score) {
                                     max_score = score;
-                                    col = j;
+                                    move = j;
                                 }
                             }
                         }
@@ -331,14 +333,15 @@ class ConnectFour {
                 }
                 
                 std::cout << std::endl;
-                std::cout << INDENT << "Computer's move: " << col << std::endl;
+                std::cout << INDENT << "Computer's move: " << move << std::endl;
 
-                return col;
+                return move;
         }
 
-        void end_turn(int player, int col) {
 
-            game_state = update_state(game_state, player, col);
+        void end_turn(int player, int move) {
+
+            game_state = update_state(game_state, player, move);
             available_moves = update_available_moves(game_state, available_moves);
             print_board();
             result = get_result(game_state);

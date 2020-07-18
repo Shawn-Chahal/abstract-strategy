@@ -6,16 +6,14 @@
 
 int main() {
     
-    int play_again = 1;
-    
-    
+    int play_again = 1; 
 
     while (play_again == 1) {
 
         ConnectFour game;
 
         double score, max_score;
-        int col, d_index;
+        int move, d_index;
         int player = 1;
         char s_play_again;
              
@@ -57,27 +55,27 @@ int main() {
 
             if (player == 1) {
                 std::cout << game.INDENT << "Your turn. Enter a number: ";
-                col = -1;
+                move = -1;
 
-                while (col == -1) {
-                    if (!(std::cin >> col)){
+                while (move == -1) {
+                    if (!(std::cin >> move)){
                         std::cout << game.INDENT << "Invalid input. Please enter a number: ";
                         std::cin.clear();
                         std::cin.ignore(10000,'\n');
-                        col = -1;
-                    } else if (!game.check_input(col)) {
+                        move = -1;
+                    } else if (!game.check_input(move)) {
                         std::cout << game.INDENT << "Move unavailable. Please enter an available number:  ";
                         std::cin.clear();
                         std::cin.ignore(10000,'\n');
-                        col = -1;
+                        move = -1;
                     }
                 }              
             } else {
-                col = game.get_move(player);
+                move = game.get_move(player);
             }
 
             std::cout << std::endl;
-            game.end_turn(player, col);
+            game.end_turn(player, move);
             player = game.switch_player(player);
         }
         
