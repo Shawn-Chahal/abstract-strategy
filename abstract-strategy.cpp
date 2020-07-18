@@ -17,7 +17,6 @@ int main() {
         int player = 1;
         char s_play_again;
              
-
         std::cout << std::endl << std::endl;
         std::cout << game.INDENT << game.NAME << std::endl << std::endl;
         std::cout << game.INDENT << "Select a difficulty." << std::endl << std::endl;

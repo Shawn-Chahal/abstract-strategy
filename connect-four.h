@@ -12,11 +12,7 @@ class ConnectFour: public StrategyGame {
         const int N_COL = 7;
         const int N_MOVES = N_COL;
         const int CONNECT = 4;
-        const double S_INITIAL = 1000000.0;
-        const double DECAY = 0.9;
-        const char P1_MARKER = 'O';
-        const char P2_MARKER = 'X';
-        const std::string INDENT = "   ";
+        
         const std::string NAME = "Connect Four";
 
         int result = -1;
@@ -281,37 +277,37 @@ class ConnectFour: public StrategyGame {
 
         int get_move(int player) {
 
-                std::cout << INDENT << "Computer is thinking.";
-                std::vector<int> attempted_moves = std::vector<int>(N_MOVES, 0);
-                double max_score = -S_INITIAL;
-                double score;
-                int move;
+            std::cout << INDENT << "Computer is thinking.";
+            std::vector<int> attempted_moves = std::vector<int>(N_MOVES, 0);
+            double max_score = -S_INITIAL;
+            double score;
+            int move;
 
-                while (!check_moves(attempted_moves)) {
-                    int j = distribution(generator);
+            while (!check_moves(attempted_moves)) {
+                int m = distribution(generator);
 
-                    if (j >=0 && j < N_MOVES){
-                        if (!attempted_moves[j]) {
+                if (m >=0 && m < N_MOVES){
+                    if (!attempted_moves[m]) {
 
-                            attempted_moves[j] = 1;
-                            std::cout << ".";
-                            
-                            if (available_moves[j] == 1) {
-                                score = get_score(game_state, available_moves, player, j, 1, max_depth, max_score);
-                
-                                if (score > max_score) {
-                                    max_score = score;
-                                    move = j;
-                                }
+                        attempted_moves[m] = 1;
+                        std::cout << ".";
+                        
+                        if (available_moves[m] == 1) {
+                            score = get_score(game_state, available_moves, player, m, 1, max_depth, max_score);
+            
+                            if (score > max_score) {
+                                max_score = score;
+                                move = m;
                             }
                         }
                     }
                 }
-                
-                std::cout << std::endl;
-                std::cout << INDENT << "Computer's move: " << move << std::endl;
+            }
+            
+            std::cout << std::endl;
+            std::cout << INDENT << "Computer's move: " << move << std::endl;
 
-                return move;
+            return move;
         }
 
 
