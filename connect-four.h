@@ -1,12 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include "strategy-game.h"
 
 
-
-
-
-class ConnectFour {
+class ConnectFour: public StrategyGame {
     
     public:
         
@@ -36,34 +34,12 @@ class ConnectFour {
         }
 
 
-        int check_moves(std::vector<int> attempted_moves) {
-
-            for (int i = 0; i < attempted_moves.size(); i++) {
-                if (attempted_moves[i] == 0) {
-                    return 0;
-                }
-            }
-
-            return 1;
-        }
-
-
         int check_input(int move) {
         
             if (move >= 0 && move < N_MOVES) {
                 return available_moves[move];
             } else {
                 return 0;
-            }
-        }
-
-
-        int switch_player(int player) {
-            
-            if (player == 1) {
-                return 2;
-            } else {
-                return 1;
             }
         }
 
@@ -110,27 +86,9 @@ class ConnectFour {
         }
 
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
-
-            for (int row = N_ROW - 1; row >= 0; row--) {
-                if (game_state[row][move] == 0) {
-                    game_state[row][move] = player;
-                    break;
-                }
-            }   
-            return game_state;
-        }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) {
-            
-            for (int j=0; j < N_MOVES; j++) {
-                if (game_state[0][j] > 0) {
-                    available_moves[j] = 0;
-                }
-            }
-            return available_moves;
-        }
+
 
 
         int get_result(std::vector<std::vector<int>> game_state) {
