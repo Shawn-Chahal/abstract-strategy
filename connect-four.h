@@ -226,55 +226,72 @@ class ConnectFour {
             int result = get_result(game_state);
             double score;
 
-            if (result == 2) {
-                return pow(DECAY, depth);
-            } else if (result == 1) {  
-                return -pow(DECAY, depth);
-            } else if (result == 0) {
-                return 0.0;
-            } else if (depth == max_depth) {  
-                return 0.0;
-            } else {
-                player = switch_player(player);
+            switch (result) {
+                case 2:
+                    return pow(DECAY, depth);
+                    break;
+                
+                case 1:
+                    return -pow(DECAY, depth);
+                    break;
 
-                if (player == 1) {
+                case 0:
+                    return 0.0;
+                    break;
+
+                default:
+
+                    if (depth == max_depth) {  
+                        return 0.0;
+                    }
+
+                    player = switch_player(player);
+
+                    if (player == 1) {
+                        
+                        double min_score = S_INITIAL;
+
+                        for (int j = 0; j < N_MOVES; j++) {
+                            if (available_moves[j] == 1) {
+                                score = get_score(game_state, available_moves, player, j, depth + 1, max_depth, min_score);
+
+                                if (score < min_score) {
+                                    min_score = score;
+                                }
+
+                                if (min_score <= ab) {
+                                    break;
+                                }
+                            }
+                        }
+                        return min_score;
+                    }  else /* if (player == 2) */ {
+
+                        double max_score = -S_INITIAL;
+
+                        for (int j = 0; j < N_MOVES; j++) {
+                            if (available_moves[j] == 1) {
+                                score = get_score(game_state, available_moves, player, j, depth + 1, max_depth, max_score);
+
+                                if (score > max_score) {
+                                    max_score = score;
+                                }
+
+                                if (max_score >= ab) {
+                                    break;
+                                }
+                            }
+                        }
+                        return max_score;
+
+
+                    }
                     
-                    double min_score = S_INITIAL;
-
-                    for (int j = 0; j < N_MOVES; j++) {
-                        if (available_moves[j] == 1) {
-                            score = get_score(game_state, available_moves, player, j, depth + 1, max_depth, min_score);
-
-                            if (score < min_score) {
-                                min_score = score;
-                            }
-
-                            if (min_score <= ab) {
-                                break;
-                            }
-                        }
-                    }
-                    return min_score;
-                }  else /* if (player == 2) */ {
-
-                    double max_score = -S_INITIAL;
-
-                    for (int j = 0; j < N_MOVES; j++) {
-                        if (available_moves[j] == 1) {
-                            score = get_score(game_state, available_moves, player, j, depth + 1, max_depth, max_score);
-
-                            if (score > max_score) {
-                                max_score = score;
-                            }
-
-                            if (max_score >= ab) {
-                                break;
-                            }
-                        }
-                    }
-                    return max_score;
-                }
+                    break;
             }
+
+            
+        
         }
 
 
