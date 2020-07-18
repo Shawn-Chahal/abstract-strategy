@@ -12,7 +12,7 @@ int main() {
 
         std::vector<std::vector<int>> game_state (N_ROW, std::vector<int> (N_COL, 0));
         std::vector<int> avail_col (N_COL, 1);
-        std::vector<int> difficulty = {2, 4, 6, 8, 10};
+        std::vector<int> difficulty = {6, 8, 10};
         double score, max_score;
         int col, d_index;
         int result = -1;
@@ -22,15 +22,13 @@ int main() {
         std::uniform_int_distribution<int> distribution(0, N_COL - 1);        
 
         std::cout << std::endl << std::endl;
-        std::cout << INDENT << "Connect Four" << std::endl << std::endl << std::endl;
+        std::cout << INDENT << "Connect Four" << std::endl << std::endl;
         std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
-        std::cout << INDENT << "1) Very Easy" << std::endl;
-        std::cout << INDENT << "2) Easy" << std::endl;
-        std::cout << INDENT << "3) Medium" << std::endl;
-        std::cout << INDENT << "4) Hard" << std::endl;
-        std::cout << INDENT << "5) Very Hard" << std::endl << std::endl;
-
+        std::cout << INDENT << "1) Easy" << std::endl;
+        std::cout << INDENT << "2) Medium" << std::endl;
+        std::cout << INDENT << "3) Hard" << std::endl << std::endl;
         std::cout << INDENT << "Enter a number: ";
+
         d_index = -1;
 
         while (d_index == -1) {
@@ -46,9 +44,7 @@ int main() {
                 d_index = -1;
             }
         }        
-
        
-        
         std::cout << std::endl << std::endl;
         std::cout << INDENT << "Player markers" << std::endl;
         std::cout << INDENT << "You:      " << P1_MARKER << std::endl;
