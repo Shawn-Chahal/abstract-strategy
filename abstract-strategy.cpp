@@ -44,6 +44,8 @@ int main() {
             }
         }        
        
+        game.set_difficulty(d_index);
+
         std::cout << std::endl << std::endl;
         std::cout << game.INDENT << "Player markers" << std::endl;
         std::cout << game.INDENT << "You:      " << game.P1_MARKER << std::endl;
@@ -71,14 +73,10 @@ int main() {
                     }
                 }              
             } else {
-                
-                col = game.get_move(player, game.difficulty[d_index - 1]);
-
+                col = game.get_move(player);
             }
 
             std::cout << std::endl;
-            
-
             game.end_turn(player, col);
             player = game.switch_player(player);
         }

@@ -21,6 +21,7 @@ class ConnectFour {
         const std::string NAME = "Connect Four";
 
         int result = -1;
+        int max_depth = 1;
         std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
         std::vector<int> difficulty = {6, 8, 10};
@@ -29,7 +30,11 @@ class ConnectFour {
         std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, N_MOVES - 1);   
 
 
-                
+        void set_difficulty(int d_index) {
+            max_depth = difficulty[d_index - 1];
+        }
+
+
         int check_moves(std::vector<int> attempted_moves) {
 
             for (int i = 0; i < attempted_moves.size(); i++) {
@@ -296,7 +301,7 @@ class ConnectFour {
         
         }
 
-        int get_move(int player, int max_depth) {
+        int get_move(int player) {
 
                 std::cout << INDENT << "Computer is thinking.";
                 std::vector<int> attempted_moves = std::vector<int>(N_MOVES, 0);
