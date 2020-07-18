@@ -51,7 +51,7 @@ int main() {
         std::cout << game.INDENT << "You:      " << game.P1_MARKER << std::endl;
         std::cout << game.INDENT << "Computer: " << game.P2_MARKER << std::endl << std::endl;
 
-        game.print_board(game.game_state, game.available_moves);
+        game.print_board();
 
         while (result == -1) {
 
@@ -106,7 +106,7 @@ int main() {
             
 
             game.end_turn(player, col);
-            result = game.check_state(game.game_state);
+            result = game.get_result(game.game_state);
             player = game.switch_player(player);
         }
         

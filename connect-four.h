@@ -15,12 +15,13 @@ class ConnectFour {
         const int CONNECT = 4;
         const double S_INITIAL = 1000000.0;
         const double DECAY = 0.9;
-        int player = 1;
-        int result = -1;
         const char P1_MARKER = 'O';
         const char P2_MARKER = 'X';
         const std::string INDENT = "   ";
         const std::string NAME = "Connect Four";
+
+        int player = 1;
+        int result = -1;
         std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
         std::vector<int> difficulty = {6, 8, 10};
@@ -58,7 +59,7 @@ class ConnectFour {
         }
 
 
-        void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) {
+        void print_board() {
             
             std::cout << INDENT;
             
@@ -123,7 +124,7 @@ class ConnectFour {
         }
 
 
-        int check_state(std::vector<std::vector<int>> game_state) {
+        int get_result(std::vector<std::vector<int>> game_state) {
 
             int player, count;
             int check_draw = 0;
@@ -222,7 +223,7 @@ class ConnectFour {
 
             game_state = update_state(game_state, player, col);
             available_moves = update_available_moves(game_state, available_moves);
-            int result = check_state(game_state);
+            int result = get_result(game_state);
             double score;
 
             if (result == 2) {
@@ -281,8 +282,8 @@ class ConnectFour {
 
             game_state = update_state(game_state, player, col);
             available_moves = update_available_moves(game_state, available_moves);
-            print_board(game_state, available_moves);
-            result = check_state(game_state);
+            print_board();
+            result = get_result(game_state);
             player = switch_player(player);
         }
 
