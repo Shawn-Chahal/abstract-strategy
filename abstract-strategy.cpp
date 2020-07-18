@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <random>
 #include "connect-four.h"
 
 
@@ -11,12 +12,14 @@ int main() {
 
         std::vector<std::vector<int>> game_state (N_ROW, std::vector<int> (N_COL, 0));
         std::vector<int> avail_col (N_COL, 1);
-        std::vector<int> difficulty = {2, 5, 8, 11, 14};
+        std::vector<int> difficulty = {2, 4, 6, 8, 10};
         double score, max_score;
         int col, d_index;
         int result = -1;
         int player = 1;
-        char s_play_again;        
+        char s_play_again;
+        std::default_random_engine generator;
+        std::uniform_int_distribution<int> distribution(0, N_COL - 1);        
 
         std::cout << std::endl << std::endl;
         std::cout << INDENT << "Connect Four" << std::endl << std::endl << std::endl;
@@ -74,17 +77,26 @@ int main() {
                 }              
             } else {
                 std::cout << INDENT << "Computer is thinking.";
+                std::vector<int> attempted_moves (N_COL, 0);
                 max_score = -S_INITIAL;
 
-                for (int j = 0; j < N_COL; j++) {
-                    std::cout << ".";
+                while (!check_moves(attempted_moves)) {
+                    int j = distribution(generator);
 
-                    if (avail_col[j] == 1) {
-                        score = get_score(game_state, avail_col, player, j, 1, difficulty[d_index - 1], max_score);
-        
-                        if (score > max_score) {
-                            max_score = score;
-                            col = j;
+                    if (j >=0 && j < N_COL){
+                        if (!attempted_moves[j]) {
+
+                            attempted_moves[j] = 1;
+                            std::cout << ".";
+                            
+                            if (avail_col[j] == 1) {
+                                score = get_score(game_state, avail_col, player, j, 1, difficulty[d_index - 1], max_score);
+                
+                                if (score > max_score) {
+                                    max_score = score;
+                                    col = j;
+                                }
+                            }
                         }
                     }
                 }
