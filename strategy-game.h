@@ -26,27 +26,10 @@ class StrategyGame {
             }
         }
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
-
-            for (int row = game_state.size() - 1; row >= 0; row--) {
-                if (game_state[row][move] == 0) {
-                    game_state[row][move] = player;
-                    break;
-                }
-            }   
-            return game_state;
-        }
+        
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) {
-            
-            for (int j=0; j < available_moves.size(); j++) {
-                if (game_state[0][j] > 0) {
-                    available_moves[j] = 0;
-                }
-            }
-            return available_moves;
-        }
+        
 
 };
 
