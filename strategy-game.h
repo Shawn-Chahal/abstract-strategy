@@ -160,6 +160,7 @@ class StrategyGame {
         const char P1_MARKER = 'O';
         const char P2_MARKER = 'X';
         const std::string INDENT = "   ";
+        const std::string LINE_BREAK = "\n" + INDENT + "-----------------------------\n";
         std::default_random_engine generator;
 
 
@@ -182,7 +183,6 @@ class StrategyGame {
             int move;
             int player = 1;
                     
-            std::cout << std::endl << std::endl;
             std::cout << INDENT << NAME << std::endl << std::endl;
             std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
             std::cout << INDENT << "1) Easy" << std::endl;
@@ -208,7 +208,8 @@ class StrategyGame {
             
             max_depth = difficulty[d_index - 1];
 
-            std::cout << std::endl << std::endl;
+            std::cout << LINE_BREAK << std::endl;
+
             std::cout << INDENT << "Player markers" << std::endl;
             std::cout << INDENT << "You:      " << P1_MARKER << std::endl;
             std::cout << INDENT << "Computer: " << P2_MARKER << std::endl << std::endl;
@@ -239,7 +240,8 @@ class StrategyGame {
                     
                 }
 
-                std::cout << std::endl;
+                std::cout << LINE_BREAK << std::endl;
+                
                 game_state = update_state(game_state, player, move);
                 available_moves = update_available_moves(game_state, available_moves);
                 print_board(game_state, available_moves, N_ROW, N_COL);
@@ -247,6 +249,8 @@ class StrategyGame {
                 player = switch_player(player);
             }
             
+            std::cout << LINE_BREAK << std::endl;
+
             switch (result) {
 
                 case 0:

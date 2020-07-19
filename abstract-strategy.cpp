@@ -16,10 +16,14 @@ int main() {
         
         std::vector<std::string> games_list = {"Connect Four", "Tic-Tac-Toe"};
 
-        std::cout << std::endl << std::endl;
-        std::cout << menu.INDENT << "Abstract Strategy Games" << std::endl;
-        std::cout << menu.INDENT << "by Shawn Chahal" << std::endl << std::endl;
+        std::cout << menu.LINE_BREAK << std::endl;
 
+        std::cout << menu.INDENT << "Abstract Strategy Games" << std::endl;
+        std::cout << menu.INDENT << "by Shawn Chahal" << std::endl;
+
+        std::cout << menu.LINE_BREAK << std::endl;
+
+        std::cout << menu.INDENT << "Select a game:" << std::endl << std::endl;
         for (int i = 0; i < games_list.size(); i++) {
             std::cout << menu.INDENT << i + 1 << ") " << games_list[i] << std::endl;
         }
@@ -43,6 +47,8 @@ int main() {
             }
         }        
         
+        std::cout << menu.LINE_BREAK << std::endl;
+
         if (games_list[g_index - 1] == "Tic-Tac-Toe") {
             TicTacToe game;
             game.run();
@@ -53,7 +59,7 @@ int main() {
         } 
 
         std::vector<std::string> options = {"Return to main menu", "Exit"};
-        std::cout << std::endl << std::endl;
+        std::cout << std::endl;
         for (int i = 0; i < options.size(); i++) {
             std::cout << menu.INDENT << i + 1 << ") " << options[i] << std::endl;
         }
