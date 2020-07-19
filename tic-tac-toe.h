@@ -4,26 +4,25 @@
 #include <cmath>
 
 
-class ConnectFour: public StrategyGame {
+class TicTacToe: public StrategyGame {
     
     public:
         
-        const int N_ROW = 6;
-        const int N_COL = 7;
-        const int N_MOVES = N_COL;
-        const int CONNECT = 4;
+        const int N_ROW = 3;
+        const int N_COL = 3;
+        const int N_MOVES = N_ROW * N_COL;
+        const int CONNECT = 3;
         
-        const std::string NAME = "Connect Four";
+        const std::string NAME = "Tic-Tac-Toe";
 
         int result = -1;
         int max_depth = 1;
         std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
-        std::vector<int> difficulty = {6, 8, 10};
+        std::vector<int> difficulty = {2, 6, 10};
 
         std::default_random_engine generator;
         std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, N_MOVES - 1);   
-
 
         void set_difficulty(int d_index) {
             max_depth = difficulty[d_index - 1];
@@ -42,24 +41,12 @@ class ConnectFour: public StrategyGame {
 
         void print_board() {
             
-            std::cout << INDENT;
-            
-            for (int j = 0; j < N_MOVES; j++) {
-                if (available_moves[j] == 1) {
-                    std::cout << "  " << j << " ";
-                } else {
-                    std::cout << "    ";
-                }
-            }
-
-            std::cout << " " << std::endl;
-            
             for (int i = 0; i < N_ROW; i++) {
                 std::cout << INDENT;
                 for (int j = 0; j < N_COL; j++) {
                     switch (game_state[i][j]) {
                         case 0:
-                            std::cout << "|   ";
+                            std::cout << "| " << i * N_COL + j << " ";
                             break;
                         case 1:
                             std::cout << "| " << P1_MARKER << " ";
@@ -71,34 +58,35 @@ class ConnectFour: public StrategyGame {
                 }
 
                 std::cout << "|" << std::endl;
-                std::cout << INDENT;
+                
 
-                for (int j = 0; j < N_COL; j++) {
-                    std::cout << "----";
+                if (i < N_ROW - 1) {
+                    std::cout << INDENT;
+                    for (int j = 0; j < N_COL; j++) {
+                        std::cout << "----";
+                    }
+                    std::cout << "-" << std::endl;
                 }
-
-                std::cout << "-" << std::endl;
             }
+            std::cout << std::endl;
         }
 
 
         std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
 
-            for (int row = game_state.size() - 1; row >= 0; row--) {
-                if (game_state[row][move] == 0) {
-                    game_state[row][move] = player;
-                    break;
-                }
-            }   
+            game_state[move / N_COL][move % N_COL] = player;
+            
             return game_state;
         }
 
 
         std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) {
             
-            for (int j=0; j < available_moves.size(); j++) {
-                if (game_state[0][j] > 0) {
-                    available_moves[j] = 0;
+            for (int i = 0; i < N_ROW ; i++) {
+                for (int j = 0; j < N_COL ; j++) {
+                    if (game_state[i][j] > 0) {
+                        available_moves[i * N_COL + j] = 0;
+                    }
                 }
             }
             return available_moves;
@@ -110,87 +98,102 @@ class ConnectFour: public StrategyGame {
             int player, count;
             int check_draw = 0;
 
-            for (int i = 0; i < N_ROW; i++) {
-                for (int j = 0; j < N_COL; j++) {
-                    if (game_state[i][j] > 0) {
-                        if (i == 0) {
-                            check_draw++;
+            /* Check horizontal */
+            for (int i = 0; i < N_ROW ; i++) {
+                
+                player = game_state[i][0];
+
+                if (player > 0){
+                    count = 1;
+
+                    for (int j = 1; j < N_COL ; j++) {
+                        
+                        if (game_state[i][j] == player) {
+                            count++;
+                        } else {
+                            break;
                         }
+                    }
 
-                        player = game_state[i][j];
-
-                        /* Check right */
-                        if (j <= N_COL - CONNECT) {
-                            count = 1;
-
-                            for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i][j + k] == player) {
-                                    count++;
-                                } else {
-                                    break;
-                                }
-                            }
-                            
-                            if (count == CONNECT) {
-                                return player;
-                            }
-                        }
-
-                        /* Check down */
-                        if (i <= N_ROW - CONNECT) {
-                            count = 1;
-
-                            for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j] == player) {
-                                    count++;
-                                } else {
-                                    break;
-                                }
-                            }
-
-                            if (count == CONNECT) {
-                                return player;
-                            }
-                        }
-
-                        /* Check right-down */
-                        if (i <= N_ROW - CONNECT && j <= N_COL - CONNECT) {
-                            count = 1;
-                            
-                            for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j + k] == player) {
-                                    count++;
-                                } else {
-                                    break;
-                                }
-                            }
-                            
-                            if (count == CONNECT) {
-                                return player;
-                            }
-                        }
-
-                        /* Check left-down */
-                        if (i <= N_ROW - CONNECT && j >= CONNECT - 1) {
-                            count = 1;
-                            
-                            for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j - k] == player) {
-                                    count++;
-                                } else {
-                                    break;
-                                }
-                            }
-
-                            if (count == CONNECT) {
-                                return player;
-                            }
-                        }
+                    if (count == CONNECT) {
+                        return player;
                     }
                 }
             }
 
-            if (check_draw == N_COL) {
+            /* Check vertical */
+            for (int j = 0; j < N_COL ; j++) {
+                
+                player = game_state[0][j];
+
+                if (player > 0){
+                    count = 1;
+
+                    for (int i = 1; i < N_ROW ; i++) {
+                        
+                        if (game_state[i][j] == player) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (count == CONNECT) {
+                        return player;
+                    }
+                }
+            }
+
+            /* Check top-left to bottom-right diagonal */
+            player = game_state[0][0];
+
+            if (player > 0){
+                count = 1;
+
+                for (int k = 1; k < N_COL; k++){
+                    if (game_state[k][k] == player) {
+                        count++;
+                    
+                    } else {
+                        break;
+                    }
+                }
+
+                if (count == CONNECT) {
+                    return player;
+                }
+            }
+            
+
+            /* Check bottom-left to top-right diagonal */
+            player = game_state[N_ROW - 1][0];
+
+            if (player > 0){
+                count = 1;
+
+                for (int k = 1; k < N_COL; k++){
+                    if (game_state[N_ROW - 1 - k][k] == player) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+                
+                if (count == CONNECT) {
+                    return player;
+                }
+            }
+
+
+            for (int i = 0; i < N_ROW ; i++) {
+                for (int j = 0; j < N_COL ; j++) {
+                    if (game_state[i][j] > 0) {
+                        check_draw++;
+                    }
+                }
+            }
+
+            if (check_draw == N_MOVES) {
                 /* Declare a draw */
                 return 0;
             } else {
@@ -201,11 +204,11 @@ class ConnectFour: public StrategyGame {
 
 
         double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int move, int depth, int max_depth, double ab) {
-
+            
             game_state = update_state(game_state, player, move);
             available_moves = update_available_moves(game_state, available_moves);
             double score;
-
+            
             switch (get_result(game_state)) {
                 case 2:
                     return pow(DECAY, depth);
@@ -222,10 +225,13 @@ class ConnectFour: public StrategyGame {
                 default:
 
                     if (depth == max_depth) {  
+
+                        
                         return 0.0;
                     }
 
                     player = switch_player(player);
+                    
 
                     if (player == 1) {
                         
@@ -246,7 +252,7 @@ class ConnectFour: public StrategyGame {
                         }
                         return min_score;
                     }  else /* if (player == 2) */ {
-
+                        
                         double max_score = -S_INITIAL;
 
                         for (int j = 0; j < N_MOVES; j++) {
@@ -294,7 +300,7 @@ class ConnectFour: public StrategyGame {
                         
                         if (available_moves[m] == 1) {
                             score = get_score(game_state, available_moves, player, m, 1, max_depth, max_score);
-            
+                            
                             if (score > max_score) {
                                 max_score = score;
                                 move = m;

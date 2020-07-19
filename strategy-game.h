@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <random>
 #include <cmath>
 
 
@@ -30,12 +31,6 @@ class StrategyGame {
             } else {
                 return 1;
             }
-        }
-
-        
-
-
-        
-
+        }    
 };
 
