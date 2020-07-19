@@ -12,9 +12,17 @@ class StrategyGame {
         const char P1_MARKER = 'O';
         const char P2_MARKER = 'X';
         const std::string INDENT = "   ";
+        std::default_random_engine generator;
 
-        
-        // Convenience methods
+
+        // Template virtual methods
+        virtual void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {}
+        virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) { return game_state; }
+        virtual std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) { return available_moves; }
+        virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
+
+
+        // Shared methods
         int check_input(int move, std::vector<int> available_moves) {
         
             if (move >= 0 && move < available_moves.size()) {
@@ -47,14 +55,6 @@ class StrategyGame {
         }    
 
 
-        // Template virtual methods
-        virtual void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {}
-        virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) { return game_state; }
-        virtual std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) { return available_moves; }
-        virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
-
-
-        // Shared methods
         double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int move, int depth, int max_depth, double ab) {
 
             game_state = update_state(game_state, player, move);
@@ -138,7 +138,7 @@ class StrategyGame {
             double score;
             int move;
 
-            std::default_random_engine generator;
+            
             std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, available_moves.size() - 1);   
 
             while (!check_moves(attempted_moves)) {
@@ -258,9 +258,6 @@ class StrategyGame {
 
         }
     
-
-
-
 
 };
 

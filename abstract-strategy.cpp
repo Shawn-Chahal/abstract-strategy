@@ -43,9 +43,6 @@ int main() {
             }
         }        
         
-
-        
-
         if (games_list[g_index - 1] == "Tic-Tac-Toe") {
             TicTacToe game;
             game.run();

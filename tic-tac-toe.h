@@ -21,9 +21,7 @@ class TicTacToe: public StrategyGame {
         std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
         std::vector<int> difficulty = {2, 6, 10};
 
-        std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, N_MOVES - 1);   
-     
+  
 
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
