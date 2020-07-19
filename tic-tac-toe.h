@@ -325,5 +325,91 @@ class TicTacToe: public StrategyGame {
             result = get_result(game_state);
         }
 
+        void run() {
+            
+            double score, max_score;
+            int move;
+            int player = 1;
+                    
+            std::cout << std::endl << std::endl;
+            std::cout << INDENT << NAME << std::endl << std::endl;
+            std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
+            std::cout << INDENT << "1) Easy" << std::endl;
+            std::cout << INDENT << "2) Medium" << std::endl;
+            std::cout << INDENT << "3) Hard" << std::endl << std::endl;
+            std::cout << INDENT << "Enter a number: ";
+
+            int d_index = -1;
+
+            while (d_index == -1) {
+                if (!(std::cin >> d_index)){
+                    std::cout << INDENT << "Invalid input. Please enter a number: ";
+                    std::cin.clear();
+                    std::cin.ignore(10000,'\n');
+                    d_index = -1;
+                } else if (d_index < 1 || d_index > difficulty.size()) {
+                    std::cout << INDENT << "Difficulty unavailable. Please enter a number between 1 and " << difficulty.size() << ": ";
+                    std::cin.clear();
+                    std::cin.ignore(10000,'\n');
+                    d_index = -1;
+                }
+            }        
+            
+            set_difficulty(d_index);
+
+            std::cout << std::endl << std::endl;
+            std::cout << INDENT << "Player markers" << std::endl;
+            std::cout << INDENT << "You:      " << P1_MARKER << std::endl;
+            std::cout << INDENT << "Computer: " << P2_MARKER << std::endl << std::endl;
+
+            print_board();
+
+            while (result == -1) {
+
+                if (player == 1) {
+                    std::cout << INDENT << "Your turn. Enter a number: ";
+                    move = -1;
+
+                    while (move == -1) {
+                        if (!(std::cin >> move)){
+                            std::cout << INDENT << "Invalid input. Please enter a number: ";
+                            std::cin.clear();
+                            std::cin.ignore(10000,'\n');
+                            move = -1;
+                        } else if (!check_input(move)) {
+                            std::cout << INDENT << "Move unavailable. Please enter an available number:  ";
+                            std::cin.clear();
+                            std::cin.ignore(10000,'\n');
+                            move = -1;
+                        }
+                    }              
+                } else {
+                    move = get_move(player);
+                    
+                }
+
+                std::cout << std::endl;
+                end_turn(player, move);
+                player = switch_player(player);
+            }
+            
+            switch (result) {
+
+                case 0:
+                    std::cout << INDENT << "Draw." << std::endl;
+                    break;
+
+                case 1:
+                    std::cout << INDENT << "You win!" << std::endl;
+                    break;
+
+                case 2:
+                    std::cout << INDENT << "You lose." << std::endl;
+                    break;
+            }
+
+
+        }
+    
 };
 
