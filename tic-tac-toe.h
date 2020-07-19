@@ -24,10 +24,6 @@ class TicTacToe: public StrategyGame {
         std::default_random_engine generator;
         std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, N_MOVES - 1);   
 
-        void set_difficulty(int d_index) {
-            max_depth = difficulty[d_index - 1];
-        }
-
 
         int check_input(int move) {
         
@@ -317,14 +313,6 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        void end_turn(int player, int move) {
-
-            game_state = update_state(game_state, player, move);
-            available_moves = update_available_moves(game_state, available_moves);
-            print_board();
-            result = get_result(game_state);
-        }
-
         void run() {
             
             double score, max_score;
@@ -355,7 +343,7 @@ class TicTacToe: public StrategyGame {
                 }
             }        
             
-            set_difficulty(d_index);
+            max_depth = difficulty[d_index - 1];
 
             std::cout << std::endl << std::endl;
             std::cout << INDENT << "Player markers" << std::endl;
@@ -389,7 +377,10 @@ class TicTacToe: public StrategyGame {
                 }
 
                 std::cout << std::endl;
-                end_turn(player, move);
+                game_state = update_state(game_state, player, move);
+                available_moves = update_available_moves(game_state, available_moves);
+                print_board();
+                result = get_result(game_state);
                 player = switch_player(player);
             }
             
@@ -411,5 +402,6 @@ class TicTacToe: public StrategyGame {
 
         }
     
+
 };
 
