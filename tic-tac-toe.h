@@ -212,14 +212,11 @@ class TicTacToe: public StrategyGame {
                 default:
 
                     if (depth == max_depth) {  
-
-                        
                         return 0.0;
                     }
 
                     player = switch_player(player);
                     
-
                     if (player == 1) {
                         
                         double min_score = S_INITIAL;
