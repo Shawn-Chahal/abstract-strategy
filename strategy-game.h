@@ -171,8 +171,13 @@ class StrategyGame {
 
 
         // Shared void method
-        void run_internal(const std::string NAME, std::vector<int> difficulty, int max_depth, int result, std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
+        void run_internal(const std::string NAME, std::vector<int> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
             
+            int result = -1;
+            int max_depth = 1;
+            std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+            std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
+
             double score, max_score;
             int move;
             int player = 1;

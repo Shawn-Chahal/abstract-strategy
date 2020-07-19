@@ -8,18 +8,13 @@ class ConnectFour: public StrategyGame {
     
     public:
         
+        const std::string NAME = "Connect Four";
+        std::vector<int> difficulty = {6, 8, 10};
+
         const int N_ROW = 6;
         const int N_COL = 7;
         const int N_MOVES = N_COL;
         const int CONNECT = 4;
-        
-        const std::string NAME = "Connect Four";
-
-        int result = -1;
-        int max_depth = 1;
-        std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-        std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
-        std::vector<int> difficulty = {6, 8, 10};
         
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
@@ -184,8 +179,7 @@ class ConnectFour: public StrategyGame {
 
         void run() {
          
-            run_internal(NAME, difficulty, max_depth, result, game_state, available_moves, N_ROW, N_COL);
-
+            run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
         }
     
 };

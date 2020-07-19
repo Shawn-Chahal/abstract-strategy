@@ -8,19 +8,14 @@ class TicTacToe: public StrategyGame {
     
     public:
         
+        const std::string NAME = "Tic-Tac-Toe";   
+        std::vector<int> difficulty = {2, 6, 10};
+
         const int N_ROW = 3;
         const int N_COL = 3;
         const int N_MOVES = N_ROW * N_COL;
         const int CONNECT = 3;
         
-        const std::string NAME = "Tic-Tac-Toe";
-
-        int result = -1;
-        int max_depth = 1;
-        std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-        std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
-        std::vector<int> difficulty = {2, 6, 10};
-
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
@@ -188,8 +183,7 @@ class TicTacToe: public StrategyGame {
 
         void run() {
           
-            run_internal(NAME, difficulty, max_depth, result, game_state, available_moves, N_ROW, N_COL);
-
+            run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
         }
     
 };
