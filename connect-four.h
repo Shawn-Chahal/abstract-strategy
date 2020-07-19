@@ -26,16 +26,6 @@ class ConnectFour: public StrategyGame {
 
 
 
-        int check_input(int move) {
-        
-            if (move >= 0 && move < N_MOVES) {
-                return available_moves[move];
-            } else {
-                return 0;
-            }
-        }
-
-
         void print_board() {
             
             std::cout << INDENT;
@@ -358,7 +348,7 @@ class ConnectFour: public StrategyGame {
                             std::cin.clear();
                             std::cin.ignore(10000,'\n');
                             move = -1;
-                        } else if (!check_input(move)) {
+                        } else if (!check_input(move, available_moves)) {
                             std::cout << INDENT << "Move unavailable. Please enter an available number:  ";
                             std::cin.clear();
                             std::cin.ignore(10000,'\n');

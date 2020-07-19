@@ -13,6 +13,17 @@ class StrategyGame {
         const char P2_MARKER = 'X';
         const std::string INDENT = "   ";
 
+
+        int check_input(int move, std::vector<int> available_moves) {
+        
+            if (move >= 0 && move < available_moves.size()) {
+                return available_moves[move];
+            } else {
+                return 0;
+            }
+        }
+
+
         int check_moves(std::vector<int> attempted_moves) {
 
                 for (int i = 0; i < attempted_moves.size(); i++) {
