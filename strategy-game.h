@@ -5,25 +5,9 @@
 
 
 class StrategyGame {
-    public:
+    private:
 
-        const double S_INITIAL = 1000000.0;
-        const double DECAY = 0.9;
-        const char P1_MARKER = 'O';
-        const char P2_MARKER = 'X';
-        const std::string INDENT = "   ";
-        std::default_random_engine generator;
-
-
-        // Template virtual methods
-        virtual void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {}
-        virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) { return game_state; }
-        virtual std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) { return available_moves; }
-        virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
-
-
-        // Shared methods
-        int check_input(int move, std::vector<int> available_moves) {
+        int check_input(std::vector<int> available_moves, int move) {
         
             if (move >= 0 && move < available_moves.size()) {
                 return available_moves[move];
@@ -54,7 +38,7 @@ class StrategyGame {
             }
         }    
 
-
+        
         double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int move, int depth, int max_depth, double ab) {
 
             game_state = update_state(game_state, player, move);
@@ -169,6 +153,24 @@ class StrategyGame {
         }
 
 
+    public:
+
+        const double S_INITIAL = 1000000.0;
+        const double DECAY = 0.9;
+        const char P1_MARKER = 'O';
+        const char P2_MARKER = 'X';
+        const std::string INDENT = "   ";
+        std::default_random_engine generator;
+
+
+        // Template virtual methods
+        virtual void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {}
+        virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) { return game_state; }
+        virtual std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) { return available_moves; }
+        virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
+
+
+        // Shared void method
         void run_internal(const std::string NAME, std::vector<int> difficulty, int max_depth, int result, std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
             double score, max_score;
@@ -220,7 +222,7 @@ class StrategyGame {
                             std::cin.clear();
                             std::cin.ignore(10000,'\n');
                             move = -1;
-                        } else if (!check_input(move, available_moves)) {
+                        } else if (!check_input(available_moves, move)) {
                             std::cout << INDENT << "Move unavailable. Please enter an available number:  ";
                             std::cin.clear();
                             std::cin.ignore(10000,'\n');
@@ -258,6 +260,5 @@ class StrategyGame {
 
         }
     
-
 };
 

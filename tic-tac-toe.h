@@ -21,8 +21,6 @@ class TicTacToe: public StrategyGame {
         std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
         std::vector<int> difficulty = {2, 6, 10};
 
-  
-
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             

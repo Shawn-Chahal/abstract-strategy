@@ -20,9 +20,7 @@ class ConnectFour: public StrategyGame {
         std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
         std::vector<int> difficulty = {6, 8, 10};
-
         
-
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
@@ -190,6 +188,5 @@ class ConnectFour: public StrategyGame {
 
         }
     
-
 };
 
