@@ -14,7 +14,6 @@ class TicTacToe: public StrategyGame {
         const int N_ROW = 3;
         const int N_COL = 3;
         const int N_MOVES = N_ROW * N_COL;
-        const int CONNECT = 3;
         
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
@@ -73,6 +72,7 @@ class TicTacToe: public StrategyGame {
 
         int get_result(std::vector<std::vector<int>> game_state) {
 
+            const int CONNECT = 3;
             int player, count;
             int check_draw = 0;
 

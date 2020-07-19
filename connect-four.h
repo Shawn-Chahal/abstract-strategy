@@ -14,7 +14,6 @@ class ConnectFour: public StrategyGame {
         const int N_ROW = 6;
         const int N_COL = 7;
         const int N_MOVES = N_COL;
-        const int CONNECT = 4;
         
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
@@ -84,6 +83,7 @@ class ConnectFour: public StrategyGame {
 
         int get_result(std::vector<std::vector<int>> game_state) {
 
+            const int CONNECT = 4;
             int player, count;
             int check_draw = 0;
 
