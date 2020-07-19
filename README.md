@@ -1,5 +1,5 @@
 # Abstract Strategy Games 
-An API which allows for the easy creation of abstract startegy games with artificial intelligence in C++. The games can then be played in a command-line interface.
+An API which allows for the easy creation of abstract strategy games with artificial intelligence in C++. The games can then be played in a command-line interface.
 
 ## Available games
 1. Connect Four
