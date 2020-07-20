@@ -42,7 +42,7 @@ class OneStepGame {
         double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int move, int depth, int max_depth, double ab) {
 
             game_state = update_state(game_state, player, move);
-            available_moves = update_available_moves(game_state, available_moves);
+            available_moves = get_available_moves(game_state, player);
             double score;
 
             switch (get_result(game_state)) {
@@ -167,7 +167,7 @@ class OneStepGame {
         // Template virtual methods
         virtual void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {}
         virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) { return game_state; }
-        virtual std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) { return available_moves; }
+        virtual std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) { return std::vector<int>(1, -1); }
         virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
 
 
@@ -243,7 +243,7 @@ class OneStepGame {
                 std::cout << LINE_BREAK << std::endl;
                 
                 game_state = update_state(game_state, player, move);
-                available_moves = update_available_moves(game_state, available_moves);
+                available_moves = get_available_moves(game_state, player);
                 print_board(game_state, available_moves, N_ROW, N_COL);
                 result = get_result(game_state);
                 player = switch_player(player);

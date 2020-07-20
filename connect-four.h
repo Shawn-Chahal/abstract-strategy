@@ -70,8 +70,10 @@ class ConnectFour: public OneStepGame {
         }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) {
+        std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) {
             
+            std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
+
             for (int j=0; j < available_moves.size(); j++) {
                 if (game_state[0][j] > 0) {
                     available_moves[j] = 0;

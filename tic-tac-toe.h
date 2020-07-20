@@ -57,8 +57,10 @@ class TicTacToe: public OneStepGame {
         }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves) {
+        std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) {
             
+            std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
+
             for (int i = 0; i < N_ROW ; i++) {
                 for (int j = 0; j < N_COL ; j++) {
                     if (game_state[i][j] > 0) {
