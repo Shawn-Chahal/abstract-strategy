@@ -169,20 +169,20 @@ class OneStepGame {
         virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) { return game_state; }
         virtual std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) { return std::vector<int>(1, -1); }
         virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
+        virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
 
 
         // Shared void method
         void run_internal(const std::string NAME, std::vector<int> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
             
-            int result = -1;
-            int max_depth = 1;
-            std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
-
             double score, max_score;
             int move;
             int player = 1;
-                    
+            int result = -1;
+            int max_depth = 1;
+            std::vector<std::vector<int>> game_state = initialize_state(N_ROW, N_COL);
+            std::vector<int> available_moves = get_available_moves(game_state, player);
+
             std::cout << INDENT << NAME << std::endl << std::endl;
             std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
             std::cout << INDENT << "1) Easy" << std::endl;

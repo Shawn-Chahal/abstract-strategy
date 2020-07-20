@@ -179,6 +179,13 @@ class ConnectFour: public OneStepGame {
         }
 
 
+        std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) {
+
+            return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+
+            }
+
+
         void run() {
          
             run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
