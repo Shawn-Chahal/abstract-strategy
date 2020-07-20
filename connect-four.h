@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-class ConnectFour: public StrategyGame {
+class ConnectFour: public OneStepGame {
     
     public:
         

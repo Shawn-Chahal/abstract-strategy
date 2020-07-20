@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-class StrategyGame {
+class OneStepGame {
     private:
 
         int check_input(std::vector<int> available_moves, int move) {

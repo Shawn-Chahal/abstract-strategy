@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-class TicTacToe: public StrategyGame {
+class TicTacToe: public OneStepGame {
     
     public:
         

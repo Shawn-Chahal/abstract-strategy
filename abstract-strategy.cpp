@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include "strategy-game.h"
+#include "one-step-game.h"
 #include "connect-four.h"
 #include "tic-tac-toe.h"
 
@@ -12,7 +12,7 @@ int main() {
 
     while (play_again == 1) {
 
-        StrategyGame menu;
+        OneStepGame menu;
         
         std::vector<std::string> games_list = {"Connect Four", "Tic-Tac-Toe"};
 
