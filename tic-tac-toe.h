@@ -16,6 +16,34 @@ class TicTacToe: public OneStepGame {
         const int N_MOVES = N_ROW * N_COL;
         
 
+        int transform_input(int user_input, const int N_ROW, const int N_COL) {
+
+            int row = user_input / 10;
+            int col = user_input % 10;
+            int move = row * N_COL + col;
+
+            return move;
+        }
+
+
+        int check_input(std::vector<int> available_moves, int user_input, const int N_ROW, const int N_COL) {
+            
+            int row = user_input / 10;
+            int col = user_input % 10;
+            int move = row * N_COL + col;
+
+            if (row < 0 || row >= N_ROW || col < 0 || col >= N_COL ) {
+                return 0;
+            }
+
+            if (move >= 0 && move < available_moves.size()) {
+                return available_moves[move];
+            } else {
+                return 0;
+            }
+        }
+
+
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
             for (int i = 0; i < N_ROW; i++) {

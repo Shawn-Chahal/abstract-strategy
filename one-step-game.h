@@ -7,16 +7,6 @@
 class OneStepGame {
     private:
 
-        int check_input(std::vector<int> available_moves, int move) {
-        
-            if (move >= 0 && move < available_moves.size()) {
-                return available_moves[move];
-            } else {
-                return 0;
-            }
-        }
-
-
         int check_moves(std::vector<int> attempted_moves) {
 
                 for (int i = 0; i < attempted_moves.size(); i++) {
@@ -170,13 +160,15 @@ class OneStepGame {
         virtual std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) { return std::vector<int>(1, -1); }
         virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
         virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
+        virtual int check_input(std::vector<int> available_moves, int user_input, const int N_ROW, const int N_COL) { return -1; }
+        virtual int transform_input(int user_input, const int N_ROW, const int N_COL) { return -1; }
 
 
         // Shared void method
         void run_internal(const std::string NAME, std::vector<int> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
             
             double score, max_score;
-            int move;
+            int move, user_input;
             int player = 1;
             int result = -1;
             int max_depth = 1;
@@ -220,21 +212,24 @@ class OneStepGame {
 
                 if (player == 1) {
                     std::cout << INDENT << "Your turn. Enter a number: ";
-                    move = -1;
+                    user_input = -1;
 
-                    while (move == -1) {
-                        if (!(std::cin >> move)){
+                    while (user_input == -1) {
+                        if (!(std::cin >> user_input)){
                             std::cout << INDENT << "Invalid input. Please enter a number: ";
                             std::cin.clear();
                             std::cin.ignore(10000,'\n');
-                            move = -1;
-                        } else if (!check_input(available_moves, move)) {
+                            user_input = -1;
+                        } else if (!check_input(available_moves, user_input, N_ROW, N_COL)) {
                             std::cout << INDENT << "Move unavailable. Please enter an available number:  ";
                             std::cin.clear();
                             std::cin.ignore(10000,'\n');
-                            move = -1;
+                            user_input = -1;
                         }
                     }              
+
+                    move = transform_input(user_input, N_ROW, N_COL);
+
                 } else {
                     move = get_move(game_state, player, available_moves, max_depth);
                     

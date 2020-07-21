@@ -16,6 +16,22 @@ class ConnectFour: public OneStepGame {
         const int N_MOVES = N_COL;
         
 
+        int transform_input(int user_input, const int N_ROW, const int N_COL) {
+
+            return user_input;
+        }
+
+
+        int check_input(std::vector<int> available_moves, int user_input, const int N_ROW, const int N_COL) {
+        
+            if (user_input >= 0 && user_input < available_moves.size()) {
+                return available_moves[user_input];
+            } else {
+                return 0;
+            }
+        }
+
+
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
             std::cout << INDENT;
