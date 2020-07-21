@@ -46,31 +46,53 @@ class TicTacToe: public OneStepGame {
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
+            std::cout << INDENT << " ";
+            
+            for (int j = 0; j < N_COL; j++) {  
+
+                std::cout << "  " << j << " ";
+            }
+
+            std::cout << " " << std::endl;
+
             for (int i = 0; i < N_ROW; i++) {
                 std::cout << INDENT;
+
                 for (int j = 0; j < N_COL; j++) {
+
+                    if (j == 0) {
+                        std::cout << i << "  ";
+                    } else {
+                        std::cout << "| ";
+                    }
+                    
                     switch (game_state[i][j]) {
                         case 0:
-                            std::cout << "| " << i * N_COL + j << " ";
+                            std::cout << " ";
                             break;
                         case 1:
-                            std::cout << "| " << P1_MARKER << " ";
+                            std::cout << P1_MARKER;
                             break;
                         case 2:
-                            std::cout << "| " << P2_MARKER << " ";
+                            std::cout << P2_MARKER;
                             break;
                     }
+
+                    std::cout << " ";
                 }
 
-                std::cout << "|" << std::endl;
+                std::cout << std::endl;
                 
-
                 if (i < N_ROW - 1) {
-                    std::cout << INDENT;
+                    std::cout << INDENT << "  ";
                     for (int j = 0; j < N_COL; j++) {
-                        std::cout << "----";
+                        if (j == N_COL - 1) {
+                            std::cout << "---";
+                        } else {
+                            std::cout << "----";
+                        }
                     }
-                    std::cout << "-" << std::endl;
+                    std::cout << std::endl;
                 }
             }
             std::cout << std::endl;

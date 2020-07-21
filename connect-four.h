@@ -36,7 +36,7 @@ class ConnectFour: public OneStepGame {
             
             std::cout << INDENT;
             
-            for (int j = 0; j < N_MOVES; j++) {
+            for (int j = 0; j < N_COL; j++) {
                 if (available_moves[j] == 1) {
                     std::cout << "  " << j << " ";
                 } else {
