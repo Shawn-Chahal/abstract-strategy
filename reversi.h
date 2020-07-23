@@ -5,6 +5,57 @@
 
 
 class Reversi: public OneStepGame {
+    private:
+
+    std::vector<int> check_link(std::vector<std::vector<int>> game_state, int row, int col) {
+        std::vector<int> link = std::vector<int>(8, 0);
+        int player = game_state[row][col];
+        int opponent = switch_player(player);
+
+        // Check right [0]
+            if (col < N_COL - 2) {
+                if (game_state[row][col + 1] == opponent) {
+                    for (int j = col + 2; j < N_COL; j++) {
+                        if (game_state[row][j] == 0) {
+                            break;
+                        } else if (game_state[row][j] == player) {
+                            link[0] = 1;
+                            break;
+                        }
+                    }
+                }
+            }
+        
+
+
+        // Check up-right [1]
+
+
+        // Check up [2]
+
+
+        // Check up-left [3]
+
+
+        // Check left [4]
+
+
+        // Check down-left [5]
+
+
+        // Check down [6]
+
+
+        // Check down-right [7]
+
+        
+
+
+
+
+        return link;
+    }
+
     
     public:
         
@@ -122,9 +173,42 @@ class Reversi: public OneStepGame {
 
             int row = move / N_COL;
             int col = move % N_COL;
+            int opponent = switch_player(player);
 
             game_state[row][col] = player;
 
+            // Check right [0]
+            if (col < N_COL - 2) {
+
+                for (int j = col + 1; j < N_COL; j++) {
+
+
+
+                }
+
+
+            }
+
+
+            // Check up-right [1]
+
+
+            // Check up [2]
+
+
+            // Check up-left [3]
+
+
+            // Check left [4]
+
+
+            // Check down-left [5]
+
+
+            // Check down [6]
+
+
+            // Check down-right [7]
 
             // Flip opponents pieces
             

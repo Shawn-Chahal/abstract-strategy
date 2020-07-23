@@ -18,17 +18,7 @@ class OneStepGame {
                 return 1;
             }
         
-
-        int switch_player(int player) {
-            
-            if (player == 1) {
-                return 2;
-            } else {
-                return 1;
-            }
-        }    
-
-        
+       
         double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int move, int depth, int max_depth, double ab) {
 
             game_state = update_state(game_state, player, move);
@@ -164,7 +154,16 @@ class OneStepGame {
         virtual int transform_input(int user_input, const int N_ROW, const int N_COL) { return -1; }
 
 
-        // Shared void method
+        // Shared methods
+        int switch_player(int player) {
+            
+            if (player == 1) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }    
+
         void run_internal(const std::string NAME, std::vector<int> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
             
             double score, max_score;
