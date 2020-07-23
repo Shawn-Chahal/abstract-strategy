@@ -477,114 +477,45 @@ class Reversi: public OneStepGame {
 
         int get_result(std::vector<std::vector<int>> game_state) {
 
-            const int CONNECT = 3;
-            int player, count;
-            int check_draw = 0;
+            int player1_score = 0;
+            int player2_score = 0;
 
-            /* Check horizontal */
-            for (int i = 0; i < N_ROW ; i++) {
-                
-                player = game_state[i][0];
+            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
 
-                if (player > 0){
-                    count = 1;
+            for (int p = 1; p <= 2; p++) {
+                available_moves = get_available_moves(game_state, p);
 
-                    for (int j = 1; j < N_COL ; j++) {
-                        
-                        if (game_state[i][j] == player) {
-                            count++;
-                        } else {
-                            break;
-                        }
+                for (int m = 0; m < N_MOVES; m++) {
+                    if (available_moves[m]) {
+                        return -1;
                     }
-
-                    if (count == CONNECT) {
-                        return player;
-                    }
-                }
-            }
-
-            /* Check vertical */
-            for (int j = 0; j < N_COL ; j++) {
-                
-                player = game_state[0][j];
-
-                if (player > 0){
-                    count = 1;
-
-                    for (int i = 1; i < N_ROW ; i++) {
-                        
-                        if (game_state[i][j] == player) {
-                            count++;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    if (count == CONNECT) {
-                        return player;
-                    }
-                }
-            }
-
-            /* Check top-left to bottom-right diagonal */
-            player = game_state[0][0];
-
-            if (player > 0){
-                count = 1;
-
-                for (int k = 1; k < N_COL; k++){
-                    if (game_state[k][k] == player) {
-                        count++;
-                    
-                    } else {
-                        break;
-                    }
-                }
-
-                if (count == CONNECT) {
-                    return player;
                 }
             }
             
-
-            /* Check bottom-left to top-right diagonal */
-            player = game_state[N_ROW - 1][0];
-
-            if (player > 0){
-                count = 1;
-
-                for (int k = 1; k < N_COL; k++){
-                    if (game_state[N_ROW - 1 - k][k] == player) {
-                        count++;
-                    } else {
-                        break;
-                    }
-                }
-                
-                if (count == CONNECT) {
-                    return player;
-                }
-            }
-
-
-            for (int i = 0; i < N_ROW ; i++) {
-                for (int j = 0; j < N_COL ; j++) {
-                    if (game_state[i][j] > 0) {
-                        check_draw++;
+            for (int i = 0; i < N_ROW; i++) {
+                for (int j = 0; j < N_COL; j++) {
+                    switch (game_state[i][j]) {
+                        case 1:
+                            player1_score++;
+                            break;
+                        case 2:
+                            player2_score++;
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
 
-            if (check_draw == N_MOVES) {
-                /* Declare a draw */
-                return 0;
+            if (player1_score > player2_score) {
+                return 1;
+            } else if (player2_score > player1_score) {
+                return 2;
             } else {
-                /* Game continues */
-                return -1;
+                return 0;
             }
+            
         }
-
 
 
         void run() {
