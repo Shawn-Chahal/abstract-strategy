@@ -237,10 +237,11 @@ class OneStepGame {
                 std::cout << LINE_BREAK << std::endl;
                 
                 game_state = update_state(game_state, player, move);
-                available_moves = get_available_moves(game_state, player);
-                print_board(game_state, available_moves, N_ROW, N_COL);
                 result = get_result(game_state);
                 player = switch_player(player);
+                available_moves = get_available_moves(game_state, player);
+                print_board(game_state, available_moves, N_ROW, N_COL);
+                
             }
             
             std::cout << LINE_BREAK << std::endl;

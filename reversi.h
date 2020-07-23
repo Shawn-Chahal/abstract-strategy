@@ -7,128 +7,244 @@
 class Reversi: public OneStepGame {
     private:
 
-    std::vector<int> check_link(std::vector<std::vector<int>> game_state, int row, int col) {
-        std::vector<int> link = std::vector<int>(8, 0);
-        int player = game_state[row][col];
-        int opponent = switch_player(player);
+        std::vector<int> check_link(std::vector<std::vector<int>> game_state, int row, int col) {
+            std::vector<int> link = std::vector<int>(8, 0);
+            int player = game_state[row][col];
+            int opponent = switch_player(player);
 
-        // Check right [0]
-        if (col < N_COL - 2) {
-            if (game_state[row][col + 1] == opponent) {
-                for (int k = 2; col + k < N_COL; k++) {
-                    if (game_state[row][col + k] == 0) {
-                        break;
-                    } else if (game_state[row][col + k] == player) {
-                        link[0] = 1;
-                        break;
+            // Check right [0]
+            if (col < N_COL - 2) {
+                if (game_state[row][col + 1] == opponent) {
+                    for (int k = 2; col + k < N_COL; k++) {
+                        if (game_state[row][col + k] == 0) {
+                            break;
+                        } else if (game_state[row][col + k] == player) {
+                            link[0] = 1;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        // Check up-right [1]
-        if ((row > 1) && (col < N_COL - 2)) {
-            if (game_state[row - 1][col + 1] == opponent) {
-                for (int k = 2; (row - k >= 0) && (col + k < N_COL); k++) {
-                    if (game_state[row - k][col + k] == 0) {
-                        break;
-                    } else if (game_state[row - k][col + k] == player) {
-                        link[1] = 1;
-                        break;
+            // Check up-right [1]
+            if ((row > 1) && (col < N_COL - 2)) {
+                if (game_state[row - 1][col + 1] == opponent) {
+                    for (int k = 2; (row - k >= 0) && (col + k < N_COL); k++) {
+                        if (game_state[row - k][col + k] == 0) {
+                            break;
+                        } else if (game_state[row - k][col + k] == player) {
+                            link[1] = 1;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        // Check up [2]
-        if (row > 1) {
-            if (game_state[row - 1][col] == opponent) {
-                for (int k = 2; row - k >= 0; k++) {
-                    if (game_state[row - k][col] == 0) {
-                        break;
-                    } else if (game_state[row - k][col] == player) {
-                        link[2] = 1;
-                        break;
+            // Check up [2]
+            if (row > 1) {
+                if (game_state[row - 1][col] == opponent) {
+                    for (int k = 2; row - k >= 0; k++) {
+                        if (game_state[row - k][col] == 0) {
+                            break;
+                        } else if (game_state[row - k][col] == player) {
+                            link[2] = 1;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        // Check up-left [3]
-        if ((row > 1) && (col > 1)) {
-            if (game_state[row - 1][col - 1] == opponent) {
-                for (int k = 2; (row - k >= 0) && (col - k >= 0); k++) {
-                    if (game_state[row - k][col - k] == 0) {
-                        break;
-                    } else if (game_state[row - k][col - k] == player) {
-                        link[3] = 1;
-                        break;
+            // Check up-left [3]
+            if ((row > 1) && (col > 1)) {
+                if (game_state[row - 1][col - 1] == opponent) {
+                    for (int k = 2; (row - k >= 0) && (col - k >= 0); k++) {
+                        if (game_state[row - k][col - k] == 0) {
+                            break;
+                        } else if (game_state[row - k][col - k] == player) {
+                            link[3] = 1;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        // Check left [4]
-        if (col > 1) {
-            if (game_state[row][col - 1] == opponent) {
-                for (int k = 2; col - k >= 0; k++) {
-                    if (game_state[row][col - k] == 0) {
-                        break;
-                    } else if (game_state[row][col - k] == player) {
-                        link[4] = 1;
-                        break;
+            // Check left [4]
+            if (col > 1) {
+                if (game_state[row][col - 1] == opponent) {
+                    for (int k = 2; col - k >= 0; k++) {
+                        if (game_state[row][col - k] == 0) {
+                            break;
+                        } else if (game_state[row][col - k] == player) {
+                            link[4] = 1;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        // Check down-left [5]
-        if ((row < N_ROW - 2) && (col > 1)) {
-            if (game_state[row + 1][col - 1] == opponent) {
-                for (int k = 2; (row + k < N_ROW) && (col - k >= 0); k++) {
-                    if (game_state[row + k][col - k] == 0) {
-                        break;
-                    } else if (game_state[row + k][col - k] == player) {
-                        link[5] = 1;
-                        break;
+            // Check down-left [5]
+            if ((row < N_ROW - 2) && (col > 1)) {
+                if (game_state[row + 1][col - 1] == opponent) {
+                    for (int k = 2; (row + k < N_ROW) && (col - k >= 0); k++) {
+                        if (game_state[row + k][col - k] == 0) {
+                            break;
+                        } else if (game_state[row + k][col - k] == player) {
+                            link[5] = 1;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        // Check down [6]
-        if (row < N_ROW - 2) {
-            if (game_state[row + 1][col] == opponent) {
-                for (int k = 2; row + k < N_ROW; k++) {
-                    if (game_state[row + k][col] == 0) {
-                        break;
-                    } else if (game_state[row + k][col] == player) {
-                        link[6] = 1;
-                        break;
+            // Check down [6]
+            if (row < N_ROW - 2) {
+                if (game_state[row + 1][col] == opponent) {
+                    for (int k = 2; row + k < N_ROW; k++) {
+                        if (game_state[row + k][col] == 0) {
+                            break;
+                        } else if (game_state[row + k][col] == player) {
+                            link[6] = 1;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
 
-        // Check down-right [7]
-        if ((row < N_ROW - 2) && (col < N_COL - 2)) {
-            if (game_state[row + 1][col + 1] == opponent) {
-                for (int k = 2; (row + k < N_ROW) && (col + k < N_COL); k++) {
-                    if (game_state[row + k][col + k] == 0) {
-                        break;
-                    } else if (game_state[row + k][col + k] == player) {
-                        link[7] = 1;
-                        break;
+            // Check down-right [7]
+            if ((row < N_ROW - 2) && (col < N_COL - 2)) {
+                if (game_state[row + 1][col + 1] == opponent) {
+                    for (int k = 2; (row + k < N_ROW) && (col + k < N_COL); k++) {
+                        if (game_state[row + k][col + k] == 0) {
+                            break;
+                        } else if (game_state[row + k][col + k] == player) {
+                            link[7] = 1;
+                            break;
+                        }
                     }
                 }
             }
+            
+            return link;
         }
-        
-        return link;
-    }
 
-    
+
+        int move_available(std::vector<std::vector<int>> game_state, int player, int move) {
+            
+            int row = move / N_COL;
+            int col = move % N_COL;
+            game_state[row][col] = player;
+            int opponent = switch_player(player);
+
+            // Check right [0]
+            if (col < N_COL - 2) {
+                if (game_state[row][col + 1] == opponent) {
+                    for (int k = 2; col + k < N_COL; k++) {
+                        if (game_state[row][col + k] == 0) {
+                            break;
+                        } else if (game_state[row][col + k] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+
+            // Check up-right [1]
+            if ((row > 1) && (col < N_COL - 2)) {
+                if (game_state[row - 1][col + 1] == opponent) {
+                    for (int k = 2; (row - k >= 0) && (col + k < N_COL); k++) {
+                        if (game_state[row - k][col + k] == 0) {
+                            break;
+                        } else if (game_state[row - k][col + k] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+
+            // Check up [2]
+            if (row > 1) {
+                if (game_state[row - 1][col] == opponent) {
+                    for (int k = 2; row - k >= 0; k++) {
+                        if (game_state[row - k][col] == 0) {
+                            break;
+                        } else if (game_state[row - k][col] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+
+            // Check up-left [3]
+            if ((row > 1) && (col > 1)) {
+                if (game_state[row - 1][col - 1] == opponent) {
+                    for (int k = 2; (row - k >= 0) && (col - k >= 0); k++) {
+                        if (game_state[row - k][col - k] == 0) {
+                            break;
+                        } else if (game_state[row - k][col - k] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+
+            // Check left [4]
+            if (col > 1) {
+                if (game_state[row][col - 1] == opponent) {
+                    for (int k = 2; col - k >= 0; k++) {
+                        if (game_state[row][col - k] == 0) {
+                            break;
+                        } else if (game_state[row][col - k] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+
+            // Check down-left [5]
+            if ((row < N_ROW - 2) && (col > 1)) {
+                if (game_state[row + 1][col - 1] == opponent) {
+                    for (int k = 2; (row + k < N_ROW) && (col - k >= 0); k++) {
+                        if (game_state[row + k][col - k] == 0) {
+                            break;
+                        } else if (game_state[row + k][col - k] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+
+            // Check down [6]
+            if (row < N_ROW - 2) {
+                if (game_state[row + 1][col] == opponent) {
+                    for (int k = 2; row + k < N_ROW; k++) {
+                        if (game_state[row + k][col] == 0) {
+                            break;
+                        } else if (game_state[row + k][col] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+
+
+            // Check down-right [7]
+            if ((row < N_ROW - 2) && (col < N_COL - 2)) {
+                if (game_state[row + 1][col + 1] == opponent) {
+                    for (int k = 2; (row + k < N_ROW) && (col + k < N_COL); k++) {
+                        if (game_state[row + k][col + k] == 0) {
+                            break;
+                        } else if (game_state[row + k][col + k] == player) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+            
+            return 0;
+        }
+      
+
     public:
         
         const std::string NAME = "Reversi (Othello)";   
@@ -249,7 +365,6 @@ class Reversi: public OneStepGame {
             game_state[row][col] = player;
 
             std::vector<int> link = check_link(game_state, row, col);
-            
 
             // Check right [0]
             if (link[0]) {
@@ -345,15 +460,17 @@ class Reversi: public OneStepGame {
 
         std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) {
             
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
+            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
 
-            for (int i = 0; i < N_ROW ; i++) {
-                for (int j = 0; j < N_COL ; j++) {
-                    if (game_state[i][j] > 0) {
-                        available_moves[i * N_COL + j] = 0;
+            for (int m = 0; m < N_MOVES; m++) {
+                if (game_state[m / N_COL][m % N_COL] == 0) {
+                    if (move_available(game_state, player, m)) {
+                        available_moves[m] = 1;
+
                     }
                 }
             }
+
             return available_moves;
         }
 
