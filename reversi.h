@@ -13,46 +13,118 @@ class Reversi: public OneStepGame {
         int opponent = switch_player(player);
 
         // Check right [0]
-            if (col < N_COL - 2) {
-                if (game_state[row][col + 1] == opponent) {
-                    for (int j = col + 2; j < N_COL; j++) {
-                        if (game_state[row][j] == 0) {
-                            break;
-                        } else if (game_state[row][j] == player) {
-                            link[0] = 1;
-                            break;
-                        }
+        if (col < N_COL - 2) {
+            if (game_state[row][col + 1] == opponent) {
+                for (int k = 2; col + k < N_COL; k++) {
+                    if (game_state[row][col + k] == 0) {
+                        break;
+                    } else if (game_state[row][col + k] == player) {
+                        link[0] = 1;
+                        break;
                     }
                 }
             }
-        
-
+        }
 
         // Check up-right [1]
-
+        if ((row > 1) && (col < N_COL - 2)) {
+            if (game_state[row - 1][col + 1] == opponent) {
+                for (int k = 2; (row - k >= 0) && (col + k < N_COL); k++) {
+                    if (game_state[row - k][col + k] == 0) {
+                        break;
+                    } else if (game_state[row - k][col + k] == player) {
+                        link[1] = 1;
+                        break;
+                    }
+                }
+            }
+        }
 
         // Check up [2]
-
+        if (row > 1) {
+            if (game_state[row - 1][col] == opponent) {
+                for (int k = 2; row - k >= 0; k++) {
+                    if (game_state[row - k][col] == 0) {
+                        break;
+                    } else if (game_state[row - k][col] == player) {
+                        link[2] = 1;
+                        break;
+                    }
+                }
+            }
+        }
 
         // Check up-left [3]
-
+        if ((row > 1) && (col > 1)) {
+            if (game_state[row - 1][col - 1] == opponent) {
+                for (int k = 2; (row - k >= 0) && (col - k >= 0); k++) {
+                    if (game_state[row - k][col - k] == 0) {
+                        break;
+                    } else if (game_state[row - k][col - k] == player) {
+                        link[3] = 1;
+                        break;
+                    }
+                }
+            }
+        }
 
         // Check left [4]
-
+        if (col > 1) {
+            if (game_state[row][col - 1] == opponent) {
+                for (int k = 2; col - k >= 0; k++) {
+                    if (game_state[row][col - k] == 0) {
+                        break;
+                    } else if (game_state[row][col - k] == player) {
+                        link[4] = 1;
+                        break;
+                    }
+                }
+            }
+        }
 
         // Check down-left [5]
-
+        if ((row < N_ROW - 2) && (col > 1)) {
+            if (game_state[row + 1][col - 1] == opponent) {
+                for (int k = 2; (row + k < N_ROW) && (col - k >= 0); k++) {
+                    if (game_state[row + k][col - k] == 0) {
+                        break;
+                    } else if (game_state[row + k][col - k] == player) {
+                        link[5] = 1;
+                        break;
+                    }
+                }
+            }
+        }
 
         // Check down [6]
+        if (row < N_ROW - 2) {
+            if (game_state[row + 1][col] == opponent) {
+                for (int k = 2; row + k < N_ROW; k++) {
+                    if (game_state[row + k][col] == 0) {
+                        break;
+                    } else if (game_state[row + k][col] == player) {
+                        link[6] = 1;
+                        break;
+                    }
+                }
+            }
+        }
 
 
         // Check down-right [7]
-
+        if ((row < N_ROW - 2) && (col < N_COL - 2)) {
+            if (game_state[row + 1][col + 1] == opponent) {
+                for (int k = 2; (row + k < N_ROW) && (col + k < N_COL); k++) {
+                    if (game_state[row + k][col + k] == 0) {
+                        break;
+                    } else if (game_state[row + k][col + k] == player) {
+                        link[7] = 1;
+                        break;
+                    }
+                }
+            }
+        }
         
-
-
-
-
         return link;
     }
 
@@ -173,44 +245,99 @@ class Reversi: public OneStepGame {
 
             int row = move / N_COL;
             int col = move % N_COL;
-            int opponent = switch_player(player);
 
             game_state[row][col] = player;
 
+            std::vector<int> link = check_link(game_state, row, col);
+            
+
             // Check right [0]
-            if (col < N_COL - 2) {
-
-                for (int j = col + 1; j < N_COL; j++) {
-
-
-
+            if (link[0]) {
+                for (int k = 1; col + k < N_COL; k++) {
+                    if (game_state[row][col + k] == player) {
+                        break;
+                    } else {
+                        game_state[row][col + k] = player;
+                    }
                 }
-
-
             }
 
-
             // Check up-right [1]
-
+            if (link[1]) {
+                for (int k = 1; (row - k >= 0) && (col + k < N_COL); k++) {
+                    if (game_state[row - k][col + k] == player) {
+                        break;
+                    } else {
+                        game_state[row - k][col + k] = player;
+                    }
+                }
+            }
 
             // Check up [2]
-
+            if (link[2]) {
+                for (int k = 1; row - k >= 0; k++) {
+                    if (game_state[row - k][col] == player) {
+                        break;
+                    } else {
+                        game_state[row - k][col] = player;
+                    }
+                }
+            }
 
             // Check up-left [3]
-
+            if (link[3]) {
+                for (int k = 1; (row - k >= 0) && (col - k >= 0); k++) {
+                    if (game_state[row - k][col - k] == player) {
+                        break;
+                    } else {
+                        game_state[row - k][col - k] = player;
+                    }
+                }
+            }
 
             // Check left [4]
-
+            if (link[4]) {
+                for (int k = 1; col - k >= 0; k++) {
+                    if (game_state[row][col - k] == player) {
+                        break;
+                    } else {
+                        game_state[row][col - k] = player;
+                    }
+                }
+            }
 
             // Check down-left [5]
-
+            if (link[5]) {
+                for (int k = 1; (row + k < N_ROW) && (col - k >= 0); k++) {
+                    if (game_state[row + k][col - k] == player) {
+                        break;
+                    } else {
+                        game_state[row + k][col - k] = player;
+                    }
+                }
+            }
 
             // Check down [6]
-
+            if (link[6]) {
+                for (int k = 1; row + k < N_ROW; k++) {
+                    if (game_state[row + k][col] == player) {
+                        break;
+                    } else {
+                        game_state[row + k][col] = player;
+                    }
+                }
+            }
 
             // Check down-right [7]
-
-            // Flip opponents pieces
+            if (link[7]) {
+                for (int k = 1; (row + k < N_ROW) && (col + k < N_COL); k++) {
+                    if (game_state[row + k][col + k] == player) {
+                        break;
+                    } else {
+                        game_state[row + k][col + k] = player;
+                    }
+                }
+            }
             
             return game_state;
         }
