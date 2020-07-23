@@ -167,7 +167,7 @@ class OneStepGame {
         void run_internal(const std::string NAME, std::vector<int> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
             
             double score, max_score;
-            int move, user_input;
+            int move, user_input, pass;
             int player = 1;
             int result = -1;
             int max_depth = 1;
@@ -240,6 +240,20 @@ class OneStepGame {
                 result = get_result(game_state);
                 player = switch_player(player);
                 available_moves = get_available_moves(game_state, player);
+
+                pass = 1;
+
+                for (int m = 0; m < N_MOVES; m++) {
+                    if (available_moves[m]) {
+                        pass = 0;
+                        break;
+                    }
+                }
+
+                if (pass) {
+                    player = switch_player(player);
+                }
+
                 print_board(game_state, available_moves, N_ROW, N_COL);
                 
             }
