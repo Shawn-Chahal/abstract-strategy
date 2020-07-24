@@ -108,19 +108,17 @@ class OneStepGame {
             while (!check_moves(attempted_moves)) {
                 int m = distribution(generator);
 
-                if (m >=0 && m < available_moves.size()){
-                    if (!attempted_moves[m]) {
+                if (!attempted_moves[m]) {
 
-                        attempted_moves[m] = 1;
-                        std::cout << ".";
-                        
-                        if (available_moves[m] == 1) {
-                            score = get_score(game_state, available_moves, player, m, 1, max_depth, max_score);
-            
-                            if (score > max_score) {
-                                max_score = score;
-                                move = m;
-                            }
+                    attempted_moves[m] = 1;
+                    std::cout << ".";
+                    
+                    if (available_moves[m] == 1) {
+                        score = get_score(game_state, available_moves, player, m, 1, max_depth, max_score);
+        
+                        if (score > max_score) {
+                            max_score = score;
+                            move = m;
                         }
                     }
                 }
@@ -176,9 +174,11 @@ class OneStepGame {
 
             std::cout << INDENT << NAME << std::endl << std::endl;
             std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
-            std::cout << INDENT << "1) Easy" << std::endl;
-            std::cout << INDENT << "2) Medium" << std::endl;
-            std::cout << INDENT << "3) Hard" << std::endl << std::endl;
+            std::cout << INDENT << "1) Very Easy" << std::endl;
+            std::cout << INDENT << "2) Easy" << std::endl;
+            std::cout << INDENT << "3) Medium" << std::endl;
+            std::cout << INDENT << "4) Hard" << std::endl;
+            std::cout << INDENT << "5) Very Hard (May experience long load times)" << std::endl << std::endl;
             std::cout << INDENT << "Enter a number: ";
 
             int d_index = -1;

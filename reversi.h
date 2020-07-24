@@ -248,7 +248,7 @@ class Reversi: public OneStepGame {
     public:
         
         const std::string NAME = "Reversi (Othello)";   
-        std::vector<int> difficulty = {2, 4, 6};
+        std::vector<int> difficulty = {2, 4, 6, 8, 10};
 
         const int N_ROW = 8;
         const int N_COL = 8;
