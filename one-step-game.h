@@ -41,7 +41,7 @@ class OneStepGame {
                 default:
 
                     if (depth == max_depth) {  
-                        return 0.0;
+                        return intermediate_score(game_state) * pow(DECAY, depth);
                     }
 
                     player = switch_player(player);
@@ -152,7 +152,7 @@ class OneStepGame {
         virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
         virtual int check_input(std::vector<int> available_moves, int user_input, const int N_ROW, const int N_COL) { return -1; }
         virtual int transform_input(int user_input, const int N_ROW, const int N_COL) { return -1; }
-
+        virtual double intermediate_score(std::vector<std::vector<int>> game_state) { return -1.0; }
 
         // Shared methods
         int switch_player(int player) {
@@ -252,6 +252,7 @@ class OneStepGame {
 
                 if (pass) {
                     player = switch_player(player);
+                    available_moves = get_available_moves(game_state, player);
                 }
 
                 print_board(game_state, available_moves, N_ROW, N_COL);

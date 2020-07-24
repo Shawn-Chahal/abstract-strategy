@@ -248,12 +248,38 @@ class Reversi: public OneStepGame {
     public:
         
         const std::string NAME = "Reversi (Othello)";   
-        std::vector<int> difficulty = {3, 5, 7}; // Needs to be tested
+        std::vector<int> difficulty = {2, 4, 6};
 
         const int N_ROW = 8;
         const int N_COL = 8;
         const int N_MOVES = N_ROW * N_COL;
         
+
+        double intermediate_score(std::vector<std::vector<int>> game_state) {
+            
+            int player1_score = 0;
+            int player2_score = 0;
+            
+
+            for (int i = 0; i < N_ROW; i++) {
+                for (int j = 0; j < N_COL; j++) {
+                    switch (game_state[i][j]) {
+                        case 1:
+                            player1_score++;
+                            break;
+                        case 2:
+                            player2_score++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            return (player2_score - player1_score + 0.0) / (player1_score + player2_score + 0.0);
+
+        }
+
 
         int transform_input(int user_input, const int N_ROW, const int N_COL) {
 

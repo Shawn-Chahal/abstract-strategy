@@ -15,6 +15,12 @@ class ConnectFour: public OneStepGame {
         const int N_COL = 7;
         const int N_MOVES = N_COL;
         
+        
+        double intermediate_score(std::vector<std::vector<int>> game_state) {
+            
+            return 0.0;
+        }
+
 
         int transform_input(int user_input, const int N_ROW, const int N_COL) {
 
