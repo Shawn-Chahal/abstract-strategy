@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include "one-step-game.h"
-#include "connect-four.h"
-#include "reversi.h"
-#include "tic-tac-toe.h"
+#include "OneStepGame.h"
+#include "ConnectFour.h"
+#include "Reversi.h"
+#include "TicTacToe.h"
 
 
 int main() {
