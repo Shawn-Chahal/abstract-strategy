@@ -3,7 +3,8 @@ An API which allows for the easy creation of abstract strategy games with artifi
 
 ## Available games
 1. Connect Four
-2. Tic-Tac-Toe
+2. Reversi (Othello)
+3. Tic-Tac-Toe
 
 ## Creating a custom strategy game class
 New strategy games can be created by writing a new class which inherits `class OneStepGame` (see documentation below).
