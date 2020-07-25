@@ -52,24 +52,35 @@ class TicTacToe: public OneStepGame {
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
-            std::cout << INDENT << " ";
+            std::cout << INDENT << "  ";
             
             for (int j = 0; j < N_COL; j++) {  
-
-                std::cout << "  " << j << " ";
+                std::cout << "   " << j << "  ";
             }
 
             std::cout << " " << std::endl;
+            std::cout << INDENT;
+
+            for (int j = 0; j < N_COL; j++) {
+                if (j == 0) {
+                    std::cout  << "   ";
+                } else {
+                    std::cout << "|";
+                }
+                
+                std::cout << "     ";
+            }
+
+            std::cout << std::endl;
 
             for (int i = 0; i < N_ROW; i++) {
                 std::cout << INDENT;
 
                 for (int j = 0; j < N_COL; j++) {
-
                     if (j == 0) {
-                        std::cout << i << "  ";
+                        std::cout << i << "    ";
                     } else {
-                        std::cout << "| ";
+                        std::cout << "|  ";
                     }
                     
                     switch (game_state[i][j]) {
@@ -84,23 +95,38 @@ class TicTacToe: public OneStepGame {
                             break;
                     }
 
-                    std::cout << " ";
+                    std::cout << "  ";
                 }
 
                 std::cout << std::endl;
                 
                 if (i < N_ROW - 1) {
-                    std::cout << INDENT << "  ";
+                    std::cout << INDENT << "   ";
+
                     for (int j = 0; j < N_COL; j++) {
                         if (j == N_COL - 1) {
-                            std::cout << "---";
+                            std::cout << "-----";
                         } else {
-                            std::cout << "----";
+                            std::cout << "-----|";
                         }
                     }
+
                     std::cout << std::endl;
                 }
             }
+            
+            std::cout << INDENT;
+
+            for (int j = 0; j < N_COL; j++) {
+                if (j == 0) {
+                    std::cout  << "   ";
+                } else {
+                    std::cout << "|";
+                }
+                
+                std::cout << "     ";
+            }
+            
             std::cout << std::endl;
         }
 
