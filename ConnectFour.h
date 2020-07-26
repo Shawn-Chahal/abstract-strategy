@@ -43,39 +43,45 @@ class ConnectFour: public OneStepGame {
             std::cout << INDENT;
             
             for (int j = 0; j < N_COL; j++) {
-                if (available_moves[j] == 1) {
-                    std::cout << "  " << j << " ";
-                } else {
-                    std::cout << "    ";
-                }
+
+                std::cout << "   " << j << "  ";
             }
 
             std::cout << " " << std::endl;
             
+            std::cout << INDENT;
+            for (int j = 0; j < N_COL; j++) {
+
+                std::cout << "|     ";
+            }
+
+            std::cout << "|" << std::endl;
+
+
             for (int i = 0; i < N_ROW; i++) {
                 std::cout << INDENT;
                 for (int j = 0; j < N_COL; j++) {
                     switch (game_state[i][j]) {
                         case 0:
-                            std::cout << "|   ";
+                            std::cout << "|     ";
                             break;
                         case 1:
-                            std::cout << "| " << P1_MARKER << " ";
+                            std::cout << "|  " << P1_MARKER << "  ";
                             break;
                         case 2:
-                            std::cout << "| " << P2_MARKER << " ";
+                            std::cout << "|  " << P2_MARKER << "  ";
                             break;
                     }
                 }
 
                 std::cout << "|" << std::endl;
-                std::cout << INDENT;
+                std::cout << INDENT << "|";
 
                 for (int j = 0; j < N_COL; j++) {
-                    std::cout << "----";
+                    std::cout << "-----|";
                 }
 
-                std::cout << "-" << std::endl;
+                std::cout << std::endl;
             }
         }
 
