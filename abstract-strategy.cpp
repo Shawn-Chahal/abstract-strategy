@@ -3,6 +3,7 @@
 #include <random>
 #include "OneStepGame.h"
 #include "ConnectFour.h"
+#include "Hex.h"
 #include "Reversi.h"
 #include "TicTacToe.h"
 
@@ -15,7 +16,7 @@ int main() {
 
         OneStepGame menu;
         
-        std::vector<std::string> games_list = {"Connect Four", "Reversi (Othello)", "Tic-Tac-Toe"};
+        std::vector<std::string> games_list = {"Connect Four", "Hex", "Reversi (Othello)", "Tic-Tac-Toe"};
 
         std::cout << menu.LINE_BREAK << std::endl;
 
@@ -60,6 +61,10 @@ int main() {
             
         } else if (games_list[g_index - 1] == "Reversi (Othello)") {
             Reversi game;
+            game.run();
+
+        } else if (games_list[g_index - 1] == "Hex") {
+            Hex game;
             game.run();
         }
 
