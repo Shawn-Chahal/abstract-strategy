@@ -247,14 +247,13 @@ class Hex: public OneStepGame {
 
     public:
         
-        const std::string NAME = "Reversi (Othello)";   
+        const std::string NAME = "Hex";   
         std::vector<int> difficulty = {2, 4, 6, 8, 10};
 
-        const int N_ROW = 8;
-        const int N_COL = 8;
+        const int N_ROW = 11;
+        const int N_COL = 11;
         const int N_MOVES = N_ROW * N_COL;
         
-
         double intermediate_score(std::vector<std::vector<int>> game_state) {
             
             int player1_score = 0;
@@ -326,59 +325,96 @@ class Hex: public OneStepGame {
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
-            std::cout << INDENT << "  ";
+            int col_index = 0;
+
+            std::cout << INDENT << "      " << col_index++ << std::endl;
+            std::cout << INDENT << "    _____" << std::endl;
             
-            for (int j = 0; j < N_COL; j++) {  
-
-                std::cout << "  " << j << " ";
-            }
-
-            std::cout << " " << std::endl;
-
-            std::cout << INDENT << "  |";
-                for (int j = 0; j < N_COL; j++) {
-                    
-                    std::cout << "---|";
-                }
-            std::cout << std::endl;
-
             for (int i = 0; i < N_ROW; i++) {
+
+                // Line 1
                 std::cout << INDENT;
-
-                for (int j = 0; j < N_COL; j++) {
-
-                    if (j == 0) {
-                        std::cout << i << " | ";
-                    } else {
-                        std::cout << "| ";
-                    }
-                    
-                    switch (game_state[i][j]) {
-                        case 0:
-                            std::cout << " ";
-                            break;
-                        case 1:
-                            std::cout << P1_MARKER;
-                            break;
-                        case 2:
-                            std::cout << P2_MARKER;
-                            break;
-                    }
-
-                    std::cout << " ";
+                if (i < 10) {
+                    std::cout << i << "  ";
+                } else if (i < 100) {
+                    std::cout << i << " ";
+                } else {
+                    std::cout << i;
                 }
 
-                std::cout << "|" << std::endl;
-                
-                
-                std::cout << INDENT << "  |";
-                for (int j = 0; j < N_COL; j++) {
-                    
-                    std::cout << "---|";
+                std::cout << "/     ";
+
+                for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
+
+                    std::cout << "\\       /     ";
                 }
-                std::cout << std::endl;
+
+                std::cout << "\\   ";
+
+                if (col_index < N_COL) {
+                    std::cout << col_index++;
+                }
+                
+                std::cout <<std::endl;
+                
+
+                // Line 2
+                std::cout << INDENT;
+                std::cout << "  /       ";
+
+                for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
+                    std::cout << "\\_____/       ";
+                }
+
+                std::cout << "\\";
+
+                if (col_index < N_COL) {
+                    std::cout << "_____";
+                }
+                
+                std::cout <<std::endl;
+
+
+                // Line 3
+                std::cout << INDENT;
+                std::cout << "  \\       ";
+
+                for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
+
+                    std::cout << "/     \\       ";
+                }
+
+                std::cout << "/";
+
+                if (col_index < N_COL) {
+                    std::cout << "     \\   " << col_index++;
+                }
+                
+                std::cout <<std::endl;
+
+
+                // Line 4
+                std::cout << INDENT;
+                std::cout << "   \\_____/";
+
+                for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
+                    std::cout << "       \\_____/";
+                }
+
+                
+
+                if (col_index <= N_COL) {
+                    std::cout << "       \\_____";
+                    
+                    if (col_index == N_COL) {
+                        col_index++;
+                    }
+                }
+                
+                std::cout <<std::endl;
             
             }
+
             std::cout << std::endl;
         }
 
