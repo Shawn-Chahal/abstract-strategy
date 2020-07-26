@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <string>
 
 
 class OneStepGame {
@@ -148,8 +149,8 @@ class OneStepGame {
         virtual std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) { return std::vector<int>(1, -1); }
         virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
         virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
-        virtual int check_input(std::vector<int> available_moves, int user_input, const int N_ROW, const int N_COL) { return -1; }
-        virtual int transform_input(int user_input, const int N_ROW, const int N_COL) { return -1; }
+        virtual int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) { return -1; }
+        virtual int transform_input(std::string user_input, const int N_ROW, const int N_COL) { return -1; }
         virtual double intermediate_score(std::vector<std::vector<int>> game_state) { return -1.0; }
 
         // Shared methods
@@ -165,12 +166,13 @@ class OneStepGame {
         void run_internal(const std::string NAME, std::vector<int> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
             
             double score, max_score;
-            int move, user_input, pass;
+            int move, pass;
             int player = 1;
             int result = -1;
             int max_depth = 1;
             std::vector<std::vector<int>> game_state = initialize_state(N_ROW, N_COL);
             std::vector<int> available_moves = get_available_moves(game_state, player);
+            std::string user_input;
 
             std::cout << INDENT << NAME << std::endl << std::endl;
             std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
@@ -210,21 +212,16 @@ class OneStepGame {
             while (result == -1) {
 
                 if (player == 1) {
-                    std::cout << INDENT << "Your turn. Enter a number: ";
-                    user_input = -1;
+                    std::cout << INDENT << "Your turn. Enter an alphanumeric value: ";
+                    std:: cin >> user_input;
 
-                    while (user_input == -1) {
-                        if (!(std::cin >> user_input)){
-                            std::cout << INDENT << "Invalid input. Please enter a number: ";
-                            std::cin.clear();
-                            std::cin.ignore(10000,'\n');
-                            user_input = -1;
-                        } else if (!check_input(available_moves, user_input, N_ROW, N_COL)) {
-                            std::cout << INDENT << "Move unavailable. Please enter an available number:  ";
-                            std::cin.clear();
-                            std::cin.ignore(10000,'\n');
-                            user_input = -1;
-                        }
+                    while (!check_input(available_moves, user_input, N_ROW, N_COL)) {
+                        
+                        std::cout << INDENT << "Invalid input. Please enter an available alphanumeric value: ";
+                        std::cin.clear();
+                        std::cin.ignore(10000,'\n');
+                        std::cin >> user_input;
+                        
                     }              
 
                     move = transform_input(user_input, N_ROW, N_COL);

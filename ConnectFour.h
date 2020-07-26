@@ -21,22 +21,28 @@ class ConnectFour: public OneStepGame {
             return 0.0;
         }
 
+        int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
 
-        int transform_input(int user_input, const int N_ROW, const int N_COL) {
+            int move = user_input[0] - '0';
 
-            return user_input;
+            return move;
         }
 
 
-        int check_input(std::vector<int> available_moves, int user_input, const int N_ROW, const int N_COL) {
-        
-            if (user_input >= 0 && user_input < available_moves.size()) {
-                return available_moves[user_input];
+        int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) {
+            
+            if (user_input.length() != 1) {
+                return 0;
+            }
+
+            int move = user_input[0] - '0';
+
+            if (move >= 0 && move < available_moves.size()) {
+                return available_moves[move];
             } else {
                 return 0;
             }
         }
-
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             

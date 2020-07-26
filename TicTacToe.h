@@ -22,20 +22,24 @@ class TicTacToe: public OneStepGame {
         }
 
 
-        int transform_input(int user_input, const int N_ROW, const int N_COL) {
+        int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
 
-            int row = user_input / 10;
-            int col = user_input % 10;
+            int row = user_input[1] - '0';
+            int col = user_input[0] - 'a';
             int move = row * N_COL + col;
 
             return move;
         }
 
 
-        int check_input(std::vector<int> available_moves, int user_input, const int N_ROW, const int N_COL) {
+        int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) {
             
-            int row = user_input / 10;
-            int col = user_input % 10;
+            if (user_input.length() != 2) {
+                return 0;
+            }
+
+            int row = user_input[1] - '0';
+            int col = user_input[0] - 'a';
             int move = row * N_COL + col;
 
             if (row < 0 || row >= N_ROW || col < 0 || col >= N_COL ) {
