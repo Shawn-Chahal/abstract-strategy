@@ -283,7 +283,7 @@ class Reversi: public OneStepGame {
 
         int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
 
-            int row = user_input[1] - '0';
+            int row = user_input[1] - '1';
             int col = user_input[0] - 'a';
             int move = row * N_COL + col;
 
@@ -297,7 +297,7 @@ class Reversi: public OneStepGame {
                 return 0;
             }
 
-            int row = user_input[1] - '0';
+            int row = user_input[1] - '1';
             int col = user_input[0] - 'a';
             int move = row * N_COL + col;
 
@@ -329,11 +329,13 @@ class Reversi: public OneStepGame {
 
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
+            char col_index = 'a';
+
             std::cout << INDENT << "  ";
             
             for (int j = 0; j < N_COL; j++) {  
-
-                std::cout << "  " << j << " ";
+                
+                std::cout << "  " << col_index++ << " ";
             }
 
             std::cout << " " << std::endl;
@@ -351,7 +353,7 @@ class Reversi: public OneStepGame {
                 for (int j = 0; j < N_COL; j++) {
 
                     if (j == 0) {
-                        std::cout << i << " | ";
+                        std::cout << i + 1 << " | ";
                     } else {
                         std::cout << "| ";
                     }

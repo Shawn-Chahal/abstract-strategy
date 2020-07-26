@@ -89,6 +89,8 @@ class ConnectFour: public OneStepGame {
 
                 std::cout << std::endl;
             }
+
+            std::cout << std::endl;
         }
 
 
