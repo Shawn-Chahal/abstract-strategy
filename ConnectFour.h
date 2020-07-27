@@ -23,7 +23,7 @@ class ConnectFour: public OneStepGame {
 
         int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
 
-            int move = user_input[0] - '0';
+            int move = user_input[0] - '1';
 
             return move;
         }
@@ -35,7 +35,7 @@ class ConnectFour: public OneStepGame {
                 return 0;
             }
 
-            int move = user_input[0] - '0';
+            int move = user_input[0] - '1';
 
             if (move >= 0 && move < available_moves.size()) {
                 return available_moves[move];
@@ -50,7 +50,7 @@ class ConnectFour: public OneStepGame {
             
             for (int j = 0; j < N_COL; j++) {
 
-                std::cout << "   " << j << "  ";
+                std::cout << "   " << j + 1 << "  ";
             }
 
             std::cout << " " << std::endl;

@@ -6,11 +6,40 @@
 
 class Hex: public OneStepGame {
     private:
+
         void print_spaces(int n_spaces) {
 
             for (int i = 0; i < n_spaces; i++) {
                 std::cout << " ";
             }
+        }
+
+        std::string print_tile(int player) {
+            std::string tile = "   ";
+
+            switch (player) {
+                case 0:
+                    return tile;
+                    break;
+                
+                case 1:
+                    tile[0] = P1_MARKER;
+                    tile[2] = P1_MARKER;
+                    return tile;
+                    break;
+
+                case 2:
+                    tile[0] = P2_MARKER;
+                    tile[2] = P2_MARKER;
+                    return tile;
+                    break;
+                
+                default:
+                    return "err";
+                    break;
+            }
+
+            
         }
 
     public:
@@ -24,34 +53,15 @@ class Hex: public OneStepGame {
         
         // Need to finish
         double intermediate_score(std::vector<std::vector<int>> game_state) {
-            
-            int player1_score = 0;
-            int player2_score = 0;
-            
-
-            for (int i = 0; i < N_ROW; i++) {
-                for (int j = 0; j < N_COL; j++) {
-                    switch (game_state[i][j]) {
-                        case 1:
-                            player1_score++;
-                            break;
-                        case 2:
-                            player2_score++;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            return (player2_score - player1_score + 0.0) / (player1_score + player2_score + 0.0);
+        
+            return 0.0;
 
         }
 
 
         int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
 
-            int row = user_input[1] - '0';
+            int row = 10 * (user_input[1] - '0') + (user_input[2] - '0') - 1;
             int col = user_input[0] - 'a';
             int move = row * N_COL + col;
 
@@ -65,7 +75,7 @@ class Hex: public OneStepGame {
                 return 0;
             }
 
-            int row = user_input[1] - '0';
+            int row = 10 * (user_input[1] - '0') + (user_input[2] - '0') - 1;
             int col = user_input[0] - 'a';
             int move = row * N_COL + col;
 
@@ -88,7 +98,7 @@ class Hex: public OneStepGame {
             return game_state;
         }
 
-        // Need to finish
+        
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
             char col_index = 'a';
@@ -116,7 +126,7 @@ class Hex: public OneStepGame {
 
                 for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
 
-                    std::cout << "\\       /     ";
+                    std::cout << "\\  " << print_tile(game_state[i - 1 - j][2 * j + 1]) << "  /     ";
                 }
 
                 std::cout << "\\";
@@ -132,10 +142,10 @@ class Hex: public OneStepGame {
 
                 // Line 2
                 std::cout << INDENT;
-                std::cout << "   |O/       ";
+                std::cout << "   |O/  " << print_tile(game_state[i][0]) << "  ";
 
                 for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
-                    std::cout << "\\_____/       ";
+                    std::cout << "\\_____/  " << print_tile(game_state[i - 1 - j][2 * j + 2]) << "  ";
                 }
 
                 std::cout << "\\";
@@ -156,11 +166,11 @@ class Hex: public OneStepGame {
 
                 // Line 3
                 std::cout << INDENT;
-                std::cout << "   |O\\       ";
+                std::cout << "   |O\\  " << print_tile(game_state[i][0]) << "  ";
 
                 for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
 
-                    std::cout << "/     \\       ";
+                    std::cout << "/     \\  " << print_tile(game_state[i - 1 - j][2 * j + 2]) << "  "; //
                 }
 
                 std::cout << "/";
@@ -185,15 +195,14 @@ class Hex: public OneStepGame {
                 std::cout << "   |OO\\_____/";
 
                 for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
-                    std::cout << "       \\_____/";
+                    std::cout << "  " << print_tile(game_state[i - j][2 * j + 1]) << "  \\_____/";
                 }
 
                 
-
                 if (col_index - 'a' < N_COL) {
-                    std::cout << "       \\_____XXX   XXXX"; 
+                    std::cout << "  " << print_tile(game_state[0][2 * i + 1]) << "  \\_____XXX   XXXX"; 
                 } else if (col_index - 'a' == N_COL) {
-                    std::cout << "       \\_____OOO|";
+                    std::cout << "  " << print_tile(game_state[0][2 * i + 1]) << "  \\_____OOO|";
                     col_index++;
                 } else if (i >= N_COL / 2) {
                     if (i + 1 - N_COL / 2 < 10) {
@@ -205,9 +214,6 @@ class Hex: public OneStepGame {
                     }
                 }
 
-
-                
-                
                 std::cout <<std::endl;
             
             }
@@ -215,7 +221,7 @@ class Hex: public OneStepGame {
 
 
             for (int i = 0; i < N_ROW / 2; i++) {
-
+                
                 // Line 1
                 std::cout << INDENT;
                 n_spaces +=4;
@@ -223,7 +229,7 @@ class Hex: public OneStepGame {
                 std::cout << "XXXXXX\\";
 
                 for (int j = i; j < N_COL / 2; j++) {
-                    std::cout << "       /     \\";
+                    std::cout << "  " << print_tile(game_state[N_ROW - 1 - (j - i)][2 * j + 1]) << "  /     \\";
                 }
 
                 std::cout << "OO|" << std::endl;
@@ -236,7 +242,7 @@ class Hex: public OneStepGame {
                 std::cout << "XXXX\\";
 
                 for (int j = i; j < N_COL / 2; j++) {
-                    std::cout << "_____/       \\";
+                    std::cout << "_____/  " << print_tile(game_state[N_ROW - 1 - (j - i)][2 * j + 2]) << "  \\";
                 }
 
                 std::cout << "O|" << std::endl;
@@ -249,10 +255,10 @@ class Hex: public OneStepGame {
                 std::cout << "XXXXXX\\";
 
                 for (int j = i; j < N_COL / 2 - 1; j++) {
-                    std::cout << "       /     \\";
+                    std::cout << "  " << print_tile(game_state[N_ROW - 1 - (j - i)][2 * j + 2]) << "  /     \\";
                 }
 
-                std::cout << "       /O|" << std::endl;
+                std::cout << "  " << print_tile(game_state[N_ROW - 1 - (N_COL / 2 - 1 - i)][N_COL - 1]) << "  /O|" << std::endl;
 
 
                 // Line 4
@@ -262,7 +268,7 @@ class Hex: public OneStepGame {
                 std::cout << "XXXX\\";
 
                 for (int j = i; j < N_COL / 2 - 1; j++) {
-                    std::cout << "_____/       \\";
+                    std::cout << "_____/  " << print_tile(game_state[N_ROW - 1 - (j - i)][2 * j + 3]) << "  \\";
                 }
 
                 std::cout << "_____/OO|";
