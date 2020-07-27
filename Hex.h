@@ -6,7 +6,12 @@
 
 class Hex: public OneStepGame {
     private:
+        void print_spaces(int n_spaces) {
 
+            for (int i = 0; i < n_spaces; i++) {
+                std::cout << " ";
+            }
+        }
 
     public:
         
@@ -87,6 +92,7 @@ class Hex: public OneStepGame {
         void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
             
             char col_index = 'a';
+            int n_spaces = 2;
 
             std::cout << INDENT << "   |XXXXXXX" << std::endl;
             std::cout << INDENT << "   |OXXX   XXXX" << std::endl;
@@ -206,7 +212,77 @@ class Hex: public OneStepGame {
             
             }
 
-            std::cout << std::endl;
+
+
+            for (int i = 0; i < N_ROW / 2; i++) {
+
+                // Line 1
+                std::cout << INDENT;
+                n_spaces +=4;
+                print_spaces(n_spaces);
+                std::cout << "XXXXXX\\";
+
+                for (int j = i; j < N_COL / 2; j++) {
+                    std::cout << "       /     \\";
+                }
+
+                std::cout << "OO|" << std::endl;
+
+
+                // Line 2
+                std::cout << INDENT;
+                n_spaces +=3;
+                print_spaces(n_spaces);
+                std::cout << "XXXX\\";
+
+                for (int j = i; j < N_COL / 2; j++) {
+                    std::cout << "_____/       \\";
+                }
+
+                std::cout << "O|" << std::endl;
+
+
+                // Line 3
+                std::cout << INDENT;
+                n_spaces +=4;
+                print_spaces(n_spaces);
+                std::cout << "XXXXXX\\";
+
+                for (int j = i; j < N_COL / 2 - 1; j++) {
+                    std::cout << "       /     \\";
+                }
+
+                std::cout << "       /O|" << std::endl;
+
+
+                // Line 4
+                std::cout << INDENT;
+                n_spaces +=3;
+                print_spaces(n_spaces);
+                std::cout << "XXXX\\";
+
+                for (int j = i; j < N_COL / 2 - 1; j++) {
+                    std::cout << "_____/       \\";
+                }
+
+                std::cout << "_____/OO|";
+
+                if (i + 2 + N_COL / 2 < 10) {
+                    std::cout << " " << 0 << i + 2 + N_COL / 2;
+                } else if (i + 2 + N_COL / 2 < 100) {
+                    std::cout << " " << i + 2 + N_COL / 2;
+                } else {
+                    std::cout << "" << i + 2 + N_COL / 2;
+                }
+
+                std::cout << std::endl;
+            
+            }
+            
+            std::cout << INDENT;
+            n_spaces +=4;
+            print_spaces(n_spaces);
+            std::cout << "XXXXXXOOO|" << std::endl;
         }
 
 
