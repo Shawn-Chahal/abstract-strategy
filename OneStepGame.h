@@ -26,7 +26,7 @@ class OneStepGame {
             available_moves = get_available_moves(game_state, player);
             double score;
 
-            switch (get_result(game_state)) {
+            switch (get_result(game_state, player)) {
                 case 2:
                     return pow(DECAY, depth);
                     break;
@@ -147,7 +147,7 @@ class OneStepGame {
         virtual void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {}
         virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) { return game_state; }
         virtual std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) { return std::vector<int>(1, -1); }
-        virtual int get_result(std::vector<std::vector<int>> game_state) { return -1; }
+        virtual int get_result(std::vector<std::vector<int>> game_state, int last_player) { return -1; }
         virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
         virtual int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) { return -1; }
         virtual int transform_input(std::string user_input, const int N_ROW, const int N_COL) { return -1; }
@@ -234,7 +234,7 @@ class OneStepGame {
                 std::cout << LINE_BREAK << std::endl;
                 
                 game_state = update_state(game_state, player, move);
-                result = get_result(game_state);
+                result = get_result(game_state, player);
                 player = switch_player(player);
                 available_moves = get_available_moves(game_state, player);
 

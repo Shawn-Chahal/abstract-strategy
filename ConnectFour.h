@@ -119,7 +119,7 @@ class ConnectFour: public OneStepGame {
         }
 
 
-        int get_result(std::vector<std::vector<int>> game_state) {
+        int get_result(std::vector<std::vector<int>> game_state, int last_player) {
 
             const int CONNECT = 4;
             int player, count;

@@ -14,6 +14,7 @@ class Hex: public OneStepGame {
             }
         }
 
+
         std::string print_tile(int player) {
             std::string tile = "   ";
 
@@ -42,10 +43,122 @@ class Hex: public OneStepGame {
             
         }
 
+
+        std::vector<int> get_neighbours(std::vector<std::vector<int>> game_state, int player, int tile_row, int tile_col) {
+
+            std::vector<int> neighbours = std::vector<int>(6, 0);
+
+            // Check position 0
+            if ((tile_row > 0) && (tile_col < N_COL - 1)) {
+                if (game_state[tile_row - 1][tile_col + 1] == player) {
+                    neighbours[0] = 1;
+                }
+            }
+
+            // Check position 1
+            if (tile_row > 0) {
+                if (game_state[tile_row - 1][tile_col] == player) {
+                    neighbours[1] = 1;
+                }
+            }
+
+            // Check position 2
+            if (tile_col > 0) {
+                if (game_state[tile_row][tile_col - 1] == player) {
+                    neighbours[2] = 1;
+                }
+            }
+
+            // Check position 3
+            if ((tile_row < N_ROW - 1) && (tile_col > 0)) {
+                if (game_state[tile_row + 1][tile_col - 1] == player) {
+                    neighbours[3] = 1;
+                }
+            }
+
+            // Check position 4
+            if (tile_row < N_ROW - 1) {
+                if (game_state[tile_row + 1][tile_col] == player) {
+                    neighbours[4] = 1;
+                }
+            }
+
+            // Check position 5
+            if (tile_col < N_COL - 1) {
+                if (game_state[tile_row][tile_col + 1] == player) {
+                    neighbours[5] = 1;
+                }
+            }
+
+            return neighbours;
+
+        }
+
+        
+        int check_link(std::vector<std::vector<int>> game_state, int player, std::vector<std::vector<int>> link_history, int tile_row, int tile_col) {
+            
+            link_history[tile_row][tile_col] = 1;
+
+            if ((player == 1) && (tile_col == N_COL - 1)) {
+                return 1;
+            }
+            
+            if ((player == 2) && (tile_row == N_ROW - 1)) {
+                return 1;
+            }
+            
+            std::vector<int> neighbours = get_neighbours(game_state, player, tile_row, tile_col);
+
+            // Check position 0 for link
+            if (neighbours[0] && !link_history[tile_row - 1][tile_col + 1]) {
+                if (check_link(game_state, player, link_history, tile_row - 1, tile_col + 1)) {
+                    return 1;
+                }
+            }
+
+            // Check position 1 for link
+            if (neighbours[1] && !link_history[tile_row - 1][tile_col]) {
+                if (check_link(game_state, player, link_history, tile_row - 1, tile_col)) {
+                    return 1;
+                }
+            }
+
+            // Check position 2 for link
+            if (neighbours[2] && !link_history[tile_row][tile_col - 1]) {
+                if (check_link(game_state, player, link_history, tile_row, tile_col - 1)) {
+                    return 1;
+                }
+            }
+
+            // Check position 3 for link
+            if (neighbours[3] && !link_history[tile_row + 1][tile_col - 1]) {
+                if (check_link(game_state, player, link_history, tile_row + 1, tile_col - 1)) {
+                    return 1;
+                }
+            }
+            
+            // Check position 4 for link
+            if (neighbours[4] && !link_history[tile_row + 1][tile_col]) {
+                if (check_link(game_state, player, link_history, tile_row + 1, tile_col)) {
+                    return 1;
+                }
+            }
+
+            // Check position 5 for link
+            if (neighbours[5] && !link_history[tile_row][tile_col + 1]) {
+                if (check_link(game_state, player, link_history, tile_row, tile_col + 1)) {
+                    return 1;
+                }
+            }
+            
+            return 0;
+
+        }
+
     public:
         
         const std::string NAME = "Hex";   
-        std::vector<int> difficulty = {2, 4, 6, 8, 10};
+        std::vector<int> difficulty = {2, 3, 4, 5, 6};
 
         const int N_ROW = 11;
         const int N_COL = 11;
@@ -316,47 +429,41 @@ class Hex: public OneStepGame {
             return available_moves;
         }
 
-        // Need to finish
-        int get_result(std::vector<std::vector<int>> game_state) {
+        
+        int get_result(std::vector<std::vector<int>> game_state, int last_player) {
 
-            int player1_score = 0;
-            int player2_score = 0;
+            std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
 
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
+            if (last_player == 1) {
+                for (int i = 0 ; i < N_ROW; i++) {
+                    if (game_state[i][0] == last_player) {
+                        if (check_link(game_state, last_player, link_history, i, 0)) {
+                            return 1;
+                        }
+                    }
+                }
+            }          
 
-            for (int p = 1; p <= 2; p++) {
-                available_moves = get_available_moves(game_state, p);
+            if (last_player == 2) {
+                for (int j = 0 ; j < N_COL; j++) {
+                    if (game_state[0][j] == last_player) {
+                        if (check_link(game_state, last_player, link_history, 0, j)) {
+                            return 1;
+                        }
+                    }
+                }
+            }    
 
-                for (int m = 0; m < N_MOVES; m++) {
-                    if (available_moves[m]) {
+            for (int i = 0 ; i < N_ROW; i++) {
+                for (int j = 0 ; j < N_COL; j++) {
+                    if (game_state[i][j] == 0) {
                         return -1;
                     }
                 }
             }
-            
-            for (int i = 0; i < N_ROW; i++) {
-                for (int j = 0; j < N_COL; j++) {
-                    switch (game_state[i][j]) {
-                        case 1:
-                            player1_score++;
-                            break;
-                        case 2:
-                            player2_score++;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
 
-            if (player1_score > player2_score) {
-                return 1;
-            } else if (player2_score > player1_score) {
-                return 2;
-            } else {
-                return 0;
-            }
-            
+            return 0;
+
         }
 
 
