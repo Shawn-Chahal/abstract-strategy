@@ -122,24 +122,19 @@ class ConnectFour: public OneStepGame {
         int get_result(std::vector<std::vector<int>> game_state, int last_player) {
 
             const int CONNECT = 4;
-            int player, count;
-            int check_draw = 0;
+            int count;
 
             for (int i = 0; i < N_ROW; i++) {
                 for (int j = 0; j < N_COL; j++) {
-                    if (game_state[i][j] > 0) {
-                        if (i == 0) {
-                            check_draw++;
-                        }
-
-                        player = game_state[i][j];
+                    if (game_state[i][j] == last_player) {
+                        
 
                         /* Check right */
                         if (j <= N_COL - CONNECT) {
                             count = 1;
 
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i][j + k] == player) {
+                                if (game_state[i][j + k] == last_player) {
                                     count++;
                                 } else {
                                     break;
@@ -147,7 +142,7 @@ class ConnectFour: public OneStepGame {
                             }
                             
                             if (count == CONNECT) {
-                                return player;
+                                return last_player;
                             }
                         }
 
@@ -156,7 +151,7 @@ class ConnectFour: public OneStepGame {
                             count = 1;
 
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j] == player) {
+                                if (game_state[i + k][j] == last_player) {
                                     count++;
                                 } else {
                                     break;
@@ -164,7 +159,7 @@ class ConnectFour: public OneStepGame {
                             }
 
                             if (count == CONNECT) {
-                                return player;
+                                return last_player;
                             }
                         }
 
@@ -173,7 +168,7 @@ class ConnectFour: public OneStepGame {
                             count = 1;
                             
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j + k] == player) {
+                                if (game_state[i + k][j + k] == last_player) {
                                     count++;
                                 } else {
                                     break;
@@ -181,7 +176,7 @@ class ConnectFour: public OneStepGame {
                             }
                             
                             if (count == CONNECT) {
-                                return player;
+                                return last_player;
                             }
                         }
 
@@ -190,7 +185,7 @@ class ConnectFour: public OneStepGame {
                             count = 1;
                             
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j - k] == player) {
+                                if (game_state[i + k][j - k] == last_player) {
                                     count++;
                                 } else {
                                     break;
@@ -198,20 +193,21 @@ class ConnectFour: public OneStepGame {
                             }
 
                             if (count == CONNECT) {
-                                return player;
+                                return last_player;
                             }
                         }
                     }
                 }
             }
 
-            if (check_draw == N_COL) {
-                /* Declare a draw */
-                return 0;
-            } else {
-                /* Game continues */
-                return -1;
+            for (int j = 0 ; j < N_COL; j++) {
+                if (game_state[0][j] == 0) {
+                    return -1;
+                }
             }
+            
+            return 0;
+
         }
 
 
