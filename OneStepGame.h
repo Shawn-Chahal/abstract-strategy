@@ -176,11 +176,10 @@ class OneStepGame {
 
             std::cout << INDENT << NAME << std::endl << std::endl;
             std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
-            std::cout << INDENT << "1) Very Easy" << std::endl;
-            std::cout << INDENT << "2) Easy" << std::endl;
-            std::cout << INDENT << "3) Medium" << std::endl;
-            std::cout << INDENT << "4) Hard" << std::endl;
-            std::cout << INDENT << "5) Very Hard (May experience long load times)" << std::endl << std::endl;
+            std::cout << INDENT << "1) Easy" << std::endl;
+            std::cout << INDENT << "2) Medium" << std::endl;
+            std::cout << INDENT << "3) Hard" << std::endl;
+            std::cout << INDENT << "4) Very Hard (May experience long load times)" << std::endl << std::endl;
             std::cout << INDENT << "Enter a number: ";
 
             int d_index = -1;

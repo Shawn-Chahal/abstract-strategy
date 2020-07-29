@@ -155,10 +155,149 @@ class Hex: public OneStepGame {
 
         }
 
+
+        int get_pseudo_game_state_score(std::vector<std::vector<int>> game_state, int player) {
+            
+            const int N_LINK = 1;
+            const int P_LINK = 3;
+            const int R_LINK = 7;
+            std::vector<std::vector<int>> pseudo_game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+            std::vector<int> neighbours;
+            int score = 0;
+            int max_score;
+
+            for (int i = 0; i < N_ROW; i++) {
+                for (int j = 0; j < N_COL; j++) {
+                    if (game_state[i][j] == player) {
+
+                        pseudo_game_state[i][j] = R_LINK;
+                        neighbours = get_neighbours(game_state, 0, i, j);
+                        
+                        if (neighbours[0]) {
+                            switch (pseudo_game_state[i - 1][j + 1]) {
+                                case 0:
+                                    pseudo_game_state[i - 1][j + 1] = N_LINK;
+                                    break;
+                                
+                                case N_LINK:
+                                    pseudo_game_state[i - 1][j + 1] = P_LINK;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+
+                        if (neighbours[1]) {
+                            switch (pseudo_game_state[i - 1][j]) {
+                                case 0:
+                                    pseudo_game_state[i - 1][j] = N_LINK;
+                                    break;
+                                
+                                case N_LINK:
+                                    pseudo_game_state[i - 1][j] = P_LINK;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }       
+
+                        if (neighbours[2]) {
+                            switch (pseudo_game_state[i][j - 1]) {
+                                case 0:
+                                    pseudo_game_state[i][j - 1] = N_LINK;
+                                    break;
+                                
+                                case N_LINK:
+                                    pseudo_game_state[i][j - 1] = P_LINK;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+
+                        if (neighbours[3]) {
+                            switch (pseudo_game_state[i + 1][j - 1]) {
+                                case 0:
+                                    pseudo_game_state[i + 1][j - 1] = N_LINK;
+                                    break;
+                                
+                                case N_LINK:
+                                    pseudo_game_state[i + 1][j - 1] = P_LINK;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+
+                        if (neighbours[4]) {
+                            switch (pseudo_game_state[i + 1][j]) {
+                                case 0:
+                                    pseudo_game_state[i + 1][j] = N_LINK;
+                                    break;
+                                
+                                case N_LINK:
+                                    pseudo_game_state[i + 1][j] = P_LINK;
+                                    break;
+
+                                default:
+                                    break;
+                            }     
+                        }
+
+                        if (neighbours[5]) {
+                            switch (pseudo_game_state[i][j + 1]) {
+                                case 0:
+                                    pseudo_game_state[i][j + 1] = N_LINK;
+                                    break;
+                                
+                                case N_LINK:
+                                    pseudo_game_state[i][j + 1] = P_LINK;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+
+                    }                    
+                }
+            }
+
+            if (player == 1) {
+                for (int j = 0; j < N_COL; j++) {
+                    max_score = 0;
+                    for (int i = 0; i < N_ROW; i++) {
+                        if (pseudo_game_state[i][j] > max_score) {
+                            max_score = pseudo_game_state[i][j];
+                        }
+                    }
+                    score += max_score;
+                }
+            } else if (player == 2) {
+                for (int i = 0; i < N_ROW; i++) {
+                    max_score = 0;
+                    for (int j = 0; j < N_COL; j++) {
+                        if (pseudo_game_state[i][j] > max_score) {
+                            max_score = pseudo_game_state[i][j];
+                        }
+                    }
+                    score += max_score;
+                }
+            }
+
+            return score;
+        }
+
+
+
     public:
         
         const std::string NAME = "Hex";   
-        std::vector<int> difficulty = {2, 3, 4, 5, 6};
+        std::vector<int> difficulty = {1, 2, 3, 4};
 
         const int N_ROW = 11;
         const int N_COL = 11;
@@ -166,8 +305,35 @@ class Hex: public OneStepGame {
         
         // Need to finish
         double intermediate_score(std::vector<std::vector<int>> game_state) {
-        
-            return 0.0;
+            
+            const int POINTS_PER_UNIQUE = 10; // points per unique row or column
+            int player1_score = 1;
+            int player2_score = 1;
+            std::vector<int> neighbours;
+           
+
+            for (int j = 1; j < N_COL; j += 2) {
+                for (int i = 0; i < N_ROW; i++) {        
+                    if (game_state[i][j] == 1) {
+                        player1_score += POINTS_PER_UNIQUE;
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 1; i < N_ROW; i += 2) {
+                for (int j = 0; j < N_COL; j++) {
+                    if (game_state[i][j] == 2) {
+                        player2_score += POINTS_PER_UNIQUE;
+                        break;
+                    }
+                }
+            }
+
+            player1_score += get_pseudo_game_state_score(game_state, 1);
+            player2_score += get_pseudo_game_state_score(game_state, 2);
+
+            return (player2_score - player1_score + 0.0) / (player1_score + player2_score + 0.0);
 
         }
 
