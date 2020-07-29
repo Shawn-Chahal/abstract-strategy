@@ -116,11 +116,12 @@ class OneStepGame {
             int move;
             double best_score = 0;
             double score;
+            const double SCORE_CONST = 2.0;
 
             for (int m = 0; m < available_moves.size(); m++) {
                 if (n_games[m] > 0) {
                     
-                    score = (win[m] + 0.0) / (n_games[m] + 0.0) + sqrt(2.0 * log(max_games + 0.0) / (n_games[m] + 0.0));
+                    score = (win[m] + 0.0) / (n_games[m] + 0.0) + sqrt(SCORE_CONST * log(max_games + 0.0) / (n_games[m] + 0.0));
 
                     if (score > best_score) {
 
