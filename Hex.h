@@ -156,143 +156,82 @@ class Hex: public OneStepGame {
         }
 
 
-        int get_pseudo_game_state_score(std::vector<std::vector<int>> game_state, int player) {
+        int get_path_length(std::vector<std::vector<int>> game_state, int player, std::vector<std::vector<int>> link_history, int tile_row, int tile_col, int length, int shortest_length) {
             
-            const int N_LINK = 1;
-            const int P_LINK = 3;
-            const int R_LINK = 7;
-            std::vector<std::vector<int>> pseudo_game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-            std::vector<int> neighbours;
-            int score = 0;
-            int max_score;
+            if (game_state[tile_row][tile_col] == 0) {
+                length++;
+            }
 
-            for (int i = 0; i < N_ROW; i++) {
-                for (int j = 0; j < N_COL; j++) {
-                    if (game_state[i][j] == player) {
+            if ((player == 1) && (tile_col == N_COL - 1)) {
+                return length;
+            }
+            
+            if ((player == 2) && (tile_row == N_ROW - 1)) {
+                return length;
+            }
 
-                        pseudo_game_state[i][j] = R_LINK;
-                        neighbours = get_neighbours(game_state, 0, i, j);
-                        
-                        if (neighbours[0]) {
-                            switch (pseudo_game_state[i - 1][j + 1]) {
-                                case 0:
-                                    pseudo_game_state[i - 1][j + 1] = N_LINK;
-                                    break;
-                                
-                                case N_LINK:
-                                    pseudo_game_state[i - 1][j + 1] = P_LINK;
-                                    break;
+            if (length == shortest_length) {
+                return length + 1;
+            }
+            
+            
 
-                                default:
-                                    break;
-                            }
-                        }
+            int branch_length;
+            link_history[tile_row][tile_col] = 1;
+            std::vector<int> neighbours_player = get_neighbours(game_state, player, tile_row, tile_col);
+            std::vector<int> neighbours_vacant = get_neighbours(game_state, 0, tile_row, tile_col);
 
-                        if (neighbours[1]) {
-                            switch (pseudo_game_state[i - 1][j]) {
-                                case 0:
-                                    pseudo_game_state[i - 1][j] = N_LINK;
-                                    break;
-                                
-                                case N_LINK:
-                                    pseudo_game_state[i - 1][j] = P_LINK;
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                        }       
-
-                        if (neighbours[2]) {
-                            switch (pseudo_game_state[i][j - 1]) {
-                                case 0:
-                                    pseudo_game_state[i][j - 1] = N_LINK;
-                                    break;
-                                
-                                case N_LINK:
-                                    pseudo_game_state[i][j - 1] = P_LINK;
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                        }
-
-                        if (neighbours[3]) {
-                            switch (pseudo_game_state[i + 1][j - 1]) {
-                                case 0:
-                                    pseudo_game_state[i + 1][j - 1] = N_LINK;
-                                    break;
-                                
-                                case N_LINK:
-                                    pseudo_game_state[i + 1][j - 1] = P_LINK;
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                        }
-
-                        if (neighbours[4]) {
-                            switch (pseudo_game_state[i + 1][j]) {
-                                case 0:
-                                    pseudo_game_state[i + 1][j] = N_LINK;
-                                    break;
-                                
-                                case N_LINK:
-                                    pseudo_game_state[i + 1][j] = P_LINK;
-                                    break;
-
-                                default:
-                                    break;
-                            }     
-                        }
-
-                        if (neighbours[5]) {
-                            switch (pseudo_game_state[i][j + 1]) {
-                                case 0:
-                                    pseudo_game_state[i][j + 1] = N_LINK;
-                                    break;
-                                
-                                case N_LINK:
-                                    pseudo_game_state[i][j + 1] = P_LINK;
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                        }
-
-                    }                    
+            // Check position 0 for link
+            if ((neighbours_player[0] || neighbours_vacant[0]) && !link_history[tile_row - 1][tile_col + 1]) {
+                branch_length = get_path_length(game_state, player, link_history, tile_row - 1, tile_col + 1, length, shortest_length);
+                if (branch_length < shortest_length) {
+                    shortest_length = branch_length;
                 }
             }
 
-            if (player == 1) {
-                for (int j = 0; j < N_COL; j++) {
-                    max_score = 0;
-                    for (int i = 0; i < N_ROW; i++) {
-                        if (pseudo_game_state[i][j] > max_score) {
-                            max_score = pseudo_game_state[i][j];
-                        }
-                    }
-                    score += max_score;
-                }
-            } else if (player == 2) {
-                for (int i = 0; i < N_ROW; i++) {
-                    max_score = 0;
-                    for (int j = 0; j < N_COL; j++) {
-                        if (pseudo_game_state[i][j] > max_score) {
-                            max_score = pseudo_game_state[i][j];
-                        }
-                    }
-                    score += max_score;
+            // Check position 1 for link
+            if ((neighbours_player[1] || neighbours_vacant[1]) && !link_history[tile_row - 1][tile_col]) {
+                branch_length = get_path_length(game_state, player, link_history, tile_row - 1, tile_col, length, shortest_length);
+                if (branch_length < shortest_length) {
+                    shortest_length = branch_length;
                 }
             }
 
-            return score;
+            // Check position 2 for link
+            if ((neighbours_player[2] || neighbours_vacant[2]) && !link_history[tile_row][tile_col - 1]) {
+                branch_length = get_path_length(game_state, player, link_history, tile_row, tile_col - 1, length, shortest_length);
+                if (branch_length < shortest_length) {
+                    shortest_length = branch_length;
+                }
+            }
+
+            // Check position 3 for link
+            if ((neighbours_player[3] || neighbours_vacant[3]) && !link_history[tile_row + 1][tile_col - 1]) {
+                branch_length = get_path_length(game_state, player, link_history, tile_row + 1, tile_col - 1, length, shortest_length);
+                if (branch_length < shortest_length) {
+                    shortest_length = branch_length;
+                }
+            }
+            
+            // Check position 4 for link
+            if ((neighbours_player[4] || neighbours_vacant[4]) && !link_history[tile_row + 1][tile_col]) {
+                branch_length = get_path_length(game_state, player, link_history, tile_row + 1, tile_col, length, shortest_length); 
+                if (branch_length < shortest_length) {
+                    shortest_length = branch_length;
+                }
+            }
+
+            // Check position 5 for link
+            if ((neighbours_player[5] || neighbours_vacant[5]) && !link_history[tile_row][tile_col + 1]) {
+                branch_length = get_path_length(game_state, player, link_history, tile_row, tile_col + 1, length, shortest_length);
+                if (branch_length < shortest_length) {
+                    shortest_length = branch_length;
+                }
+            }
+            
+            return shortest_length;
+
         }
-
-
 
     public:
         
@@ -306,34 +245,36 @@ class Hex: public OneStepGame {
         // Need to finish
         double intermediate_score(std::vector<std::vector<int>> game_state) {
             
-            const int POINTS_PER_UNIQUE = 10; // points per unique row or column
-            int player1_score = 1;
-            int player2_score = 1;
-            std::vector<int> neighbours;
+            
+            int shortest_length_p1 = N_MOVES;
+            int shortest_length_p2 = N_MOVES;
+            int branch_length;
+            std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+
+            for (int i = 0; i < N_ROW; i++) {
+                if (game_state[i][0] != 2) {
+                    
+                    branch_length = get_path_length(game_state, 1, link_history, i, 0, 0, shortest_length_p1);
+                    
+                    if (branch_length < shortest_length_p1) {
+                        shortest_length_p1 = branch_length;
+                    }
+                    
+                }
+            }
            
-
-            for (int j = 1; j < N_COL; j += 2) {
-                for (int i = 0; i < N_ROW; i++) {        
-                    if (game_state[i][j] == 1) {
-                        player1_score += POINTS_PER_UNIQUE;
-                        break;
+            for (int j = 0; j < N_COL; j++) {
+                if (game_state[0][j] != 1) {
+                    
+                    branch_length = get_path_length(game_state, 2, link_history, 0, j, 0, shortest_length_p2);
+                    
+                    if (branch_length < shortest_length_p2) {
+                        shortest_length_p2 = branch_length;
                     }
                 }
             }
 
-            for (int i = 1; i < N_ROW; i += 2) {
-                for (int j = 0; j < N_COL; j++) {
-                    if (game_state[i][j] == 2) {
-                        player2_score += POINTS_PER_UNIQUE;
-                        break;
-                    }
-                }
-            }
-
-            player1_score += get_pseudo_game_state_score(game_state, 1);
-            player2_score += get_pseudo_game_state_score(game_state, 2);
-
-            return (player2_score - player1_score + 0.0) / (player1_score + player2_score + 0.0);
+            return (shortest_length_p1 - shortest_length_p2 + 1.0) / (shortest_length_p2 + shortest_length_p1 + 1.0);
 
         }
 
