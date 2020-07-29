@@ -9,18 +9,12 @@ class TicTacToe: public OneStepGame {
     public:
         
         const std::string NAME = "Tic-Tac-Toe";   
-        std::vector<int> difficulty = {4, 6, 8, 10};
+        std::vector<int> difficulty = {1000, 10000, 100000};
 
         const int N_ROW = 3;
         const int N_COL = 3;
         const int N_MOVES = N_ROW * N_COL;
                 
-
-        double intermediate_score(std::vector<std::vector<int>> game_state) {
-            
-            return 0.0;
-        }
-
 
         int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
 

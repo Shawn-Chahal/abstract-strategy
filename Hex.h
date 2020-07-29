@@ -43,9 +43,19 @@ class Hex: public OneStepGame {
             
         }
 
+        
+        int check_link(std::vector<std::vector<int>> game_state, int player, std::vector<std::vector<int>> link_history, int tile_row, int tile_col) {
+            
+            link_history[tile_row][tile_col] = 1;
 
-        std::vector<int> get_neighbours(std::vector<std::vector<int>> game_state, int player, int tile_row, int tile_col) {
-
+            if ((player == 1) && (tile_col == N_COL - 1)) {
+                return 1;
+            }
+            
+            if ((player == 2) && (tile_row == N_ROW - 1)) {
+                return 1;
+            }
+            
             std::vector<int> neighbours = std::vector<int>(6, 0);
 
             // Check position 0
@@ -90,24 +100,9 @@ class Hex: public OneStepGame {
                 }
             }
 
-            return neighbours;
 
-        }
+            // This section repeats...
 
-        
-        int check_link(std::vector<std::vector<int>> game_state, int player, std::vector<std::vector<int>> link_history, int tile_row, int tile_col) {
-            
-            link_history[tile_row][tile_col] = 1;
-
-            if ((player == 1) && (tile_col == N_COL - 1)) {
-                return 1;
-            }
-            
-            if ((player == 2) && (tile_row == N_ROW - 1)) {
-                return 1;
-            }
-            
-            std::vector<int> neighbours = get_neighbours(game_state, player, tile_row, tile_col);
 
             // Check position 0 for link
             if (neighbours[0] && !link_history[tile_row - 1][tile_col + 1]) {
@@ -156,127 +151,14 @@ class Hex: public OneStepGame {
         }
 
 
-        int get_path_length(std::vector<std::vector<int>> game_state, int player, std::vector<std::vector<int>> link_history, int tile_row, int tile_col, int length, int shortest_length) {
-            
-            if (game_state[tile_row][tile_col] == 0) {
-                length++;
-            }
-
-            if ((player == 1) && (tile_col == N_COL - 1)) {
-                return length;
-            }
-            
-            if ((player == 2) && (tile_row == N_ROW - 1)) {
-                return length;
-            }
-
-            if (length == shortest_length) {
-                return length + 1;
-            }
-            
-            
-
-            int branch_length;
-            link_history[tile_row][tile_col] = 1;
-            std::vector<int> neighbours_player = get_neighbours(game_state, player, tile_row, tile_col);
-            std::vector<int> neighbours_vacant = get_neighbours(game_state, 0, tile_row, tile_col);
-
-            // Check position 0 for link
-            if ((neighbours_player[0] || neighbours_vacant[0]) && !link_history[tile_row - 1][tile_col + 1]) {
-                branch_length = get_path_length(game_state, player, link_history, tile_row - 1, tile_col + 1, length, shortest_length);
-                if (branch_length < shortest_length) {
-                    shortest_length = branch_length;
-                }
-            }
-
-            // Check position 1 for link
-            if ((neighbours_player[1] || neighbours_vacant[1]) && !link_history[tile_row - 1][tile_col]) {
-                branch_length = get_path_length(game_state, player, link_history, tile_row - 1, tile_col, length, shortest_length);
-                if (branch_length < shortest_length) {
-                    shortest_length = branch_length;
-                }
-            }
-
-            // Check position 2 for link
-            if ((neighbours_player[2] || neighbours_vacant[2]) && !link_history[tile_row][tile_col - 1]) {
-                branch_length = get_path_length(game_state, player, link_history, tile_row, tile_col - 1, length, shortest_length);
-                if (branch_length < shortest_length) {
-                    shortest_length = branch_length;
-                }
-            }
-
-            // Check position 3 for link
-            if ((neighbours_player[3] || neighbours_vacant[3]) && !link_history[tile_row + 1][tile_col - 1]) {
-                branch_length = get_path_length(game_state, player, link_history, tile_row + 1, tile_col - 1, length, shortest_length);
-                if (branch_length < shortest_length) {
-                    shortest_length = branch_length;
-                }
-            }
-            
-            // Check position 4 for link
-            if ((neighbours_player[4] || neighbours_vacant[4]) && !link_history[tile_row + 1][tile_col]) {
-                branch_length = get_path_length(game_state, player, link_history, tile_row + 1, tile_col, length, shortest_length); 
-                if (branch_length < shortest_length) {
-                    shortest_length = branch_length;
-                }
-            }
-
-            // Check position 5 for link
-            if ((neighbours_player[5] || neighbours_vacant[5]) && !link_history[tile_row][tile_col + 1]) {
-                branch_length = get_path_length(game_state, player, link_history, tile_row, tile_col + 1, length, shortest_length);
-                if (branch_length < shortest_length) {
-                    shortest_length = branch_length;
-                }
-            }
-            
-            return shortest_length;
-
-        }
-
     public:
         
         const std::string NAME = "Hex";   
-        std::vector<int> difficulty = {1, 2, 3, 4};
+        std::vector<int> difficulty = {10, 50, 100};
 
         const int N_ROW = 11;
         const int N_COL = 11;
         const int N_MOVES = N_ROW * N_COL;
-        
-        // Need to finish
-        double intermediate_score(std::vector<std::vector<int>> game_state) {
-            
-            
-            int shortest_length_p1 = N_MOVES;
-            int shortest_length_p2 = N_MOVES;
-            int branch_length;
-            std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-
-            for (int i = 0; i < N_ROW; i++) {
-                if (game_state[i][0] != 2) {
-                    
-                    branch_length = get_path_length(game_state, 1, link_history, i, 0, 0, shortest_length_p1);
-                    
-                    if (branch_length < shortest_length_p1) {
-                        shortest_length_p1 = branch_length;
-                    }
-                    
-                }
-            }
-           
-            for (int j = 0; j < N_COL; j++) {
-                if (game_state[0][j] != 1) {
-                    
-                    branch_length = get_path_length(game_state, 2, link_history, 0, j, 0, shortest_length_p2);
-                    
-                    if (branch_length < shortest_length_p2) {
-                        shortest_length_p2 = branch_length;
-                    }
-                }
-            }
-
-            return (shortest_length_p1 - shortest_length_p2 + 1.0) / (shortest_length_p2 + shortest_length_p1 + 1.0);
-
-        }
 
 
         int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
@@ -555,7 +437,7 @@ class Hex: public OneStepGame {
                 for (int j = 0 ; j < N_COL; j++) {
                     if (game_state[0][j] == last_player) {
                         if (check_link(game_state, last_player, link_history, 0, j)) {
-                            return 1;
+                            return 2;
                         }
                     }
                 }

@@ -9,17 +9,13 @@ class ConnectFour: public OneStepGame {
     public:
         
         const std::string NAME = "Connect Four";
-        std::vector<int> difficulty = {6, 8, 10, 12};
+        std::vector<int> difficulty = {1000, 10000, 100000};
 
         const int N_ROW = 6;
         const int N_COL = 7;
         const int N_MOVES = N_COL;
         
         
-        double intermediate_score(std::vector<std::vector<int>> game_state) {
-            
-            return 0.0;
-        }
 
         int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
 

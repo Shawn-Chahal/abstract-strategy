@@ -20,111 +20,116 @@ class OneStepGame {
             }
         
        
-        double get_score(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player, int move, int depth, int max_depth, double ab) {
+        int get_score(std::vector<std::vector<int>> game_state, int player, int move) {
 
             game_state = update_state(game_state, player, move);
-            available_moves = get_available_moves(game_state, player);
-            double score;
-
-            switch (get_result(game_state, player)) {
-                case 2:
-                    return pow(DECAY, depth);
-                    break;
-                
-                case 1:
-                    return -pow(DECAY, depth);
-                    break;
-
-                case 0:
-                    return 0.0;
-                    break;
-
-                default:
-
-                    if (depth == max_depth) {  
-                        return intermediate_score(game_state) * pow(DECAY, depth);
-                    }
-
-                    player = switch_player(player);
-
-                    if (player == 1) {
-                        
-                        double min_score = S_INITIAL;
-
-                        for (int j = 0; j < available_moves.size(); j++) {
-                            if (available_moves[j] == 1) {
-                                score = get_score(game_state, available_moves, player, j, depth + 1, max_depth, min_score);
-
-                                if (score < min_score) {
-                                    min_score = score;
-                                }
-
-                                if (min_score <= ab) {
-                                    break;
-                                }
-                            }
-                        }
-                        return min_score;
-                    }  else /* if (player == 2) */ {
-
-                        double max_score = -S_INITIAL;
-
-                        for (int j = 0; j < available_moves.size(); j++) {
-                            if (available_moves[j] == 1) {
-                                score = get_score(game_state, available_moves, player, j, depth + 1, max_depth, max_score);
-
-                                if (score > max_score) {
-                                    max_score = score;
-                                }
-
-                                if (max_score >= ab) {
-                                    break;
-                                }
-                            }
-                        }
-                        return max_score;
+            int result = get_result(game_state, player);
 
 
-                    }
-
-                    break;
+            if (result >= 0) {
+                return result;
             }
 
+            player = switch_player(player);
+            std::vector<int> available_moves = get_available_moves(game_state, player);
+
+            int pass = 1;
+
+            for (int m = 0; m < available_moves.size(); m++) {
+                if (available_moves[m]) {
+                    pass = 0;
+                    break;
+                }
+            }
+
+            if (pass) {
+                player = switch_player(player);
+                available_moves = get_available_moves(game_state, player);
+            }
+
+
+            std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, available_moves.size() - 1); 
+  
+            int m;
+            int check = 0;
+            while (result == -1) {
+
+                m = distribution(generator);
+
+                if (available_moves[m]) {
             
+                    result = get_score(game_state, player, m);
+                    
+                }
+                
+                
+                
+            }
+
+            return result;
         
         }
 
 
-        int get_move(std::vector<std::vector<int>> game_state, int player, std::vector<int> available_moves, int max_depth) {
+        int get_move(std::vector<std::vector<int>> game_state, int player, std::vector<int> available_moves, int max_games) {
 
             std::cout << INDENT << "Computer is thinking.";
-            std::vector<int> attempted_moves = std::vector<int>(available_moves.size(), 0);
-            double max_score = -S_INITIAL;
-            double score;
-            int move;
+            std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, available_moves.size() - 1); 
+            std::vector<int> win = std::vector<int>(available_moves.size(), 0);
+            std::vector<int> lose = std::vector<int>(available_moves.size(), 0);
+            std::vector<int> draw = std::vector<int>(available_moves.size(), 0);
+            std::vector<int> n_games = std::vector<int>(available_moves.size(), 0);
 
             
-            std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, available_moves.size() - 1);   
+            int games_played = 0;
+            int result;
+            int m;
 
-            while (!check_moves(attempted_moves)) {
-                int m = distribution(generator);
+            while (games_played < max_games) {
+                
+                m = distribution(generator);
 
-                if (!attempted_moves[m]) {
+                
 
-                    attempted_moves[m] = 1;
-                    std::cout << ".";
+                if (available_moves[m]) {
+                
+                    result = get_score(game_state, player, m);
+    
+                    if (result == player) {
+                        win[m]++;
+                    } else if (result == switch_player(player)) {
+                        lose[m]++;
+                    } else {
+                        draw[m]++;
+                    }
                     
-                    if (available_moves[m] == 1) {
-                        score = get_score(game_state, available_moves, player, m, 1, max_depth, max_score);
-        
-                        if (score > max_score) {
-                            max_score = score;
-                            move = m;
-                        }
+                    n_games[m]++;
+
+                    games_played++;
+
+                    if (games_played % (max_games / 10) == 0) {
+                        std::cout << ".";
                     }
                 }
             }
-            
+
+            int move;
+            double best_score = 0;
+            double score;
+
+            for (int m = 0; m < available_moves.size(); m++) {
+                if (n_games[m] > 0) {
+                    
+                    score = (win[m] + 0.0) / (n_games[m] + 0.0) + sqrt(2.0 * log(max_games + 0.0) / (n_games[m] + 0.0));
+
+                    if (score > best_score) {
+
+                        best_score = score;
+                        move = m;
+                    }
+                } 
+            }
+
             std::cout << std::endl;
             std::cout << INDENT << "Computer's move: " << move << std::endl;
 
@@ -151,7 +156,6 @@ class OneStepGame {
         virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
         virtual int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) { return -1; }
         virtual int transform_input(std::string user_input, const int N_ROW, const int N_COL) { return -1; }
-        virtual double intermediate_score(std::vector<std::vector<int>> game_state) { return -1.0; }
 
         // Shared methods
         int switch_player(int player) {
@@ -169,7 +173,7 @@ class OneStepGame {
             int move, pass;
             int player = 1;
             int result = -1;
-            int max_depth = 1;
+            int max_games = 1;
             std::vector<std::vector<int>> game_state = initialize_state(N_ROW, N_COL);
             std::vector<int> available_moves = get_available_moves(game_state, player);
             std::string user_input;
@@ -179,7 +183,7 @@ class OneStepGame {
             std::cout << INDENT << "1) Easy" << std::endl;
             std::cout << INDENT << "2) Medium" << std::endl;
             std::cout << INDENT << "3) Hard" << std::endl;
-            std::cout << INDENT << "4) Very Hard (May experience long load times)" << std::endl << std::endl;
+            std::cout << std::endl;
             std::cout << INDENT << "Enter a number: ";
 
             int d_index = -1;
@@ -198,7 +202,7 @@ class OneStepGame {
                 }
             }        
             
-            max_depth = difficulty[d_index - 1];
+            max_games = difficulty[d_index - 1];
 
             std::cout << LINE_BREAK << std::endl;
 
@@ -226,7 +230,7 @@ class OneStepGame {
                     move = transform_input(user_input, N_ROW, N_COL);
 
                 } else {
-                    move = get_move(game_state, player, available_moves, max_depth);
+                    move = get_move(game_state, player, available_moves, max_games);
                     
                 }
 
