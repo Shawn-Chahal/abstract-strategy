@@ -42,8 +42,8 @@ Validates the user input.
 ### int check_moves()
 Determines if the AI has attempted to check every branch of the game tree at a given node.
 
-### int switch_player()
-Switches between player 1 and 2.
+### int next_player()
+Returns the next player. In some games (E.g., Reversi) a player may have to pass their turn if they have no available moves.
 
 ### double get_score()
 Returns the AI's score for a given move using a recursive minimax algorithm with alpha-beta pruning. Allows the setting of a max_depth to control the AI difficulty.

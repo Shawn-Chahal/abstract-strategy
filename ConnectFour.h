@@ -9,7 +9,7 @@ class ConnectFour: public OneStepGame {
     public:
         
         const std::string NAME = "Connect Four";
-        std::vector<int> difficulty = {1000, 10000, 100000};
+        std::vector<int> difficulty = {1000, 2500, 5000};
 
         const int N_ROW = 6;
         const int N_COL = 7;
@@ -40,7 +40,7 @@ class ConnectFour: public OneStepGame {
             }
         }
 
-        void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
+        void print_board(std::vector<std::vector<int>> game_state, const int N_ROW, const int N_COL) {
             
             std::cout << INDENT;
             

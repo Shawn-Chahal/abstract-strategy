@@ -154,7 +154,7 @@ class Hex: public OneStepGame {
     public:
         
         const std::string NAME = "Hex";   
-        std::vector<int> difficulty = {10, 50, 100};
+        std::vector<int> difficulty = {100, 250, 500};
 
         const int N_ROW = 11;
         const int N_COL = 11;
@@ -201,7 +201,7 @@ class Hex: public OneStepGame {
         }
 
         
-        void print_board(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, const int N_ROW, const int N_COL) {
+        void print_board(std::vector<std::vector<int>> game_state, const int N_ROW, const int N_COL) {
             
             char col_index = 'a';
             int n_spaces = 2;
