@@ -44,6 +44,8 @@
         "numeric": "cpp",
         "random": "cpp",
         "variant": "cpp",
-        "ctime": "cpp"
+        "ctime": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp"
     }
 }

@@ -3,6 +3,7 @@
 #include <random>
 #include <cmath>
 #include <string>
+#include <chrono>
 
 
 class OneStepGame {
@@ -73,13 +74,6 @@ class OneStepGame {
             game_state = update_state(game_state, tree[parent_node].player, move);
             int result = get_result(game_state, tree[parent_node].player);
 
-            if (result > -1) {
-
-                tree[parent_node].update(result);
-
-                return tree;
-            }
-
             int player = next_player(game_state, tree[parent_node].player);
             std::vector<int> available_moves = get_available_moves(game_state, player);
                         
@@ -91,6 +85,14 @@ class OneStepGame {
             }
 
             int current_node = tree[parent_node].children[move];
+
+            if (result > -1) {
+
+                tree[current_node].update(result);
+                tree[parent_node].update(result);
+
+                return tree;
+            }
             
             if (tree[current_node].total == 0) {
 
@@ -130,7 +132,7 @@ class OneStepGame {
         }
 
 
-        int get_move(std::vector<std::vector<int>> game_state, int player, std::vector<int> available_moves, int max_games) {
+        int get_move(std::vector<std::vector<int>> game_state, int player, std::vector<int> available_moves, double max_time) {
 
             std::cout << INDENT << "Computer is thinking.";
             std::vector<Node> tree;
@@ -138,7 +140,19 @@ class OneStepGame {
             double UCB1,UCB1_max;
             int child_node,m_try, new_child_node;
 
-            while (tree[0].total < max_games) {
+
+            double update_frequency = max_time / 5;
+
+            std::chrono::duration<double> time;
+            std::chrono::duration<double> update_time;
+                        
+            auto start = std::chrono::steady_clock::now();
+            auto end = std::chrono::steady_clock::now();
+            auto last_update = std::chrono::steady_clock::now();
+            time = end - start;
+
+
+            while (time.count() < max_time) {
 
                 UCB1_max = -1;
 
@@ -162,8 +176,13 @@ class OneStepGame {
 
                 tree = update_tree(game_state, tree, 0, m_try);
                 
-                if (tree[0].total % (max_games / 10) == 0) {
+                auto end = std::chrono::steady_clock::now();
+                time = end - start;
+                update_time = end - last_update;
+
+                if (update_time.count() > update_frequency) {
                     std::cout << ".";
+                    last_update = std::chrono::steady_clock::now();
                 }                
             }
 
@@ -173,7 +192,8 @@ class OneStepGame {
             int node_log;
             for (int m = 0; m < available_moves.size(); m++) {
                 node_log = tree[0].children[m];
-                if (node_log >- 1) {
+                
+                if (node_log > -1) {
                     std::cout << INDENT << m + 1 << ": " << tree[node_log].get_score(player) << " Wins: " << tree[node_log].loss << " Draw: " << tree[node_log].draw << " Loss: " << tree[node_log].win << " Total: " << tree[node_log].total << std::endl;
                 }
             }
@@ -235,7 +255,7 @@ class OneStepGame {
         }    
 
 
-        void run_internal(const std::string NAME, std::vector<int> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
+        void run_internal(const std::string NAME, std::vector<double> difficulty, const int N_ROW, const int N_COL, const int N_MOVES) {
             
             double score, max_score;
             int move, pass;
@@ -270,7 +290,7 @@ class OneStepGame {
                 }
             }        
             
-            int max_games = difficulty[d_index - 1];
+            double max_time = difficulty[d_index - 1];
 
             std::cout << LINE_BREAK << std::endl;
 
@@ -302,7 +322,7 @@ class OneStepGame {
 
                 } else {
 
-                    move = get_move(game_state, player, available_moves, max_games);
+                    move = get_move(game_state, player, available_moves, max_time);
                 }
 
                 std::cout << LINE_BREAK << std::endl;

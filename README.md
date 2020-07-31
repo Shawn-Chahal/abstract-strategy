@@ -19,7 +19,7 @@ class TicTacToe: public OneStepGame {...};
 3. Set the constant variables:
 ```
 const std::string NAME = "Tic-Tac-Toe";   
-std::vector<int> difficulty = {2, 6, 10}; // These are the max_depth that the AI will search the game tree for the {Easy, Medium, Hard} difficulties.
+std::vector<double> difficulty = {2, 6, 10}; // These are the max_depth that the AI will search the game tree for the {Easy, Medium, Hard} difficulties.
 const int N_ROW = 3;
 const int N_COL = 3;
 const int N_MOVES = N_ROW * N_COL;

@@ -9,7 +9,7 @@ class TicTacToe: public OneStepGame {
     public:
         
         const std::string NAME = "Tic-Tac-Toe";   
-        std::vector<int> difficulty = {1000, 2500, 5000};
+        std::vector<double> difficulty = {1, 5, 10};
 
         const int N_ROW = 3;
         const int N_COL = 3;

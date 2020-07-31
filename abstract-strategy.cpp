@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <chrono>
 #include "Node.h"
 #include "OneStepGame.h"
 #include "ConnectFour.h"
