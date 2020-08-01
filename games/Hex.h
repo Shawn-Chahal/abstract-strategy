@@ -1,14 +1,14 @@
 #ifndef H_HEX
 #define H_HEX
 
-#include "OneStepGame.h"
+#include "../ai/StrategyGame.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 
-class Hex: public OneStepGame {
+class Hex: public StrategyGame {
     private:
 
         void print_spaces(int n_spaces) {

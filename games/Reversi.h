@@ -1,14 +1,14 @@
 #ifndef H_REVERSI
 #define H_REVERSI
 
-#include "OneStepGame.h"
+#include "../ai/StrategyGame.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 
-class Reversi: public OneStepGame {
+class Reversi: public StrategyGame {
     private:
 
         std::vector<int> check_link(std::vector<std::vector<int>> game_state, int row, int col) {

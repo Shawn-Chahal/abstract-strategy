@@ -1,5 +1,5 @@
-#ifndef H_ONESTEPGAME
-#define H_ONESTEPGAME
+#ifndef H_STRATEGYGAME
+#define H_STRATEGYGAME
 
 #include "Node.h"
 
@@ -10,7 +10,7 @@
 #include <chrono>
 
 
-class OneStepGame {
+class StrategyGame {
     private:
 
         int next_player(std::vector<std::vector<int>> game_state, int previous_player) {

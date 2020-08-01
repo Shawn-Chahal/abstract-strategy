@@ -8,14 +8,14 @@ An API which allows for the easy creation of abstract strategy games with artifi
 4. Tic-Tac-Toe
 
 ## Creating a custom strategy game class
-New strategy games can be created by writing a new class which inherits `class OneStepGame` (see documentation below).
+New strategy games can be created by writing a new class which inherits `class StrategyGame` (see documentation below).
 
 Here is an example using Tic-Tac-Toe:
 
 1. Create a file called **tic-tac-toe.h**.
-2. Inherit the OneStepGame class.
+2. Inherit the StrategyGame class.
 ```
-class TicTacToe: public OneStepGame {...};
+class TicTacToe: public StrategyGame {...};
 ```
 3. Set the constant variables:
 ```
@@ -29,9 +29,9 @@ const int N_MOVES = N_ROW * N_COL;
 5. Define `std::vector<std::vector<int>> update_state()` which returns the updated `game_state` based on a `player`'s `move`.
 6. Define `std::vector<int> get_available_moves()` which returns the updated `available_moves` based on the current `game_state` and `player`.
 7. Define `int get_result()` which determines if the game has ended. Returns the player that won (1 or 2), a draw (0), or that the game has not yet ended (-1).
-8. Define `void run()` which is a simple wrapper function for the inherited `run_internal()` method from the parent `class OneStepGame`.
+8. Define `void run()` which is a simple wrapper function for the inherited `run_internal()` method from the parent `class StrategyGame`.
 
-## class OneStepGame
+## class StrategyGame
 The parent class to be inherited by individual strategy game classes.
 
 ### void run_internal()

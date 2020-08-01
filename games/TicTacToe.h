@@ -1,14 +1,14 @@
 #ifndef H_TICTACTOE
 #define H_TICTACTOE
 
-#include "OneStepGame.h"
+#include "../ai/StrategyGame.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 
-class TicTacToe: public OneStepGame {
+class TicTacToe: public StrategyGame {
     
     public:
         

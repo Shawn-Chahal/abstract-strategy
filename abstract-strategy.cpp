@@ -1,8 +1,8 @@
-#include "OneStepGame.h"
-#include "ConnectFour.h"
-#include "Hex.h"
-#include "Reversi.h"
-#include "TicTacToe.h"
+#include "ai/StrategyGame.h"
+#include "games/ConnectFour.h"
+#include "games/Hex.h"
+#include "games/Reversi.h"
+#include "games/TicTacToe.h"
 
 #include <iostream>
 #include <vector>
@@ -15,7 +15,7 @@ int main() {
 
     while (play_again == 1) {
 
-        OneStepGame menu;
+        StrategyGame menu;
         
         std::vector<std::string> games_list = {"Connect Four", "Hex (7 x 7)", "Reversi (Othello)", "Tic-Tac-Toe"};
 

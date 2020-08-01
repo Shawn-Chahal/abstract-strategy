@@ -1,14 +1,14 @@
 #ifndef H_CONNECTFOUR
 #define H_CONNECTFOUR
 
-#include "OneStepGame.h"
+#include "../ai/StrategyGame.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 
-class ConnectFour: public OneStepGame {
+class ConnectFour: public StrategyGame {
     
     public:
         
