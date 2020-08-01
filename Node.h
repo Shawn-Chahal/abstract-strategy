@@ -1,8 +1,9 @@
+#ifndef H_NODE
+#define H_NODE
+
 #include <iostream>
 #include <vector>
-#include <random>
 #include <cmath>
-#include <string>
 
 
 class Node {
@@ -79,3 +80,5 @@ class Node {
 
 
 };
+
+#endif

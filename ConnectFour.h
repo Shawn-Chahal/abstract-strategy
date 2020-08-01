@@ -1,7 +1,11 @@
+#ifndef H_CONNECTFOUR
+#define H_CONNECTFOUR
+
+#include "OneStepGame.h"
+
 #include <iostream>
 #include <vector>
-#include <random>
-#include <cmath>
+#include <string>
 
 
 class ConnectFour: public OneStepGame {
@@ -221,3 +225,4 @@ class ConnectFour: public OneStepGame {
     
 };
 
+#endif

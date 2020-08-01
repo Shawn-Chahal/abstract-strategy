@@ -1,7 +1,11 @@
+#ifndef H_HEX
+#define H_HEX
+
+#include "OneStepGame.h"
+
 #include <iostream>
 #include <vector>
-#include <random>
-#include <cmath>
+#include <string>
 
 
 class Hex: public OneStepGame {
@@ -463,3 +467,4 @@ class Hex: public OneStepGame {
     
 };
 
+#endif

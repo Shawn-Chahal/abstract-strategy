@@ -1,7 +1,11 @@
+#ifndef H_ONESTEPGAME
+#define H_ONESTEPGAME
+
+#include "Node.h"
+
 #include <iostream>
 #include <vector>
 #include <random>
-#include <cmath>
 #include <string>
 #include <chrono>
 
@@ -355,3 +359,5 @@ class OneStepGame {
 
 };
 
+
+#endif

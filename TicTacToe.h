@@ -1,7 +1,11 @@
+#ifndef H_TICTACTOE
+#define H_TICTACTOE
+
+#include "OneStepGame.h"
+
 #include <iostream>
 #include <vector>
-#include <random>
-#include <cmath>
+#include <string>
 
 
 class TicTacToe: public OneStepGame {
@@ -281,3 +285,4 @@ class TicTacToe: public OneStepGame {
     
 };
 
+#endif

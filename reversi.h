@@ -1,7 +1,11 @@
+#ifndef H_REVERSI
+#define H_REVERSI
+
+#include "OneStepGame.h"
+
 #include <iostream>
 #include <vector>
-#include <random>
-#include <cmath>
+#include <string>
 
 
 class Reversi: public OneStepGame {
@@ -530,3 +534,4 @@ class Reversi: public OneStepGame {
     
 };
 
+#endif
