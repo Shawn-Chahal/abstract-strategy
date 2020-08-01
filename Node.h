@@ -23,6 +23,7 @@ class Node {
         int last_result; // for backpropagation
         std::vector<int> children; // index = move, value = child node id for that move
     
+    
         Node(int parent_input, int player_input, const int N_MOVES) {
 
             parent = parent_input;

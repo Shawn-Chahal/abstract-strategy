@@ -60,96 +60,72 @@ class Hex: public OneStepGame {
                 return 1;
             }
             
-            std::vector<int> neighbours = std::vector<int>(6, 0);
-
             // Check position 0
             if ((tile_row > 0) && (tile_col < N_COL - 1)) {
                 if (game_state[tile_row - 1][tile_col + 1] == player) {
-                    neighbours[0] = 1;
+                    if (!link_history[tile_row - 1][tile_col + 1]) {
+                        if (check_link(game_state, player, link_history, tile_row - 1, tile_col + 1)) {
+                            return 1;
+                        }
+                    }
                 }
             }
 
             // Check position 1
             if (tile_row > 0) {
                 if (game_state[tile_row - 1][tile_col] == player) {
-                    neighbours[1] = 1;
+                    if (!link_history[tile_row - 1][tile_col]) {
+                        if (check_link(game_state, player, link_history, tile_row - 1, tile_col)) {
+                            return 1;
+                        }
+                    }
                 }
             }
 
             // Check position 2
             if (tile_col > 0) {
                 if (game_state[tile_row][tile_col - 1] == player) {
-                    neighbours[2] = 1;
+                    if (!link_history[tile_row][tile_col - 1]) {
+                        if (check_link(game_state, player, link_history, tile_row, tile_col - 1)) {
+                            return 1;
+                        }
+                    }
                 }
             }
 
             // Check position 3
             if ((tile_row < N_ROW - 1) && (tile_col > 0)) {
                 if (game_state[tile_row + 1][tile_col - 1] == player) {
-                    neighbours[3] = 1;
+                    if (!link_history[tile_row + 1][tile_col - 1]) {
+                        if (check_link(game_state, player, link_history, tile_row + 1, tile_col - 1)) {
+                            return 1;
+                        }
+                    }
                 }
             }
 
             // Check position 4
             if (tile_row < N_ROW - 1) {
                 if (game_state[tile_row + 1][tile_col] == player) {
-                    neighbours[4] = 1;
+                    if (!link_history[tile_row + 1][tile_col]) {
+                        if (check_link(game_state, player, link_history, tile_row + 1, tile_col)) {
+                            return 1;
+                        }
+                    }
                 }
             }
 
             // Check position 5
             if (tile_col < N_COL - 1) {
                 if (game_state[tile_row][tile_col + 1] == player) {
-                    neighbours[5] = 1;
+                    if (!link_history[tile_row][tile_col + 1]) {
+                        if (check_link(game_state, player, link_history, tile_row, tile_col + 1)) {
+                            return 1;
+                        }
+                    }
                 }
             }
-
-
-            // This section repeats...
-
-
-            // Check position 0 for link
-            if (neighbours[0] && !link_history[tile_row - 1][tile_col + 1]) {
-                if (check_link(game_state, player, link_history, tile_row - 1, tile_col + 1)) {
-                    return 1;
-                }
-            }
-
-            // Check position 1 for link
-            if (neighbours[1] && !link_history[tile_row - 1][tile_col]) {
-                if (check_link(game_state, player, link_history, tile_row - 1, tile_col)) {
-                    return 1;
-                }
-            }
-
-            // Check position 2 for link
-            if (neighbours[2] && !link_history[tile_row][tile_col - 1]) {
-                if (check_link(game_state, player, link_history, tile_row, tile_col - 1)) {
-                    return 1;
-                }
-            }
-
-            // Check position 3 for link
-            if (neighbours[3] && !link_history[tile_row + 1][tile_col - 1]) {
-                if (check_link(game_state, player, link_history, tile_row + 1, tile_col - 1)) {
-                    return 1;
-                }
-            }
-            
-            // Check position 4 for link
-            if (neighbours[4] && !link_history[tile_row + 1][tile_col]) {
-                if (check_link(game_state, player, link_history, tile_row + 1, tile_col)) {
-                    return 1;
-                }
-            }
-
-            // Check position 5 for link
-            if (neighbours[5] && !link_history[tile_row][tile_col + 1]) {
-                if (check_link(game_state, player, link_history, tile_row, tile_col + 1)) {
-                    return 1;
-                }
-            }
-            
+          
             return 0;
 
         }
@@ -157,11 +133,11 @@ class Hex: public OneStepGame {
 
     public:
         
-        const std::string NAME = "Hex";   
+        const std::string NAME = "Hex (7 x 7)";   
         std::vector<double> difficulty = {5, 15, 30, 60, 120};
 
-        const int N_ROW = 11;
-        const int N_COL = 11;
+        const int N_ROW = 7;
+        const int N_COL = 7;
         const int N_MOVES = N_ROW * N_COL;
 
 
@@ -426,25 +402,52 @@ class Hex: public OneStepGame {
         int get_result(std::vector<std::vector<int>> game_state, int last_player) {
 
             std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+            
+            int link_1 = 0;
+            int link_2 = 0;
+
 
             if (last_player == 1) {
                 for (int i = 0 ; i < N_ROW; i++) {
                     if (game_state[i][0] == last_player) {
-                        if (check_link(game_state, last_player, link_history, i, 0)) {
-                            return 1;
-                        }
+                        link_1++;
                     }
+                    if (game_state[i][N_COL - 1] == last_player) {
+                        link_2++;
+                    }
+                }
+
+                if ((link_1 > 0) && (link_2 > 0)) {
+                    for (int i = 0 ; i < N_ROW; i++) {
+                        if (game_state[i][0] == last_player) {
+                            if (check_link(game_state, last_player, link_history, i, 0)) {
+                                return 1;
+                            }
+                        }
+                    }                       
                 }
             }          
 
             if (last_player == 2) {
                 for (int j = 0 ; j < N_COL; j++) {
                     if (game_state[0][j] == last_player) {
-                        if (check_link(game_state, last_player, link_history, 0, j)) {
-                            return 2;
+                        link_1++;
+                    }
+                    if (game_state[N_ROW - 1][j] == last_player) {
+                        link_2++;
+                    }
+                }
+
+                if ((link_1 > 0) && (link_2 > 0)) {
+                    for (int j = 0 ; j < N_COL; j++) {
+                        if (game_state[0][j] == last_player) {
+                            if (check_link(game_state, last_player, link_history, 0, j)) {
+                                return 2;
+                            }
                         }
                     }
                 }
+
             }    
 
             for (int i = 0 ; i < N_ROW; i++) {

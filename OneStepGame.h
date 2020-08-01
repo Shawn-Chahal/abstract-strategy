@@ -61,18 +61,6 @@ class OneStepGame {
         }
 
 
-        int check_moves(std::vector<int> attempted_moves) {
-
-            for (int i = 0; i < attempted_moves.size(); i++) {
-                if (attempted_moves[i] == 0) {
-                    return 0;
-                }
-            }
-
-            return 1;
-        }
-        
-
         std::vector<Node> update_tree(std::vector<std::vector<int>> game_state, std::vector<Node> tree, int parent_node, int move) {
 
             game_state = update_state(game_state, tree[parent_node].player, move);

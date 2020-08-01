@@ -290,6 +290,7 @@ class Reversi: public OneStepGame {
             }
         }
 
+
         std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) {
 
             std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));

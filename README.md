@@ -3,8 +3,9 @@ An API which allows for the easy creation of abstract strategy games with artifi
 
 ## Available games
 1. Connect Four
-2. Reversi (Othello)
-3. Tic-Tac-Toe
+2. Hex (7 x 7)
+3. Reversi (Othello)
+4. Tic-Tac-Toe
 
 ## Creating a custom strategy game class
 New strategy games can be created by writing a new class which inherits `class OneStepGame` (see documentation below).
@@ -38,9 +39,6 @@ Set's up the in-game user interface. Allows the user to choose a difficulty sett
 
 ### int check_input()
 Validates the user input.
-
-### int check_moves()
-Determines if the AI has attempted to check every branch of the game tree at a given node.
 
 ### int next_player()
 Returns the next player. In some games (E.g., Reversi) a player may have to pass their turn if they have no available moves.

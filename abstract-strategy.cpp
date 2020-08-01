@@ -17,7 +17,7 @@ int main() {
 
         OneStepGame menu;
         
-        std::vector<std::string> games_list = {"Connect Four", "Hex", "Reversi (Othello)", "Tic-Tac-Toe"};
+        std::vector<std::string> games_list = {"Connect Four", "Hex (7 x 7)", "Reversi (Othello)", "Tic-Tac-Toe"};
 
         std::cout << menu.LINE_BREAK << std::endl;
 
@@ -64,7 +64,7 @@ int main() {
             Reversi game;
             game.run();
 
-        } else if (games_list[g_index - 1] == "Hex") {
+        } else if (games_list[g_index - 1] == "Hex (7 x 7)") {
             Hex game;
             game.run();
         }
