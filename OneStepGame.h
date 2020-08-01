@@ -261,16 +261,17 @@ class OneStepGame {
             int move, pass;
             int player = 1;
             int result = -1;
+            std::vector<std::string> difficulty_names = {"Beginner", "Easy", "Normal", "Hard", "Expert"};
             
             std::vector<std::vector<int>> game_state = initialize_state(N_ROW, N_COL);
             std::vector<int> available_moves;
             std::string user_input;
 
             std::cout << INDENT << NAME << std::endl << std::endl;
-            std::cout << INDENT << "Select a difficulty." << std::endl << std::endl;
-            std::cout << INDENT << "1) Easy" << std::endl;
-            std::cout << INDENT << "2) Medium" << std::endl;
-            std::cout << INDENT << "3) Hard" << std::endl;
+            std::cout << INDENT << "Select a difficulty [Time AI has to think]" << std::endl << std::endl;
+            for (int i = 0; i < difficulty_names.size(); i++) {
+                std::cout << INDENT << i + 1 << ") " << difficulty_names[i] << " \t[ " << difficulty[i] << " s ]" << std::endl;
+            }
             std::cout << std::endl;
             std::cout << INDENT << "Enter a number: ";
 

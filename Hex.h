@@ -154,7 +154,7 @@ class Hex: public OneStepGame {
     public:
         
         const std::string NAME = "Hex";   
-        std::vector<double> difficulty = {1, 10, 25};
+        std::vector<double> difficulty = {5, 15, 30, 60, 120};
 
         const int N_ROW = 11;
         const int N_COL = 11;

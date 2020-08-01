@@ -9,7 +9,7 @@ class ConnectFour: public OneStepGame {
     public:
         
         const std::string NAME = "Connect Four";
-        std::vector<double> difficulty = {1, 10, 25};
+        std::vector<double> difficulty = {3, 5, 10, 15, 30};
 
         const int N_ROW = 6;
         const int N_COL = 7;
