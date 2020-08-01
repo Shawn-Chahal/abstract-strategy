@@ -190,19 +190,7 @@ class OneStepGame {
                 }                
             }
 
-            std::cout << std::endl;
-
-            // LOGISTICS START
-            int node_log;
-            for (int m = 0; m < available_moves.size(); m++) {
-                node_log = tree[0].children[m];
-                
-                if (node_log > -1) {
-                    std::cout << INDENT << m + 1 << ": " << tree[node_log].get_score(player) << " Wins: " << tree[node_log].loss << " Draw: " << tree[node_log].draw << " Loss: " << tree[node_log].win << " Total: " << tree[node_log].total << std::endl;
-                }
-            }
-            std::cout << INDENT << "Tree size: " << tree.size() << " Wins: " << tree[0].win << " Draw: " << tree[0].draw << " Loss: " << tree[0].loss << " Total: " << tree[0].total << std::endl;
-            // LOGISTICS END
+            std::cout << std::endl << std::endl;
 
             int move;
             double best_score = -S_INITIAL;
@@ -224,7 +212,13 @@ class OneStepGame {
                 } 
             }
 
-            std::cout << INDENT << "Computer's move: " << move << std::endl;
+            int confidence = 100 * best_score;
+
+            std::cout << INDENT << "Computer's move: " << move << std::endl << std::endl;
+
+            std::cout << INDENT << "Confidence:    " << confidence << "%" << std::endl;
+            std::cout << INDENT << "Tree size:     " << tree.size() << std::endl;
+            std::cout << INDENT << "Total games:   " << tree[0].total << std::endl;
 
             return move;
         }
