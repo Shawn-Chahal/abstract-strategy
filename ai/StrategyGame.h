@@ -202,8 +202,9 @@ class StrategyGame {
 
             int confidence = 100 * best_score;
 
-            std::cout << INDENT << "Computer's move: " << move << std::endl << std::endl;
-
+            std::cout << INDENT << "Computer's move: ";
+            ai_output(move);
+            std::cout << std::endl << std::endl;
             std::cout << INDENT << "Confidence:    " << confidence << "%" << std::endl;
             std::cout << INDENT << "Tree size:     " << tree.size() << std::endl;
             std::cout << INDENT << "Total games:   " << tree[0].total << std::endl;
@@ -229,6 +230,7 @@ class StrategyGame {
         virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
         virtual int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) { return -1; }
         virtual int transform_input(std::string user_input, const int N_ROW, const int N_COL) { return -1; }
+        virtual void ai_output(int move) {}
         virtual void how_to_play() {}
 
 

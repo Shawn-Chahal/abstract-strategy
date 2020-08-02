@@ -227,6 +227,10 @@ class ConnectFour: public StrategyGame {
 
         }
 
+        void ai_output(int move) {
+            std::cout << move + 1;
+        }
+
 
         void run() {
          

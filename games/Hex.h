@@ -475,6 +475,22 @@ class Hex: public StrategyGame {
         }
 
 
+        virtual void ai_output(int move) {
+
+            int row = move / N_COL + 1;
+            char col = (move % N_COL) + 'a';
+
+            std::cout << col;
+            
+            if (row < 10) {
+                std::cout << 0 << row;
+            } else {
+                std::cout << row;
+            }
+
+        }
+
+
         void run() {
           
             run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
