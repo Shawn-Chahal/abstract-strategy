@@ -119,7 +119,7 @@ class ConnectFour: public StrategyGame {
         }
 
 
-        int get_result(std::vector<std::vector<int>> game_state, int last_player) {
+        int get_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             const int CONNECT = 4;
             int count;

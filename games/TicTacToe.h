@@ -160,7 +160,7 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        int get_result(std::vector<std::vector<int>> game_state, int last_player) {
+        int get_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             const int CONNECT = 3;
             int player, count;

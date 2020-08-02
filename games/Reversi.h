@@ -485,7 +485,7 @@ class Reversi: public StrategyGame {
         }
 
 
-        int get_result(std::vector<std::vector<int>> game_state, int last_player) {
+        int get_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             int player1_score = 0;
             int player2_score = 0;
