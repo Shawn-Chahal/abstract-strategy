@@ -214,8 +214,18 @@ class ConnectFour: public StrategyGame {
         std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) {
 
             return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+        }
 
-            }
+
+        void how_to_play() {
+
+            std::cout << INDENT << "Connect four consecutive tiles in a straight line." << std::endl;
+            std::cout << INDENT << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
+            std::cout << INDENT << "Token are inserted from the top of the column." << std::endl;
+            std::cout << INDENT << "E.g., if you want to play on column = 1," << std::endl; 
+            std::cout << INDENT << "then input 1 when prompted." << std::endl;
+
+        }
 
 
         void run() {

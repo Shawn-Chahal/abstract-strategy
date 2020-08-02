@@ -528,6 +528,21 @@ class Reversi: public StrategyGame {
         }
 
 
+       void how_to_play() {
+
+            std::cout << INDENT << "Occupy as many tiles as possible before both players run out of moves." << std::endl;
+            std::cout << INDENT << "You may only play on an empty tile which is connected in a straight line" << std::endl;
+            std::cout << INDENT << "to another one of your tiles. However, all the tiles in between your two" << std::endl;
+            std::cout << INDENT << "tiles must be occupied by your opponent. The straight line can be" << std::endl;
+            std::cout << INDENT << "horizontal, vertical, or diagonal. If you have no available moves," << std::endl;
+            std::cout << INDENT << "your turn will be passed." << std::endl;
+            std::cout << INDENT << "Each tile is represnted by an alphanumeric value." << std::endl;
+            std::cout << INDENT << "E.g., if you want to play on column = a and row = 1," << std::endl; 
+            std::cout << INDENT << "then input a1 when prompted." << std::endl;
+
+        }
+
+
         void run() {
           
             run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);

@@ -459,6 +459,18 @@ class Hex: public StrategyGame {
             }
 
             return 0;
+        }
+
+
+       void how_to_play() {
+
+            std::cout << INDENT << "Link the two sides of the board maching your token" << std::endl;
+            std::cout << INDENT << "before your opponent. You may play on any empty tile." << std::endl;
+            std::cout << INDENT << "Each tile is represnted by an alphanumeric value." << std::endl;
+            std::cout << INDENT << "E.g., if you want to play on column = a and row = 01," << std::endl; 
+            std::cout << INDENT << "then input a01 when prompted." << std::endl;
+            std::cout << INDENT << "Pay careful attention to the row numbers as the game is" << std::endl;
+            std::cout << INDENT << "played on a hexagonal grid in the shape of a rhombus." << std::endl;
 
         }
 

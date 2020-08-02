@@ -229,6 +229,8 @@ class StrategyGame {
         virtual std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) { return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)); }
         virtual int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) { return -1; }
         virtual int transform_input(std::string user_input, const int N_ROW, const int N_COL) { return -1; }
+        virtual void how_to_play() {}
+
 
         // Shared methods
         int switch_player(int player) {
@@ -254,7 +256,15 @@ class StrategyGame {
             std::string user_input;
 
             std::cout << INDENT << NAME << std::endl << std::endl;
+            std::cout << INDENT << "How to play" << std::endl << std::endl;
+            how_to_play();
+            std::cout << std::endl;
+            std::cout << INDENT << "Player markers" << std::endl;
+            std::cout << INDENT << "You:      " << P1_MARKER << std::endl;
+            std::cout << INDENT << "Computer: " << P2_MARKER << std::endl << std::endl;
+
             std::cout << INDENT << "Select a difficulty [Time AI has to think]" << std::endl << std::endl;
+
             for (int i = 0; i < difficulty_names.size(); i++) {
                 std::cout << INDENT << i + 1 << ") " << difficulty_names[i] << " \t[ " << difficulty[i] << " s ]" << std::endl;
             }
@@ -280,10 +290,6 @@ class StrategyGame {
             double max_time = difficulty[d_index - 1];
 
             std::cout << LINE_BREAK << std::endl;
-
-            std::cout << INDENT << "Player markers" << std::endl;
-            std::cout << INDENT << "You:      " << P1_MARKER << std::endl;
-            std::cout << INDENT << "Computer: " << P2_MARKER << std::endl << std::endl;
 
             print_board(game_state, N_ROW, N_COL);
 
