@@ -489,7 +489,7 @@ void Reversi::display() {
     
     char col_index = 'a';
 
-    std::cout << INDENT << "  ";
+    std::cout << "\t" << "  ";
     
     for (int j = 0; j < N_COL; j++) {  
         
@@ -498,7 +498,7 @@ void Reversi::display() {
 
     std::cout << " " << std::endl;
 
-    std::cout << INDENT << "  |";
+    std::cout << "\t" << "  |";
         for (int j = 0; j < N_COL; j++) {
             
             std::cout << "---|";
@@ -506,7 +506,7 @@ void Reversi::display() {
     std::cout << std::endl;
 
     for (int i = 0; i < N_ROW; i++) {
-        std::cout << INDENT;
+        std::cout << "\t";
 
         for (int j = 0; j < N_COL; j++) {
 
@@ -534,7 +534,7 @@ void Reversi::display() {
         std::cout << "|" << std::endl;
         
         
-        std::cout << INDENT << "  |";
+        std::cout << "\t" << "  |";
         for (int j = 0; j < N_COL; j++) {
             
             std::cout << "---|";
@@ -548,15 +548,15 @@ void Reversi::display() {
 
 void Reversi::how_to_play() {
 
-    std::cout << INDENT << "Occupy as many tiles as possible before both players run out of moves." << std::endl;
-    std::cout << INDENT << "You may only play on an empty tile which is connected in a straight line" << std::endl;
-    std::cout << INDENT << "to another one of your tiles. However, all the tiles in between your two" << std::endl;
-    std::cout << INDENT << "tiles must be occupied by your opponent. The straight line can be" << std::endl;
-    std::cout << INDENT << "horizontal, vertical, or diagonal. If you have no available moves," << std::endl;
-    std::cout << INDENT << "your turn will be passed." << std::endl;
-    std::cout << INDENT << "Each tile is represnted by an alphanumeric value." << std::endl;
-    std::cout << INDENT << "E.g., if you want to play on column = a and row = 1," << std::endl; 
-    std::cout << INDENT << "then input a1 when prompted." << std::endl;
+    std::cout << "\t" << "Occupy as many tiles as possible before both players run out of moves." << std::endl;
+    std::cout << "\t" << "You may only play on an empty tile which is connected in a straight line" << std::endl;
+    std::cout << "\t" << "to another one of your tiles. However, all the tiles in between your two" << std::endl;
+    std::cout << "\t" << "tiles must be occupied by your opponent. The straight line can be" << std::endl;
+    std::cout << "\t" << "horizontal, vertical, or diagonal. If you have no available moves," << std::endl;
+    std::cout << "\t" << "your turn will be passed." << std::endl;
+    std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
+    std::cout << "\t" << "E.g., if you want to play on column = a and row = 1," << std::endl; 
+    std::cout << "\t" << "then input a1 when prompted." << std::endl;
 
 }
 

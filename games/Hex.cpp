@@ -293,16 +293,16 @@ void Hex::display() {
     char col_index = 'a';
     int n_spaces = 2;
 
-    std::cout << INDENT << "   |XXXXXXX" << std::endl;
-    std::cout << INDENT << "   |OXXX   XXXX" << std::endl;
+    std::cout << "\t" << "   |XXXXXXX" << std::endl;
+    std::cout << "\t" << "   |OXXX   XXXX" << std::endl;
 
-    std::cout << INDENT << "   |OOX  " << col_index++ << "  XXXXXX" << std::endl;
-    std::cout << INDENT << "   |OOO_____XXX   XXXX" << std::endl;
+    std::cout << "\t" << "   |OOX  " << col_index++ << "  XXXXXX" << std::endl;
+    std::cout << "\t" << "   |OOO_____XXX   XXXX" << std::endl;
     
     for (int i = 0; i < N_ROW; i++) {
 
         // Line 1
-        std::cout << INDENT;
+        std::cout << "\t";
         if (i + 1 < 10) {
             std::cout << 0 << i + 1 << " ";
         } else if (i + 1 < 100) {
@@ -330,7 +330,7 @@ void Hex::display() {
         
 
         // Line 2
-        std::cout << INDENT;
+        std::cout << "\t";
         std::cout << "   |O/  " << print_tile(game_state[i][0]) << "  ";
 
         for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
@@ -354,7 +354,7 @@ void Hex::display() {
 
 
         // Line 3
-        std::cout << INDENT;
+        std::cout << "\t";
         std::cout << "   |O\\  " << print_tile(game_state[i][0]) << "  ";
 
         for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
@@ -380,7 +380,7 @@ void Hex::display() {
 
 
         // Line 4
-        std::cout << INDENT;
+        std::cout << "\t";
         std::cout << "   |OO\\_____/";
 
         for (int j = 0; (j < i) && (j < N_COL / 2); j++) {
@@ -412,7 +412,7 @@ void Hex::display() {
     for (int i = 0; i < N_ROW / 2; i++) {
         
         // Line 1
-        std::cout << INDENT;
+        std::cout << "\t";
         n_spaces +=4;
         print_spaces(n_spaces);
         std::cout << "XXXXXX\\";
@@ -425,7 +425,7 @@ void Hex::display() {
 
 
         // Line 2
-        std::cout << INDENT;
+        std::cout << "\t";
         n_spaces +=3;
         print_spaces(n_spaces);
         std::cout << "XXXX\\";
@@ -438,7 +438,7 @@ void Hex::display() {
 
 
         // Line 3
-        std::cout << INDENT;
+        std::cout << "\t";
         n_spaces +=4;
         print_spaces(n_spaces);
         std::cout << "XXXXXX\\";
@@ -451,7 +451,7 @@ void Hex::display() {
 
 
         // Line 4
-        std::cout << INDENT;
+        std::cout << "\t";
         n_spaces +=3;
         print_spaces(n_spaces);
         std::cout << "XXXX\\";
@@ -474,7 +474,7 @@ void Hex::display() {
     
     }
     
-    std::cout << INDENT;
+    std::cout << "\t";
     n_spaces +=4;
     print_spaces(n_spaces);
     std::cout << "XXXXXXOOO|" << std::endl;
@@ -483,13 +483,13 @@ void Hex::display() {
 
 void Hex::how_to_play() {
 
-    std::cout << INDENT << "Link the two sides of the board maching your token" << std::endl;
-    std::cout << INDENT << "before your opponent. You may play on any empty tile." << std::endl;
-    std::cout << INDENT << "Each tile is represnted by an alphanumeric value." << std::endl;
-    std::cout << INDENT << "E.g., if you want to play on column = a and row = 01," << std::endl; 
-    std::cout << INDENT << "then input a01 when prompted." << std::endl;
-    std::cout << INDENT << "Pay careful attention to the row numbers as the game is" << std::endl;
-    std::cout << INDENT << "played on a hexagonal grid in the shape of a rhombus." << std::endl;
+    std::cout << "\t" << "Link the two sides of the board maching your token" << std::endl;
+    std::cout << "\t" << "before your opponent. You may play on any empty tile." << std::endl;
+    std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
+    std::cout << "\t" << "E.g., if you want to play on column = a and row = 01," << std::endl; 
+    std::cout << "\t" << "then input a01 when prompted." << std::endl;
+    std::cout << "\t" << "Pay careful attention to the row numbers as the game is" << std::endl;
+    std::cout << "\t" << "played on a hexagonal grid in the shape of a rhombus." << std::endl;
 
 }
 

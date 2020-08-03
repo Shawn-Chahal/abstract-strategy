@@ -165,14 +165,14 @@ void TicTacToe::display() {
     
     char col_index = 'a';
 
-    std::cout << INDENT << "  ";
+    std::cout << "\t" << "  ";
     
     for (int j = 0; j < N_COL; j++) {  
         std::cout << "   " << col_index++ << "  ";
     }
 
     std::cout << " " << std::endl;
-    std::cout << INDENT;
+    std::cout << "\t";
 
     for (int j = 0; j < N_COL; j++) {
         if (j == 0) {
@@ -187,7 +187,7 @@ void TicTacToe::display() {
     std::cout << std::endl;
 
     for (int i = 0; i < N_ROW; i++) {
-        std::cout << INDENT;
+        std::cout << "\t";
 
         for (int j = 0; j < N_COL; j++) {
             if (j == 0) {
@@ -214,7 +214,7 @@ void TicTacToe::display() {
         std::cout << std::endl;
         
         if (i < N_ROW - 1) {
-            std::cout << INDENT << "   ";
+            std::cout << "\t" << "   ";
 
             for (int j = 0; j < N_COL; j++) {
                 if (j == N_COL - 1) {
@@ -228,7 +228,7 @@ void TicTacToe::display() {
         }
     }
     
-    std::cout << INDENT;
+    std::cout << "\t";
 
     for (int j = 0; j < N_COL; j++) {
         if (j == 0) {
@@ -248,11 +248,11 @@ void TicTacToe::display() {
 
 void TicTacToe::how_to_play() {
 
-    std::cout << INDENT << "Connect three consecutive tiles in a straight line." << std::endl;
-    std::cout << INDENT << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
-    std::cout << INDENT << "Each tile is represnted by an alphanumeric value." << std::endl;
-    std::cout << INDENT << "E.g., if you want to play on column = a and row = 1," << std::endl; 
-    std::cout << INDENT << "then input a1 when prompted." << std::endl;
+    std::cout << "\t" << "Connect three consecutive tiles in a straight line." << std::endl;
+    std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
+    std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
+    std::cout << "\t" << "E.g., if you want to play on column = a and row = 1," << std::endl; 
+    std::cout << "\t" << "then input a1 when prompted." << std::endl;
 
 }
 

@@ -10,8 +10,7 @@ class GameBoard {
         const char P1_MARKER = 'O';
         const char P2_MARKER = 'X';
 
-        const std::string INDENT = "   ";
-        const std::string LINE_BREAK = "\n" + INDENT + "-----------------------------\n";
+        const std::string LINE_BREAK = "\n\t-----------------------------\n";
 
         int player, last_move, result;
         std::vector<std::vector<int>> game_state;

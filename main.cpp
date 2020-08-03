@@ -11,8 +11,8 @@
 
 
 // Need to declare these globally
-const std::string INDENT = "   ";
-const std::string LINE_BREAK = "\n" + INDENT + "-----------------------------\n";
+
+const std::string LINE_BREAK = "\n\t-----------------------------\n";
 
 
 int menu_input (int size) {
@@ -21,12 +21,12 @@ int menu_input (int size) {
 
     while (index == -1) {
         if (!(std::cin >> index)){
-            std::cout << INDENT << "Invalid input. Please enter a number: ";
+            std::cout << "\t" << "Invalid input. Please enter a number: ";
             std::cin.clear();
             std::cin.ignore(10000,'\n');
             index = -1;
         } else if (index < 1 || index > size) {
-            std::cout << INDENT << "Index unavailable. Please enter a number between 1 and " << size << ": ";
+            std::cout << "\t" << "Index unavailable. Please enter a number between 1 and " << size << ": ";
             std::cin.clear();
             std::cin.ignore(10000,'\n');
             index = -1;
@@ -48,15 +48,15 @@ int main() {
 
         std::vector<std::string> games_list = {"Connect Four", "Hex (7 x 7)", "Reversi (Othello)", "Tic-Tac-Toe"};
         std::cout << LINE_BREAK << std::endl;
-        std::cout << INDENT << "Abstract Strategy Games" << std::endl;
-        std::cout << INDENT << "by Shawn Chahal" << std::endl;
+        std::cout << "\t" << "Abstract Strategy Games" << std::endl;
+        std::cout << "\t" << "by Shawn Chahal" << std::endl;
         std::cout << LINE_BREAK << std::endl;
-        std::cout << INDENT << "Select a game:" << std::endl << std::endl;
+        std::cout << "\t" << "Select a game:" << std::endl << std::endl;
         for (int i = 0; i < games_list.size(); i++) {
-            std::cout << INDENT << i + 1 << ") " << games_list[i] << std::endl;
+            std::cout << "\t" << i + 1 << ") " << games_list[i] << std::endl;
         }
-        std::cout << INDENT << std::endl;
-        std::cout << INDENT << "Enter a number: ";
+        std::cout << "\t" << std::endl;
+        std::cout << "\t" << "Enter a number: ";
 
         int g_index = menu_input(games_list.size());
        
@@ -82,10 +82,10 @@ int main() {
         std::vector<std::string> options = {"Return to main menu", "Exit"};
         std::cout << std::endl;
         for (int i = 0; i < options.size(); i++) {
-            std::cout << INDENT << i + 1 << ") " << options[i] << std::endl;
+            std::cout << "\t" << i + 1 << ") " << options[i] << std::endl;
         }
-        std::cout << INDENT << std::endl;
-        std::cout << INDENT << "Enter a number: ";
+        std::cout << "\t" << std::endl;
+        std::cout << "\t" << "Enter a number: ";
 
         play_again = menu_input(options.size());
 
