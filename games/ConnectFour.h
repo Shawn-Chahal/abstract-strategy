@@ -1,27 +1,37 @@
 #ifndef H_CONNECTFOUR
 #define H_CONNECTFOUR
 
-#include "../ai/StrategyGame.h"
+#include "../ai/GameBoard.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 
-class ConnectFour: public StrategyGame {
-    
-    public:
-        
-        const std::string NAME = "Connect Four";
-        std::vector<double> difficulty = {3, 5, 10, 15, 30};
+class ConnectFour: public GameBoard {
+    private:
 
+        const std::string NAME = "Connect Four";
         const int N_ROW = 6;
         const int N_COL = 7;
         const int N_MOVES = N_COL;
-        
-        
 
-        int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
+
+    public:
+        
+        ConnectFour* clone() const { return new ConnectFour(*this); }
+
+        
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_state();
+            available_moves = update_available_moves(game_state, player);
+            difficulty = {3, 5, 10, 15, 30};
+        }
+
+
+        int transform_input(std::string user_input) {
 
             int move = user_input[0] - '1';
 
@@ -29,7 +39,7 @@ class ConnectFour: public StrategyGame {
         }
 
 
-        int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) {
+        int check_input(std::string user_input) {
             
             if (user_input.length() != 1) {
                 return 0;
@@ -44,7 +54,8 @@ class ConnectFour: public StrategyGame {
             }
         }
 
-        void print_board(std::vector<std::vector<int>> game_state, const int N_ROW, const int N_COL) {
+
+        void display() {
             
             std::cout << INDENT;
             
@@ -106,7 +117,7 @@ class ConnectFour: public StrategyGame {
         }
 
 
-        std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
             
             std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
 
@@ -119,7 +130,7 @@ class ConnectFour: public StrategyGame {
         }
 
 
-        int get_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             const int CONNECT = 4;
             int count;
@@ -211,7 +222,7 @@ class ConnectFour: public StrategyGame {
         }
 
 
-        std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) {
+        std::vector<std::vector<int>> initialize_state() {
 
             return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         }
@@ -227,14 +238,13 @@ class ConnectFour: public StrategyGame {
 
         }
 
+
         void ai_output(int move) {
             std::cout << move + 1;
         }
 
-
-        void run() {
-         
-            run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
+        void print_name() {
+            std::cout << NAME;
         }
     
 };

@@ -1,15 +1,22 @@
 #ifndef H_HEX
 #define H_HEX
 
-#include "../ai/StrategyGame.h"
+#include "../ai/GameBoard.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 
-class Hex: public StrategyGame {
+class Hex: public GameBoard {
     private:
+
+        const std::string NAME = "Hex (7 x 7)";
+        const int N_ROW = 7;
+        const int N_COL = 7;
+        const int N_MOVES = N_ROW * N_COL;
+
+
 
         void print_spaces(int n_spaces) {
 
@@ -229,16 +236,19 @@ class Hex: public StrategyGame {
 
 
     public:
-        
-        const std::string NAME = "Hex (7 x 7)";   
-        std::vector<double> difficulty = {5, 15, 30, 60, 120};
+                   
+        Hex* clone() const { return new Hex(*this); }
 
-        const int N_ROW = 7;
-        const int N_COL = 7;
-        const int N_MOVES = N_ROW * N_COL;
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_state();
+            available_moves = update_available_moves(game_state, player);
+            difficulty = {5, 15, 30, 60, 120};
+        }
 
 
-        int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
+        int transform_input(std::string user_input) {
 
             int row = 10 * (user_input[1] - '0') + (user_input[2] - '0') - 1;
             int col = user_input[0] - 'a';
@@ -248,7 +258,7 @@ class Hex: public StrategyGame {
         }
 
 
-        int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) {
+        int check_input(std::string user_input) {
             
             if (user_input.length() != 3) {
                 return 0;
@@ -270,7 +280,7 @@ class Hex: public StrategyGame {
         }
         
 
-        std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) {
+        std::vector<std::vector<int>> initialize_state() {
 
             std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
 
@@ -278,7 +288,7 @@ class Hex: public StrategyGame {
         }
 
         
-        void print_board(std::vector<std::vector<int>> game_state, const int N_ROW, const int N_COL) {
+        void display() {
             
             char col_index = 'a';
             int n_spaces = 2;
@@ -482,7 +492,7 @@ class Hex: public StrategyGame {
         }
 
 
-        std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
             
             std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
 
@@ -496,7 +506,7 @@ class Hex: public StrategyGame {
         }
 
         
-        int get_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
             int tile_row = last_move / N_COL;
@@ -531,7 +541,7 @@ class Hex: public StrategyGame {
         }
 
 
-        virtual void ai_output(int move) {
+        void ai_output(int move) {
 
             int row = move / N_COL + 1;
             char col = (move % N_COL) + 'a';
@@ -546,11 +556,10 @@ class Hex: public StrategyGame {
 
         }
 
-
-        void run() {
-          
-            run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
+        void print_name() {
+            std::cout << NAME;
         }
+
     
 };
 

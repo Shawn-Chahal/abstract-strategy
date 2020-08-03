@@ -25,10 +25,10 @@ const int N_ROW = 3;
 const int N_COL = 3;
 const int N_MOVES = N_ROW * N_COL;
 ```
-4. Define `void print_board()` which will print the game board to the command-line interface.
+4. Define `void print()` which will print the game board to the command-line interface.
 5. Define `std::vector<std::vector<int>> update_state()` which returns the updated `game_state` based on a `player`'s `move`.
-6. Define `std::vector<int> get_available_moves()` which returns the updated `available_moves` based on the current `game_state` and `player`.
-7. Define `int get_result()` which determines if the game has ended. Returns the player that won (1 or 2), a draw (0), or that the game has not yet ended (-1).
+6. Define `std::vector<int> update_available_moves()` which returns the updated `available_moves` based on the current `game_state` and `player`.
+7. Define `int update_result()` which determines if the game has ended. Returns the player that won (1 or 2), a draw (0), or that the game has not yet ended (-1).
 8. Define `void run()` which is a simple wrapper function for the inherited `run_internal()` method from the parent `class StrategyGame`.
 
 ## class StrategyGame

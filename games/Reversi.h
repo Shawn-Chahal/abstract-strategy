@@ -1,15 +1,21 @@
 #ifndef H_REVERSI
 #define H_REVERSI
 
-#include "../ai/StrategyGame.h"
+#include "../ai/GameBoard.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 
-class Reversi: public StrategyGame {
+class Reversi: public GameBoard {
     private:
+
+        const std::string NAME = "Reversi (Othello)";
+        const int N_ROW = 8;
+        const int N_COL = 8;
+        const int N_MOVES = N_ROW * N_COL;
+
 
         std::vector<int> check_link(std::vector<std::vector<int>> game_state, int row, int col) {
             std::vector<int> link = std::vector<int>(8, 0);
@@ -251,15 +257,19 @@ class Reversi: public StrategyGame {
 
     public:
         
-        const std::string NAME = "Reversi (Othello)";   
-        std::vector<double> difficulty = {5, 15, 30, 60, 120};
+        Reversi* clone() const { return new Reversi(*this); }
 
-        const int N_ROW = 8;
-        const int N_COL = 8;
-        const int N_MOVES = N_ROW * N_COL;
         
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_state();
+            available_moves = update_available_moves(game_state, player);
+            difficulty = {5, 15, 30, 60, 120};
+        }
 
-        int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
+
+        int transform_input(std::string user_input) {
 
             int row = user_input[1] - '1';
             int col = user_input[0] - 'a';
@@ -269,7 +279,7 @@ class Reversi: public StrategyGame {
         }
 
 
-        int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) {
+        int check_input(std::string user_input) {
             
             if (user_input.length() != 2) {
                 return 0;
@@ -291,7 +301,7 @@ class Reversi: public StrategyGame {
         }
 
 
-        std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) {
+        std::vector<std::vector<int>> initialize_state() {
 
             std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
 
@@ -306,7 +316,7 @@ class Reversi: public StrategyGame {
         }
 
 
-        void print_board(std::vector<std::vector<int>> game_state, const int N_ROW, const int N_COL) {
+        void display() {
             
             char col_index = 'a';
 
@@ -468,7 +478,7 @@ class Reversi: public StrategyGame {
         }
 
 
-        std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
             
             std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
 
@@ -485,7 +495,7 @@ class Reversi: public StrategyGame {
         }
 
 
-        int get_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             int player1_score = 0;
             int player2_score = 0;
@@ -493,7 +503,7 @@ class Reversi: public StrategyGame {
             std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
 
             for (int p = 1; p <= 2; p++) {
-                available_moves = get_available_moves(game_state, p);
+                available_moves = update_available_moves(game_state, p);
 
                 for (int m = 0; m < N_MOVES; m++) {
                     if (available_moves[m]) {
@@ -543,7 +553,7 @@ class Reversi: public StrategyGame {
         }
 
 
-        virtual void ai_output(int move) {
+        void ai_output(int move) {
 
             int row = move / N_COL + 1;
             char col = (move % N_COL) + 'a';
@@ -552,12 +562,10 @@ class Reversi: public StrategyGame {
 
         }
 
-
-        void run() {
-          
-            run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
+        void print_name() {
+            std::cout << NAME;
         }
-    
+
 };
 
 #endif

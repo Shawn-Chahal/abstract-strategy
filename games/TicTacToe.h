@@ -8,19 +8,31 @@
 #include <string>
 
 
-class TicTacToe: public StrategyGame {
-    
-    public:
-        
-        const std::string NAME = "Tic-Tac-Toe";   
-        std::vector<double> difficulty = {1, 2, 3, 4, 5};
+class TicTacToe: public GameBoard {
+    private:
 
+        const std::string NAME = "Tic-Tac-Toe";    
         const int N_ROW = 3;
         const int N_COL = 3;
         const int N_MOVES = N_ROW * N_COL;
-                
 
-        int transform_input(std::string user_input, const int N_ROW, const int N_COL) {
+
+
+    public:
+        
+        TicTacToe* clone() const { return new TicTacToe(*this); }
+
+   
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_state();
+            available_moves = update_available_moves(game_state, player);
+            difficulty = {1, 2, 3, 4, 5};
+        }
+
+
+        int transform_input(std::string user_input) {
 
             int row = user_input[1] - '1';
             int col = user_input[0] - 'a';
@@ -30,7 +42,7 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        int check_input(std::vector<int> available_moves, std::string user_input, const int N_ROW, const int N_COL) {
+        int check_input(std::string user_input) {
             
             if (user_input.length() != 2) {
                 return 0;
@@ -52,7 +64,7 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        void print_board(std::vector<std::vector<int>> game_state, const int N_ROW, const int N_COL) {
+        void display() {
             
             char col_index = 'a';
 
@@ -145,7 +157,7 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        std::vector<int> get_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
             
             std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
 
@@ -160,7 +172,7 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        int get_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             const int CONNECT = 3;
             int player, count;
@@ -271,7 +283,7 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        std::vector<std::vector<int>> initialize_state(const int N_ROW, const int N_COL) {
+        std::vector<std::vector<int>> initialize_state() {
 
             return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
             
@@ -289,7 +301,7 @@ class TicTacToe: public StrategyGame {
         }
 
 
-        virtual void ai_output(int move) {
+        void ai_output(int move) {
 
             int row = move / N_COL + 1;
             char col = (move % N_COL) + 'a';
@@ -297,13 +309,13 @@ class TicTacToe: public StrategyGame {
             std::cout << col << row;
 
         }
-
-
-        void run() {
-          
-            run_internal(NAME, difficulty, N_ROW, N_COL, N_MOVES);
+  
+        void print_name() {
+            std::cout << NAME;
         }
-    
+
+
+
 };
 
 #endif
