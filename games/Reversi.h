@@ -253,127 +253,43 @@ class Reversi: public GameBoard {
             
             return 0;
         }
-      
-
-    public:
-        
-        Reversi* clone() const { return new Reversi(*this); }
 
         
-        void initialize_board() {
-            result = -1;
-            player = 1;
-            game_state = initialize_state();
-            available_moves = update_available_moves(game_state, player);
-            difficulty = {5, 15, 30, 60, 120};
-        }
+        int next_player(std::vector<std::vector<int>> game_state, int previous_player) {
 
+            int player = switch_player(previous_player);
+            std::vector<int> available_moves = update_available_moves(game_state, player);
+            int pass = 1;
 
-        int transform_input(std::string user_input) {
-
-            int row = user_input[1] - '1';
-            int col = user_input[0] - 'a';
-            int move = row * N_COL + col;
-
-            return move;
-        }
-
-
-        int check_input(std::string user_input) {
-            
-            if (user_input.length() != 2) {
-                return 0;
-            }
-
-            int row = user_input[1] - '1';
-            int col = user_input[0] - 'a';
-            int move = row * N_COL + col;
-
-            if (row < 0 || row >= N_ROW || col < 0 || col >= N_COL ) {
-                return 0;
-            }
-
-            if (move >= 0 && move < available_moves.size()) {
-                return available_moves[move];
-            } else {
-                return 0;
-            }
-        }
-
-
-        std::vector<std::vector<int>> initialize_state() {
-
-            std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-
-            game_state[N_ROW / 2 - 1][N_COL / 2 - 1] = 2;
-            game_state[N_ROW / 2 - 1][N_COL / 2    ] = 1;
-            game_state[N_ROW / 2    ][N_COL / 2 - 1] = 1;
-            game_state[N_ROW / 2    ][N_COL / 2    ] = 2;
-
-            return game_state;
-
-            
-        }
-
-
-        void display() {
-            
-            char col_index = 'a';
-
-            std::cout << INDENT << "  ";
-            
-            for (int j = 0; j < N_COL; j++) {  
-                
-                std::cout << "  " << col_index++ << " ";
-            }
-
-            std::cout << " " << std::endl;
-
-            std::cout << INDENT << "  |";
-                for (int j = 0; j < N_COL; j++) {
-                    
-                    std::cout << "---|";
+            for (int m = 0; m < available_moves.size(); m++) {
+                if (available_moves[m]) {
+                    pass = 0;
+                    break;
                 }
-            std::cout << std::endl;
+            }
 
-            for (int i = 0; i < N_ROW; i++) {
-                std::cout << INDENT;
+            if (pass) {
+                player = switch_player(player);
+            }
 
-                for (int j = 0; j < N_COL; j++) {
+            return player;
+        }
 
-                    if (j == 0) {
-                        std::cout << i + 1 << " | ";
-                    } else {
-                        std::cout << "| ";
+
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
+            
+            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
+
+            for (int m = 0; m < N_MOVES; m++) {
+                if (game_state[m / N_COL][m % N_COL] == 0) {
+                    if (move_available(game_state, player, m)) {
+                        available_moves[m] = 1;
+
                     }
-                    
-                    switch (game_state[i][j]) {
-                        case 0:
-                            std::cout << " ";
-                            break;
-                        case 1:
-                            std::cout << P1_MARKER;
-                            break;
-                        case 2:
-                            std::cout << P2_MARKER;
-                            break;
-                    }
-
-                    std::cout << " ";
                 }
-
-                std::cout << "|" << std::endl;
-                
-                
-                std::cout << INDENT << "  |";
-                for (int j = 0; j < N_COL; j++) {
-                    
-                    std::cout << "---|";
-                }
-                std::cout << std::endl;
-            
             }
-            std::cout << std::endl;
+
+            return available_moves;
         }
 
 
@@ -478,23 +394,6 @@ class Reversi: public GameBoard {
         }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
-            
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
-
-            for (int m = 0; m < N_MOVES; m++) {
-                if (game_state[m / N_COL][m % N_COL] == 0) {
-                    if (move_available(game_state, player, m)) {
-                        available_moves[m] = 1;
-
-                    }
-                }
-            }
-
-            return available_moves;
-        }
-
-
         int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
 
             int player1_score = 0;
@@ -538,7 +437,129 @@ class Reversi: public GameBoard {
         }
 
 
-       void how_to_play() {
+        std::vector<std::vector<int>> initialize_state() {
+
+            std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+
+            game_state[N_ROW / 2 - 1][N_COL / 2 - 1] = 2;
+            game_state[N_ROW / 2 - 1][N_COL / 2    ] = 1;
+            game_state[N_ROW / 2    ][N_COL / 2 - 1] = 1;
+            game_state[N_ROW / 2    ][N_COL / 2    ] = 2;
+
+            return game_state;
+
+            
+        }
+
+
+    public:
+        
+        Reversi* clone() const { return new Reversi(*this); }
+
+        
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_state();
+            available_moves = update_available_moves(game_state, player);
+            difficulty = {5, 15, 30, 60, 120};
+        }
+
+
+        int transform_input(std::string user_input) {
+
+            int row = user_input[1] - '1';
+            int col = user_input[0] - 'a';
+            int move = row * N_COL + col;
+
+            return move;
+        }
+
+
+        int check_input(std::string user_input) {
+            
+            if (user_input.length() != 2) {
+                return 0;
+            }
+
+            int row = user_input[1] - '1';
+            int col = user_input[0] - 'a';
+            int move = row * N_COL + col;
+
+            if (row < 0 || row >= N_ROW || col < 0 || col >= N_COL ) {
+                return 0;
+            }
+
+            if (move >= 0 && move < available_moves.size()) {
+                return available_moves[move];
+            } else {
+                return 0;
+            }
+        }
+
+
+        void display() {
+            
+            char col_index = 'a';
+
+            std::cout << INDENT << "  ";
+            
+            for (int j = 0; j < N_COL; j++) {  
+                
+                std::cout << "  " << col_index++ << " ";
+            }
+
+            std::cout << " " << std::endl;
+
+            std::cout << INDENT << "  |";
+                for (int j = 0; j < N_COL; j++) {
+                    
+                    std::cout << "---|";
+                }
+            std::cout << std::endl;
+
+            for (int i = 0; i < N_ROW; i++) {
+                std::cout << INDENT;
+
+                for (int j = 0; j < N_COL; j++) {
+
+                    if (j == 0) {
+                        std::cout << i + 1 << " | ";
+                    } else {
+                        std::cout << "| ";
+                    }
+                    
+                    switch (game_state[i][j]) {
+                        case 0:
+                            std::cout << " ";
+                            break;
+                        case 1:
+                            std::cout << P1_MARKER;
+                            break;
+                        case 2:
+                            std::cout << P2_MARKER;
+                            break;
+                    }
+
+                    std::cout << " ";
+                }
+
+                std::cout << "|" << std::endl;
+                
+                
+                std::cout << INDENT << "  |";
+                for (int j = 0; j < N_COL; j++) {
+                    
+                    std::cout << "---|";
+                }
+                std::cout << std::endl;
+            
+            }
+            std::cout << std::endl;
+        }
+
+
+        void how_to_play() {
 
             std::cout << INDENT << "Occupy as many tiles as possible before both players run out of moves." << std::endl;
             std::cout << INDENT << "You may only play on an empty tile which is connected in a straight line" << std::endl;
@@ -562,9 +583,29 @@ class Reversi: public GameBoard {
 
         }
 
+
         void print_name() {
             std::cout << NAME;
         }
+
+
+        void update(int move) {
+            last_move = move;
+
+            // Update game_state
+            game_state = update_state(game_state, player, move);
+
+            // Update result
+            result = update_result(game_state, player, move);
+
+            // Update player
+            player = next_player(game_state, player);
+
+            // Update available_moves
+            available_moves = update_available_moves(game_state, player);
+
+        }
+
 
 };
 

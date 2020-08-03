@@ -17,7 +17,6 @@ class Hex: public GameBoard {
         const int N_MOVES = N_ROW * N_COL;
 
 
-
         void print_spaces(int n_spaces) {
 
             for (int i = 0; i < n_spaces; i++) {
@@ -234,16 +233,39 @@ class Hex: public GameBoard {
 
         }
 
+                
+        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+
+            std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+            int tile_row = last_move / N_COL;
+            int tile_col = last_move % N_COL;
+
+            if (check_link(game_state, last_player, link_history, tile_row, tile_col) == 3) {
+                return last_player;
+            }
+
+            for (int i = 0 ; i < N_ROW; i++) {
+                for (int j = 0 ; j < N_COL; j++) {
+                    if (game_state[i][j] == 0) {
+                        return -1;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
 
     public:
                    
         Hex* clone() const { return new Hex(*this); }
 
+
         void initialize_board() {
             result = -1;
             player = 1;
-            game_state = initialize_state();
-            available_moves = update_available_moves(game_state, player);
+            game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+            available_moves = std::vector<int>(N_MOVES, 1);
             difficulty = {5, 15, 30, 60, 120};
         }
 
@@ -277,14 +299,6 @@ class Hex: public GameBoard {
             } else {
                 return 0;
             }
-        }
-        
-
-        std::vector<std::vector<int>> initialize_state() {
-
-            std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-
-            return game_state;
         }
 
         
@@ -481,54 +495,7 @@ class Hex: public GameBoard {
         }
 
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
-
-            int row = move / N_COL;
-            int col = move % N_COL;
-
-            game_state[row][col] = player;
-            
-            return game_state;
-        }
-
-
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
-            
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
-
-            for (int m = 0; m < N_MOVES; m++) {
-                if (game_state[m / N_COL][m % N_COL] == 0) {
-                    available_moves[m] = 1;
-                }
-            }
-
-            return available_moves;
-        }
-
-        
-        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
-
-            std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-            int tile_row = last_move / N_COL;
-            int tile_col = last_move % N_COL;
-
-            if (check_link(game_state, last_player, link_history, tile_row, tile_col) == 3) {
-                return last_player;
-            }
-
-            for (int i = 0 ; i < N_ROW; i++) {
-                for (int j = 0 ; j < N_COL; j++) {
-                    if (game_state[i][j] == 0) {
-                        return -1;
-                    }
-                }
-            }
-
-            return 0;
-        }
-
-
-       void how_to_play() {
+        void how_to_play() {
 
             std::cout << INDENT << "Link the two sides of the board maching your token" << std::endl;
             std::cout << INDENT << "before your opponent. You may play on any empty tile." << std::endl;
@@ -556,8 +523,27 @@ class Hex: public GameBoard {
 
         }
 
+
         void print_name() {
             std::cout << NAME;
+        }
+
+
+        void update(int move) {
+            last_move = move;
+            
+            // Update game_state
+            game_state[move / N_COL][move % N_COL] = player;
+            
+            // Update result
+            result = update_result(game_state, player, move);
+            
+            // Update player
+            player = switch_player(player);
+            
+            // Update available_moves
+            available_moves[move] = 1;
+
         }
 
     

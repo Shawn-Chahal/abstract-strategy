@@ -14,6 +14,10 @@
 class StrategyGame {
     private:
 
+        const double S_INITIAL = 1000000.0;
+        std::default_random_engine generator;
+
+
         int get_terminal_result(GameBoard &board_ref) {
             
             GameBoard *board = board_ref.clone();
@@ -205,10 +209,6 @@ class StrategyGame {
 
 
     public:
-
-        const double S_INITIAL = 1000000.0;
-        
-        std::default_random_engine generator;
              
         void run(GameBoard &board_ref) {
             GameBoard *board = board_ref.clone();
