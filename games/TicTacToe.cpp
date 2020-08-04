@@ -126,6 +126,7 @@ void TicTacToe::initialize_board() {
     game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
     available_moves = std::vector<int>(N_MOVES, 1);
     difficulty = {1, 2, 3, 4, 5};
+    line_length = 42;
 }
 
 

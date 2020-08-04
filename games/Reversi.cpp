@@ -482,6 +482,7 @@ void Reversi::initialize_board() {
     game_state = initialize_state();
     available_moves = update_available_moves(game_state, player);
     difficulty = {5, 15, 30, 60, 120};
+    line_length = 44;
 }
 
 

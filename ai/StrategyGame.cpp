@@ -1,3 +1,4 @@
+#include "asg.h"
 #include "Node.h"
 #include "GameBoard.h"
 #include "StrategyGame.h"
@@ -227,26 +228,11 @@ void StrategyGame::run(GameBoard &board_ref) {
     std::cout << std::endl;
     std::cout << "\t" << "Enter a number: ";
 
-    int d_index = -1;
-
-    while (d_index == -1) {
-        if (!(std::cin >> d_index)){
-            std::cout << "\t" << "Invalid input. Please enter a number: ";
-            std::cin.clear();
-            std::cin.ignore(10000,'\n');
-            d_index = -1;
-        } else if (d_index < 1 || d_index > difficulty_names.size()) {
-            std::cout << "\t" << "Difficulty unavailable. Please enter a number between 1 and " << difficulty_names.size() << ": ";
-            std::cin.clear();
-            std::cin.ignore(10000,'\n');
-            d_index = -1;
-        }
-    }        
+    int d_index = asg::menu_input(difficulty_names.size());       
     
     double max_time = board->get_difficulty(d_index - 1);
 
-    std::cout << board->LINE_BREAK << std::endl;
-
+    asg::line_break(board->get_line_length());
     board->display();
 
     while (board->get_result() == -1) {
@@ -271,15 +257,16 @@ void StrategyGame::run(GameBoard &board_ref) {
 
             move = get_move(*board, max_time);
         }
-
-        std::cout << board->LINE_BREAK << std::endl;
         
         board->update(move);
+
+        asg::line_break(board->get_line_length());
         board->display();
         
     }
     
-    std::cout << board->LINE_BREAK << std::endl;
+    asg::line_break(board->get_line_length());
+
 
     switch (board->get_result()) {
 

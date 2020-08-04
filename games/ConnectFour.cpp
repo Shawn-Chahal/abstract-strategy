@@ -130,6 +130,7 @@ void ConnectFour::initialize_board() {
     game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
     available_moves = std::vector<int>(N_MOVES, 1);
     difficulty = {3, 5, 10, 15, 30};
+    line_length = 44;
 }
 
 

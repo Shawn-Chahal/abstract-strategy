@@ -10,9 +10,7 @@ class GameBoard {
         const char P1_MARKER = 'O';
         const char P2_MARKER = 'X';
 
-        const std::string LINE_BREAK = "\n\t-----------------------------\n";
-
-        int player, last_move, result;
+        int player, last_move, result, line_length;
         std::vector<std::vector<int>> game_state;
         std::vector<int> available_moves;
         std::vector<double> difficulty;
@@ -45,6 +43,7 @@ class GameBoard {
         int get_game_state(int row, int col) { return game_state[row][col]; }
         int get_available_moves(int move) { return available_moves[move]; }
         int get_num_moves() { return available_moves.size(); }
+        int get_line_length() { return line_length; }
 
         double get_difficulty(int d_index) { return difficulty[d_index]; }
 

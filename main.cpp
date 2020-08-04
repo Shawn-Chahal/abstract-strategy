@@ -1,5 +1,6 @@
 #include "ai/StrategyGame.h"
 #include "ai/GameBoard.h"
+#include "ai/asg.h"
 #include "games/ConnectFour.h"
 #include "games/Hex.h"
 #include "games/Reversi.h"
@@ -10,31 +11,6 @@
 #include <string>
 
 
-// Need to declare these globally
-
-const std::string LINE_BREAK = "\n\t-----------------------------\n";
-
-
-int menu_input (int size) {
-
-    int index = -1;
-
-    while (index == -1) {
-        if (!(std::cin >> index)){
-            std::cout << "\t" << "Invalid input. Please enter a number: ";
-            std::cin.clear();
-            std::cin.ignore(10000,'\n');
-            index = -1;
-        } else if (index < 1 || index > size) {
-            std::cout << "\t" << "Index unavailable. Please enter a number between 1 and " << size << ": ";
-            std::cin.clear();
-            std::cin.ignore(10000,'\n');
-            index = -1;
-        }
-    }        
- 
-    return index;
-}
 
 
 int main() {
@@ -47,10 +23,10 @@ int main() {
         StrategyGame app;
 
         std::vector<std::string> games_list = {"Connect Four", "Hex (7 x 7)", "Reversi (Othello)", "Tic-Tac-Toe"};
-        std::cout << LINE_BREAK << std::endl;
+        asg::line_break(30);
         std::cout << "\t" << "Abstract Strategy Games" << std::endl;
         std::cout << "\t" << "by Shawn Chahal" << std::endl;
-        std::cout << LINE_BREAK << std::endl;
+        asg::line_break(30);
         std::cout << "\t" << "Select a game:" << std::endl << std::endl;
         for (int i = 0; i < games_list.size(); i++) {
             std::cout << "\t" << i + 1 << ") " << games_list[i] << std::endl;
@@ -58,9 +34,9 @@ int main() {
         std::cout << "\t" << std::endl;
         std::cout << "\t" << "Enter a number: ";
 
-        int g_index = menu_input(games_list.size());
+        int g_index = asg::menu_input(games_list.size());
        
-        std::cout << LINE_BREAK << std::endl;
+        asg::line_break(30);
 
         if (games_list[g_index - 1] == "Tic-Tac-Toe") {
             TicTacToe game;
@@ -87,7 +63,7 @@ int main() {
         std::cout << "\t" << std::endl;
         std::cout << "\t" << "Enter a number: ";
 
-        play_again = menu_input(options.size());
+        play_again = asg::menu_input(options.size());
 
     }
 

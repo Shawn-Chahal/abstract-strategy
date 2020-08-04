@@ -285,6 +285,7 @@ void Hex::initialize_board() {
     game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
     available_moves = std::vector<int>(N_MOVES, 1);
     difficulty = {5, 15, 30, 60, 120};
+    line_length = 64;
 }
 
 
