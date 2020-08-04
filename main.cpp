@@ -11,14 +11,11 @@
 #include <string>
 
 
-
-
 int main() {
     
     int play_again = 1; 
 
     while (play_again == 1) {
-
 
         StrategyGame app;
 
