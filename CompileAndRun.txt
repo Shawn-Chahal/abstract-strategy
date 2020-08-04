@@ -1,1 +1,1 @@
-if ($?) { g++ main.cpp -o main } ; if ($?) { ./main }
+if ($?) { g++ main.cpp ai/*.cpp -o main } ; if ($?) { ./main }

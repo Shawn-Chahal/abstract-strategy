@@ -57,7 +57,7 @@ class ConnectFour: public GameBoard {
 
         void display() {
             
-            std::cout << INDENT;
+            std::cout << "\t";
             
             for (int j = 0; j < N_COL; j++) {
 
@@ -66,7 +66,7 @@ class ConnectFour: public GameBoard {
 
             std::cout << " " << std::endl;
             
-            std::cout << INDENT;
+            std::cout << "\t";
             for (int j = 0; j < N_COL; j++) {
 
                 std::cout << "|     ";
@@ -76,7 +76,7 @@ class ConnectFour: public GameBoard {
 
 
             for (int i = 0; i < N_ROW; i++) {
-                std::cout << INDENT;
+                std::cout << "\t";
                 for (int j = 0; j < N_COL; j++) {
                     switch (game_state[i][j]) {
                         case 0:
@@ -92,7 +92,7 @@ class ConnectFour: public GameBoard {
                 }
 
                 std::cout << "|" << std::endl;
-                std::cout << INDENT << "|";
+                std::cout << "\t" << "|";
 
                 for (int j = 0; j < N_COL; j++) {
                     std::cout << "-----|";
@@ -230,11 +230,11 @@ class ConnectFour: public GameBoard {
 
         void how_to_play() {
 
-            std::cout << INDENT << "Connect four consecutive tiles in a straight line." << std::endl;
-            std::cout << INDENT << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
-            std::cout << INDENT << "Token are inserted from the top of the column." << std::endl;
-            std::cout << INDENT << "E.g., if you want to play on column = 1," << std::endl; 
-            std::cout << INDENT << "then input 1 when prompted." << std::endl;
+            std::cout << "\t" << "Connect four consecutive tiles in a straight line." << std::endl;
+            std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
+            std::cout << "\t" << "Token are inserted from the top of the column." << std::endl;
+            std::cout << "\t" << "E.g., if you want to play on column = 1," << std::endl; 
+            std::cout << "\t" << "then input 1 when prompted." << std::endl;
 
         }
 

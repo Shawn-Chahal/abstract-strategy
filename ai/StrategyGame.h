@@ -113,7 +113,7 @@ class StrategyGame {
 
         int get_move(GameBoard &board_ref, double max_time) {
             GameBoard *board = board_ref.clone();
-            std::cout << board->INDENT << "Computer is thinking.";
+            std::cout << "\t" << "Computer is thinking.";
             std::vector<Node> tree;
             tree.push_back(Node(-1, board->get_player(), board->get_num_moves()));
             double UCB1,UCB1_max;
@@ -193,12 +193,12 @@ class StrategyGame {
 
             int confidence = 100 * best_score;
 
-            std::cout << board->INDENT << "Computer's move: ";
+            std::cout << "\t" << "Computer's move: ";
             board->ai_output(move);
             std::cout << std::endl << std::endl;
-            std::cout << board->INDENT << "Confidence:    " << confidence << "%" << std::endl;
-            std::cout << board->INDENT << "Tree size:     " << tree.size() << std::endl;
-            std::cout << board->INDENT << "Total games:   " << tree[0].total << std::endl;
+            std::cout << "\t" << "Confidence:    " << confidence << "%" << std::endl;
+            std::cout << "\t" << "Tree size:     " << tree.size() << std::endl;
+            std::cout << "\t" << "Total games:   " << tree[0].total << std::endl;
             delete board;
             return move;
         }
@@ -220,43 +220,29 @@ class StrategyGame {
 
             std::string user_input;
 
-            std::cout << board->INDENT;
+            std::cout << "\t";
             board->print_name();
             std::cout << std::endl << std::endl;
-            std::cout << board->INDENT << "How to play" << std::endl << std::endl;
+            std::cout << "\t" << "How to play" << std::endl << std::endl;
             board->how_to_play();
             std::cout << std::endl;
-            std::cout << board->INDENT << "Player markers" << std::endl;
-            std::cout << board->INDENT << "You:      " << board->P1_MARKER << std::endl;
-            std::cout << board->INDENT << "Computer: " << board->P2_MARKER << std::endl << std::endl;
+            std::cout << "\t" << "Player markers" << std::endl;
+            std::cout << "\t" << "You:      " << board->P1_MARKER << std::endl;
+            std::cout << "\t" << "Computer: " << board->P2_MARKER << std::endl << std::endl;
 
-            std::cout << board->INDENT << "Select a difficulty [Time AI has to think]" << std::endl << std::endl;
+            std::cout << "\t" << "Select a difficulty [Time AI has to think]" << std::endl << std::endl;
 
             for (int i = 0; i < difficulty_names.size(); i++) {
-                std::cout << board->INDENT << i + 1 << ") " << difficulty_names[i] << " \t[ " << board->get_difficulty(i) << " s ]" << std::endl;
+                std::cout << "\t" << i + 1 << ") " << difficulty_names[i] << " \t[ " << board->get_difficulty(i) << " s ]" << std::endl;
             }
             std::cout << std::endl;
-            std::cout << board->INDENT << "Enter a number: ";
+            std::cout << "\t" << "Enter a number: ";
 
-            int d_index = -1;
-
-            while (d_index == -1) {
-                if (!(std::cin >> d_index)){
-                    std::cout << board->INDENT << "Invalid input. Please enter a number: ";
-                    std::cin.clear();
-                    std::cin.ignore(10000,'\n');
-                    d_index = -1;
-                } else if (d_index < 1 || d_index > difficulty_names.size()) {
-                    std::cout << board->INDENT << "Difficulty unavailable. Please enter a number between 1 and " << difficulty_names.size() << ": ";
-                    std::cin.clear();
-                    std::cin.ignore(10000,'\n');
-                    d_index = -1;
-                }
-            }        
+            int d_index = asg::menu_input(difficulty_names.size());
             
             double max_time = board->get_difficulty(d_index - 1);
 
-            std::cout << board->LINE_BREAK << std::endl;
+            asg::line_break(30);
 
             board->display();
 
@@ -264,12 +250,12 @@ class StrategyGame {
 
                 if (board->get_player() == 1) {
 
-                    std::cout << board->INDENT << "Your turn. Enter an alphanumeric value: ";
+                    std::cout << "\t" << "Your turn. Enter an alphanumeric value: ";
                     std:: cin >> user_input;
 
                     while (!(board->check_input(user_input))) {
                         
-                        std::cout << board->INDENT << "Invalid input. Please enter an available alphanumeric value: ";
+                        std::cout << "\t" << "Invalid input. Please enter an available alphanumeric value: ";
                         std::cin.clear();
                         std::cin.ignore(10000,'\n');
                         std::cin >> user_input;
@@ -283,27 +269,27 @@ class StrategyGame {
                     move = get_move(*board, max_time);
                 }
 
-                std::cout << board->LINE_BREAK << std::endl;
+                asg::line_break(30);
                 
                 board->update(move);
                 board->display();
                 
             }
             
-            std::cout << board->LINE_BREAK << std::endl;
+            asg::line_break(30);
 
             switch (board->get_result()) {
 
                 case 0:
-                    std::cout << board->INDENT << "Draw." << std::endl;
+                    std::cout << "\t" << "Draw." << std::endl;
                     break;
 
                 case 1:
-                    std::cout << board->INDENT << "You win!" << std::endl;
+                    std::cout << "\t" << "You win!" << std::endl;
                     break;
 
                 case 2:
-                    std::cout << board->INDENT << "You lose." << std::endl;
+                    std::cout << "\t" << "You lose." << std::endl;
                     break;
             }
 
