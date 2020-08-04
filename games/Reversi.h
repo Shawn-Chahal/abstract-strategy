@@ -259,12 +259,34 @@ class Reversi: public GameBoard {
         
         Reversi* clone() const { return new Reversi(*this); }
 
+
+        int next_player(std::vector<std::vector<int>> game_state, int previous_player) {
+
+            int player = switch_player(previous_player);
+            std::vector<int> available_moves = update_available_moves(game_state, available_moves, player);
+            int pass = 1;
+
+            for (int m = 0; m < available_moves.size(); m++) {
+                if (available_moves[m]) {
+                    pass = 0;
+                    break;
+                }
+            }
+
+            if (pass) {
+                player = switch_player(player);
+            }
+
+            return player;
+        }
+
+
         
         void initialize_board() {
             result = -1;
             player = 1;
             game_state = initialize_state();
-            available_moves = update_available_moves(game_state, player);
+            available_moves = update_available_moves(game_state, available_moves, player);
             difficulty = {5, 15, 30, 60, 120};
         }
 
@@ -478,9 +500,9 @@ class Reversi: public GameBoard {
         }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
             
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
+            available_moves = std::vector<int>(N_MOVES, 0);
 
             for (int m = 0; m < N_MOVES; m++) {
                 if (game_state[m / N_COL][m % N_COL] == 0) {
@@ -503,7 +525,7 @@ class Reversi: public GameBoard {
             std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
 
             for (int p = 1; p <= 2; p++) {
-                available_moves = update_available_moves(game_state, p);
+                available_moves = update_available_moves(game_state, available_moves, p);
 
                 for (int m = 0; m < N_MOVES; m++) {
                     if (available_moves[m]) {

@@ -23,11 +23,14 @@ class TicTacToe: public GameBoard {
         TicTacToe* clone() const { return new TicTacToe(*this); }
 
    
+        int next_player(std::vector<std::vector<int>> game_state, int previous_player) { return switch_player(previous_player); }
+        
+
         void initialize_board() {
             result = -1;
             player = 1;
             game_state = initialize_state();
-            available_moves = update_available_moves(game_state, player);
+            available_moves = update_available_moves(game_state, available_moves, player);
             difficulty = {1, 2, 3, 4, 5};
         }
 
@@ -157,9 +160,9 @@ class TicTacToe: public GameBoard {
         }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
             
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
+            available_moves = std::vector<int>(N_MOVES, 1);
 
             for (int i = 0; i < N_ROW ; i++) {
                 for (int j = 0; j < N_COL ; j++) {

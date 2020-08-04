@@ -21,12 +21,14 @@ class ConnectFour: public GameBoard {
         
         ConnectFour* clone() const { return new ConnectFour(*this); }
 
+        int next_player(std::vector<std::vector<int>> game_state, int previous_player) { return switch_player(previous_player); }
         
+
         void initialize_board() {
             result = -1;
             player = 1;
             game_state = initialize_state();
-            available_moves = update_available_moves(game_state, player);
+            available_moves = update_available_moves(game_state, available_moves, player);
             difficulty = {3, 5, 10, 15, 30};
         }
 
@@ -117,9 +119,9 @@ class ConnectFour: public GameBoard {
         }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
             
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 1);
+            available_moves = std::vector<int>(N_MOVES, 1);
 
             for (int j=0; j < available_moves.size(); j++) {
                 if (game_state[0][j] > 0) {

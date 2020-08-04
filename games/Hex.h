@@ -239,11 +239,14 @@ class Hex: public GameBoard {
                    
         Hex* clone() const { return new Hex(*this); }
 
+        int next_player(std::vector<std::vector<int>> game_state, int previous_player) { return switch_player(previous_player); }
+        
+
         void initialize_board() {
             result = -1;
             player = 1;
             game_state = initialize_state();
-            available_moves = update_available_moves(game_state, player);
+            available_moves = update_available_moves(game_state, available_moves, player);
             difficulty = {5, 15, 30, 60, 120};
         }
 
@@ -492,9 +495,9 @@ class Hex: public GameBoard {
         }
 
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, int player) {
+        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
             
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
+            available_moves = std::vector<int>(N_MOVES, 0);
 
             for (int m = 0; m < N_MOVES; m++) {
                 if (game_state[m / N_COL][m % N_COL] == 0) {
