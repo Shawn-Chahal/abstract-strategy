@@ -40,15 +40,15 @@ class GameBoard {
 
         
         // Inherited methods
-        int switch_player(int player) {
-                
-            if (player == 1) {
-                return 2;
-            } else {
-                return 1;
-            }
-        }    
+        int switch_player(int player) { return (player == 1) ? 2 : 1; }
+        int get_player() { return player; }
+        int get_result() { return result; }
+        int get_game_state(int row, int col) { return game_state[row][col]; }
+        int get_available_moves(int move) { return available_moves[move]; }
+        int get_num_moves() { return available_moves.size(); }
+        double get_difficulty(int d_index) { return difficulty[d_index]; }
 
+  
         int next_player(std::vector<std::vector<int>> game_state, int previous_player) {
 
             int player = switch_player(previous_player);
@@ -69,29 +69,6 @@ class GameBoard {
             return player;
         }
 
-        int get_player() {
-            return player;
-        }
-
-        int get_result() {
-            return result;
-        }
-
-        int get_game_state(int row, int col) {
-            return game_state[row][col];
-        }
-
-        int get_available_moves(int move) {
-            return available_moves[move];
-        }
-
-        double get_difficulty(int d_index) {
-            return difficulty[d_index];
-        }
-
-        int get_num_moves() {
-            return available_moves.size();
-        }
 
         void update(int move) {
             last_move = move;
