@@ -1,6 +1,5 @@
 #include "ai/StrategyGame.h"
 #include "ai/GameBoard.h"
-#include "ai/asg.h"
 #include "games/ConnectFour.h"
 #include "games/Hex.h"
 #include "games/Reversi.h"
@@ -17,23 +16,41 @@ int main() {
 
     while (play_again == 1) {
 
+        // Need to declare these globally
+        const std::string INDENT = "   ";
+        const std::string LINE_BREAK = "\n" + INDENT + "-----------------------------\n";
+
         StrategyGame app;
 
         std::vector<std::string> games_list = {"Connect Four", "Hex (7 x 7)", "Reversi (Othello)", "Tic-Tac-Toe"};
-        asg::line_break(30);
-        std::cout << "\t" << "Abstract Strategy Games" << std::endl;
-        std::cout << "\t" << "by Shawn Chahal" << std::endl;
-        asg::line_break(30);
-        std::cout << "\t" << "Select a game:" << std::endl << std::endl;
+        std::cout << LINE_BREAK << std::endl;
+        std::cout << INDENT << "Abstract Strategy Games" << std::endl;
+        std::cout << INDENT << "by Shawn Chahal" << std::endl;
+        std::cout << LINE_BREAK << std::endl;
+        std::cout << INDENT << "Select a game:" << std::endl << std::endl;
         for (int i = 0; i < games_list.size(); i++) {
-            std::cout << "\t" << i + 1 << ") " << games_list[i] << std::endl;
+            std::cout << INDENT << i + 1 << ") " << games_list[i] << std::endl;
         }
-        std::cout << "\t" << std::endl;
-        std::cout << "\t" << "Enter a number: ";
+        std::cout << INDENT << std::endl;
+        std::cout << INDENT << "Enter a number: ";
 
-        int g_index = asg::menu_input(games_list.size());
-       
-        asg::line_break(30);
+        int g_index = -1;
+
+        while (g_index == -1) {
+            if (!(std::cin >> g_index)){
+                std::cout << INDENT << "Invalid input. Please enter a number: ";
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                g_index = -1;
+            } else if (g_index < 1 || g_index > games_list.size()) {
+                std::cout << INDENT << "Game index unavailable. Please enter a number between 1 and " << games_list.size() << ": ";
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                g_index = -1;
+            }
+        }        
+        
+        std::cout << LINE_BREAK << std::endl;
 
         if (games_list[g_index - 1] == "Tic-Tac-Toe") {
             TicTacToe game;
@@ -55,14 +72,29 @@ int main() {
         std::vector<std::string> options = {"Return to main menu", "Exit"};
         std::cout << std::endl;
         for (int i = 0; i < options.size(); i++) {
-            std::cout << "\t" << i + 1 << ") " << options[i] << std::endl;
+            std::cout << INDENT << i + 1 << ") " << options[i] << std::endl;
         }
-        std::cout << "\t" << std::endl;
-        std::cout << "\t" << "Enter a number: ";
+        std::cout << INDENT << std::endl;
+        std::cout << INDENT << "Enter a number: ";
 
-        play_again = asg::menu_input(options.size());
+        int e_index = -1;
+
+        while (e_index == -1) {
+            if (!(std::cin >> e_index)){
+                std::cout << INDENT << "Invalid input. Please enter a number: ";
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                e_index = -1;
+            } else if (e_index < 1 || e_index > options.size()) {
+                std::cout << INDENT << "Option unavailable. Please enter a number between 1 and " << options.size() << ": ";
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                e_index = -1;
+            }
+        }
+
+        play_again = e_index;
 
     }
-
     return 0;
 }
