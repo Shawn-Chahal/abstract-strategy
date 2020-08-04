@@ -1,3 +1,4 @@
+#include "asg.h"
 #include "StrategyGame.h"
 
 #include <iostream>
@@ -234,7 +235,7 @@ void StrategyGame::run(GameBoard &board_ref) {
 
     asg::line_break(30);
 
-    board->display();
+    board->print_board();
 
     while (board->get_result() == -1) {
 
@@ -262,7 +263,7 @@ void StrategyGame::run(GameBoard &board_ref) {
         asg::line_break(30);
         
         board->update(move);
-        board->display();
+        board->print_board();
         
     }
     

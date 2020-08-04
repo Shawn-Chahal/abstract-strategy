@@ -29,7 +29,7 @@ class TicTacToe: public GameBoard {
         void initialize_board() {
             result = -1;
             player = 1;
-            game_state = initialize_state();
+            game_state = initialize_game_state();
             available_moves = update_available_moves(game_state, available_moves, player);
             difficulty = {1, 2, 3, 4, 5};
         }
@@ -67,7 +67,7 @@ class TicTacToe: public GameBoard {
         }
 
 
-        void display() {
+        void print_board() {
             
             char col_index = 'a';
 
@@ -286,7 +286,7 @@ class TicTacToe: public GameBoard {
         }
 
 
-        std::vector<std::vector<int>> initialize_state() {
+        std::vector<std::vector<int>> initialize_game_state() {
 
             return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
             

@@ -245,7 +245,7 @@ class Hex: public GameBoard {
         void initialize_board() {
             result = -1;
             player = 1;
-            game_state = initialize_state();
+            game_state = initialize_game_state();
             available_moves = update_available_moves(game_state, available_moves, player);
             difficulty = {5, 15, 30, 60, 120};
         }
@@ -283,7 +283,7 @@ class Hex: public GameBoard {
         }
         
 
-        std::vector<std::vector<int>> initialize_state() {
+        std::vector<std::vector<int>> initialize_game_state() {
 
             std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
 
@@ -291,7 +291,7 @@ class Hex: public GameBoard {
         }
 
         
-        void display() {
+        void print_board() {
             
             char col_index = 'a';
             int n_spaces = 2;

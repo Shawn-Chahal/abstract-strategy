@@ -27,7 +27,7 @@ class ConnectFour: public GameBoard {
         void initialize_board() {
             result = -1;
             player = 1;
-            game_state = initialize_state();
+            game_state = initialize_game_state();
             available_moves = update_available_moves(game_state, available_moves, player);
             difficulty = {3, 5, 10, 15, 30};
         }
@@ -57,7 +57,7 @@ class ConnectFour: public GameBoard {
         }
 
 
-        void display() {
+        void print_board() {
             
             std::cout << "\t";
             
@@ -224,7 +224,7 @@ class ConnectFour: public GameBoard {
         }
 
 
-        std::vector<std::vector<int>> initialize_state() {
+        std::vector<std::vector<int>> initialize_game_state() {
 
             return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         }
