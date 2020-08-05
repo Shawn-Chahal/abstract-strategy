@@ -19,7 +19,7 @@ class TicTacToe: public StrategyGame {...};
 ```
 3. Set the constant variables:
 ```
-const std::string NAME = "Tic-Tac-Toe";   
+const std::string name = "Tic-Tac-Toe";   
 std::vector<double> difficulty = {2, 6, 10}; // These are the max_depth that the AI will search the game tree for the {Easy, Medium, Hard} difficulties.
 const int N_ROW = 3;
 const int N_COL = 3;
@@ -37,7 +37,7 @@ The parent class to be inherited by individual strategy game classes.
 ### void run_internal()
 Set's up the in-game user interface. Allows the user to choose a difficulty setting and input their move each turn.
 
-### int check_input()
+### int input_check()
 Validates the user input.
 
 ### int update_player()

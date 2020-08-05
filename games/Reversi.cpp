@@ -241,10 +241,27 @@ int Reversi::move_available(std::vector<std::vector<int>> game_state, int player
     return 0;
 }
 
-std::vector<int> Reversi::update_local_available_moves(int player) {
-    return update_available_moves(-1);
+std::vector<int> Reversi::update_local_available_moves(int local_player) {
+
+    std::vector<int> local_available_moves = std::vector<int>(N_MOVES, 0);
+
+    for (int m = 0; m < N_MOVES; m++) {
+        if (game_state[m / N_COL][m % N_COL] == 0) {
+            local_available_moves[m] = move_available(game_state, local_player, m);
+        }
+    }
+
+    return local_available_moves;
 }
 
+
+std::string Reversi::initialize_name() {
+    return "Reversi (Othello)";
+}
+
+std::vector<double> Reversi::initialize_difficulty() {
+    return {5, 15, 30, 60, 120};
+}
 
 std::vector<std::vector<int>> Reversi::initialize_game_state() {
 
@@ -262,7 +279,7 @@ std::vector<int> Reversi::initialize_available_moves() {
     return available_moves;
 }
 
-int Reversi::check_input(std::string user_input) {
+int Reversi::input_check(std::string user_input) {
     
     if (user_input.length() != 2) {
         return 0;
@@ -283,7 +300,7 @@ int Reversi::check_input(std::string user_input) {
     }
 }
 
-int Reversi::transform_input(std::string user_input) {
+int Reversi::input_transform(std::string user_input) {
 
     int row = user_input[1] - '1';
     int col = user_input[0] - 'a';
@@ -292,7 +309,7 @@ int Reversi::transform_input(std::string user_input) {
     return move;
 }
 
-void Reversi::ai_output(int move) {
+void Reversi::print_ai_move(int move) {
 
     int row = move / N_COL + 1;
     char col = (move % N_COL) + 'a';
@@ -300,7 +317,7 @@ void Reversi::ai_output(int move) {
     std::cout << col << row;
 }
 
-void Reversi::how_to_play() {
+void Reversi::print_rules() {
 
     std::cout << "\t" << "Occupy as many tiles as possible before both players run out of moves." << std::endl;
     std::cout << "\t" << "You may only play on an empty tile which is connected in a straight line" << std::endl;
@@ -371,18 +388,6 @@ void Reversi::print_board() {
     
     }
     std::cout << std::endl;
-}
-
-void Reversi::print_name() {
-    std::cout << NAME;
-}
-
-void Reversi::initialize_board() {
-    result = -1;
-    player = 1;
-    game_state = initialize_game_state();
-    available_moves = initialize_available_moves();
-    difficulty = {5, 15, 30, 60, 120};
 }
 
 

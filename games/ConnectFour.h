@@ -9,7 +9,6 @@
 class ConnectFour: public GameBoard {
     private:
 
-        const std::string NAME = "Connect Four";
         const int N_ROW = 6;
         const int N_COL = 7;
         const int N_MOVES = N_COL;
@@ -18,15 +17,15 @@ class ConnectFour: public GameBoard {
         
         ConnectFour* clone() const { return new ConnectFour(*this); }
 
+        std::string initialize_name();
+        std::vector<double> initialize_difficulty();
         std::vector<std::vector<int>> initialize_game_state();
         std::vector<int> initialize_available_moves();
-        int check_input(std::string user_input);
-        int transform_input(std::string user_input);
-        void ai_output(int move);
-        void how_to_play();
+        int input_check(std::string user_input);
+        int input_transform(std::string user_input);
+        void print_ai_move(int move);
+        void print_rules();
         void print_board();
-        void print_name();
-        void initialize_board();
 
         std::vector<std::vector<int>> update_game_state(int move);
         int update_result(int move);

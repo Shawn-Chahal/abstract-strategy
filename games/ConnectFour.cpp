@@ -4,6 +4,13 @@
 #include <vector>
 #include <string>
 
+std::string ConnectFour::initialize_name() {
+    return "Connect Four";
+}
+
+std::vector<double> ConnectFour::initialize_difficulty() {
+    return {3, 5, 10, 15, 30};
+}
 
 std::vector<std::vector<int>> ConnectFour::initialize_game_state() {
     return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
@@ -13,12 +20,12 @@ std::vector<int> ConnectFour::initialize_available_moves() {
     return std::vector<int>(N_MOVES, 1);
 }
 
-int ConnectFour::check_input(std::string user_input) {
+int ConnectFour::input_check(std::string user_input) {
     if (user_input.length() != 1) {
         return 0;
     }
 
-    int move = transform_input(user_input);
+    int move = input_transform(user_input);
 
     if (move >= 0 && move < available_moves.size()) {
         return available_moves[move];
@@ -27,15 +34,15 @@ int ConnectFour::check_input(std::string user_input) {
     }
 }
 
-int ConnectFour::transform_input(std::string user_input) {
+int ConnectFour::input_transform(std::string user_input) {
     return user_input[0] - '1';
 }
 
-void ConnectFour::ai_output(int move) {
+void ConnectFour::print_ai_move(int move) {
     std::cout << move + 1;
 }
 
-void ConnectFour::how_to_play() {
+void ConnectFour::print_rules() {
 
     std::cout << "\t" << "Connect four consecutive tiles in a straight line." << std::endl;
     std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
@@ -91,18 +98,6 @@ void ConnectFour::print_board() {
     }
 
     std::cout << std::endl;
-}
-
-void ConnectFour::print_name() {
-    std::cout << NAME;
-}
-
-void ConnectFour::initialize_board() {
-    result = -1;
-    player = 1;
-    game_state = initialize_game_state();
-    available_moves = initialize_available_moves();
-    difficulty = {3, 5, 10, 15, 30};
 }
 
 

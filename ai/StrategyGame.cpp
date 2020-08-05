@@ -189,7 +189,7 @@ int StrategyGame::get_move(GameBoard &board_ref, double max_time) {
     int confidence = 100 * best_score;
 
     std::cout << "\t" << "Computer's move: ";
-    board->ai_output(move);
+    board->print_ai_move(move);
     std::cout << std::endl << std::endl;
     std::cout << "\t" << "Confidence:    " << confidence << "%" << std::endl;
     std::cout << "\t" << "Tree size:     " << tree.size() << std::endl;
@@ -203,7 +203,7 @@ int StrategyGame::get_move(GameBoard &board_ref, double max_time) {
 
 void StrategyGame::run(GameBoard &board_ref) {
     GameBoard *board = board_ref.clone();
-    board->initialize_board();
+    board->initialize();
 
     double score, max_score;
     int move, pass;
@@ -211,11 +211,9 @@ void StrategyGame::run(GameBoard &board_ref) {
 
     std::string user_input;
 
-    std::cout << "\t";
-    board->print_name();
-    std::cout << std::endl << std::endl;
+    std::cout << "\t" << board->get_name() << std::endl << std::endl;
     std::cout << "\t" << "How to play" << std::endl << std::endl;
-    board->how_to_play();
+    board->print_rules();
     std::cout << std::endl;
     std::cout << "\t" << "Player markers" << std::endl;
     std::cout << "\t" << "You:      " << board->P1_MARKER << std::endl;
@@ -244,7 +242,7 @@ void StrategyGame::run(GameBoard &board_ref) {
             std::cout << "\t" << "Your turn. Enter an alphanumeric value: ";
             std:: cin >> user_input;
 
-            while (!(board->check_input(user_input))) {
+            while (!(board->input_check(user_input))) {
                 
                 std::cout << "\t" << "Invalid input. Please enter an available alphanumeric value: ";
                 std::cin.clear();
@@ -253,7 +251,7 @@ void StrategyGame::run(GameBoard &board_ref) {
                 
             }              
 
-            move = board->transform_input(user_input);
+            move = board->input_transform(user_input);
 
         } else {
 

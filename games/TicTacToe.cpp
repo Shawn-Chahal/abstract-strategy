@@ -5,6 +5,14 @@
 #include <string>
 
 
+std::string TicTacToe::initialize_name() {
+    return "Tic-Tac-Toe";
+}
+
+std::vector<double> TicTacToe::initialize_difficulty() {
+    return {1, 2, 3, 4, 5};
+}
+
 std::vector<std::vector<int>> TicTacToe::initialize_game_state() {
     return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
 }
@@ -13,7 +21,7 @@ std::vector<int> TicTacToe::initialize_available_moves() {
     return std::vector<int>(N_MOVES, 1);
 }
 
-int TicTacToe::check_input(std::string user_input) {
+int TicTacToe::input_check(std::string user_input) {
     
     if (user_input.length() != 2) {
         return 0;
@@ -34,7 +42,7 @@ int TicTacToe::check_input(std::string user_input) {
     }
 }
 
-int TicTacToe::transform_input(std::string user_input) {
+int TicTacToe::input_transform(std::string user_input) {
 
     int row = user_input[1] - '1';
     int col = user_input[0] - 'a';
@@ -43,7 +51,7 @@ int TicTacToe::transform_input(std::string user_input) {
     return move;
 }
 
-void TicTacToe::ai_output(int move) {
+void TicTacToe::print_ai_move(int move) {
 
     int row = move / N_COL + 1;
     char col = (move % N_COL) + 'a';
@@ -51,7 +59,7 @@ void TicTacToe::ai_output(int move) {
     std::cout << col << row;
 }
 
-void TicTacToe::how_to_play() {
+void TicTacToe::print_rules() {
 
     std::cout << "\t" << "Connect three consecutive tiles in a straight line." << std::endl;
     std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
@@ -142,18 +150,6 @@ void TicTacToe::print_board() {
     std::cout << std::endl;
 
     std::cout << std::endl;
-}
-
-void TicTacToe::print_name() {
-    std::cout << NAME;
-}
-
-void TicTacToe::initialize_board() {
-    result = -1;
-    player = 1;
-    game_state = initialize_game_state();
-    available_moves = initialize_available_moves();
-    difficulty = {1, 2, 3, 4, 5};
 }
 
 

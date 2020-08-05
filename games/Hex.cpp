@@ -219,6 +219,14 @@ int Hex::check_link(std::vector<std::vector<int>> game_state, int player, std::v
 }
 
 
+std::string Hex::initialize_name() {
+    return "Hex (7 x 7)";
+}
+
+std::vector<double> Hex::initialize_difficulty() {
+    return {5, 15, 30, 60, 120};
+}
+
 std::vector<std::vector<int>> Hex::initialize_game_state() {
     return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
 }
@@ -227,7 +235,7 @@ std::vector<int> Hex::initialize_available_moves() {
     return std::vector<int>(N_MOVES, 1);
 }
 
-int Hex::check_input(std::string user_input) {       
+int Hex::input_check(std::string user_input) {       
     if (user_input.length() != 3) {
         return 0;
     }
@@ -247,7 +255,7 @@ int Hex::check_input(std::string user_input) {
     }
 }
 
-int Hex::transform_input(std::string user_input) {
+int Hex::input_transform(std::string user_input) {
 
     int row = 10 * (user_input[1] - '0') + (user_input[2] - '0') - 1;
     int col = user_input[0] - 'a';
@@ -256,7 +264,7 @@ int Hex::transform_input(std::string user_input) {
     return move;
 }
 
-void Hex::ai_output(int move) {
+void Hex::print_ai_move(int move) {
 
     int row = move / N_COL + 1;
     char col = (move % N_COL) + 'a';
@@ -270,7 +278,7 @@ void Hex::ai_output(int move) {
     }
 }
 
-void Hex::how_to_play() {
+void Hex::print_rules() {
 
     std::cout << "\t" << "Link the two sides of the board maching your token" << std::endl;
     std::cout << "\t" << "before your opponent. You may play on any empty tile." << std::endl;
@@ -471,18 +479,6 @@ void Hex::print_board() {
     n_spaces +=4;
     print_spaces(n_spaces);
     std::cout << "XXXXXXOOO|" << std::endl;
-}
-
-void Hex::print_name() {
-    std::cout << NAME;
-}
-
-void Hex::initialize_board() {
-    result = -1;
-    player = 1;
-    game_state = initialize_game_state();
-    available_moves = initialize_available_moves();
-    difficulty = {5, 15, 30, 60, 120};
 }
 
 
