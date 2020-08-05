@@ -47,28 +47,28 @@ int StrategyGame::get_terminal_result(GameBoard &board_ref) {
 
 std::vector<Node> StrategyGame::update_tree(GameBoard &board_ref, std::vector<Node> tree, int parent_node, int move) {
     GameBoard *board = board_ref.clone();
-    board->update(move);
-            
+    
     if (tree[parent_node].children[move] == -1) {
-
+        board->update(move);
         int new_child_node = tree.size();
         tree[parent_node].add_child(new_child_node, move);
-        tree.push_back(Node(parent_node, board->get_player(), board->get_num_moves()));
+        tree.push_back(Node(parent_node, board->get_player(), board->get_num_moves(), *board));
+        delete board;
     }
         
     int current_node = tree[parent_node].children[move];
 
-    if (board->get_result() > -1) {
+    if (tree[current_node].board->get_result() > -1) {
 
-        tree[current_node].update(board->get_result());
-        tree[parent_node].update(board->get_result());
-        delete board;
+        tree[current_node].update(tree[current_node].board->get_result());
+        tree[parent_node].update(tree[current_node].board->get_result());
+        
         return tree;
     }
         
     if (tree[current_node].total == 0) {
             
-        int tr = get_terminal_result(*board);
+        int tr = get_terminal_result(*tree[current_node].board);
         
         tree[current_node].update(tr);
         
@@ -79,8 +79,8 @@ std::vector<Node> StrategyGame::update_tree(GameBoard &board_ref, std::vector<No
         double UCB1_max = -1;
         int child_node, m_try, new_child_node, player_child;
 
-        for (int m = 0; m < board->get_num_moves(); m++) {
-            if (board->get_available_moves(m)) {
+        for (int m = 0; m < tree[current_node].board->get_num_moves(); m++) {
+            if (tree[current_node].board->get_available_moves(m)) {
 
                 child_node = tree[current_node].children[m];
 
@@ -97,11 +97,11 @@ std::vector<Node> StrategyGame::update_tree(GameBoard &board_ref, std::vector<No
             }
         }
 
-        tree = update_tree(*board, tree, current_node, m_try);
+        tree = update_tree(*tree[current_node].board, tree, current_node, m_try);
     }        
         
     tree[parent_node].update(tree[current_node].last_result);
-    delete board;
+    
     return tree;
 }
 
@@ -110,7 +110,7 @@ int StrategyGame::get_move(GameBoard &board_ref, double max_time) {
     GameBoard *board = board_ref.clone();
     std::cout << "\t" << "Computer is thinking.";
     std::vector<Node> tree;
-    tree.push_back(Node(-1, board->get_player(), board->get_num_moves()));
+    tree.push_back(Node(-1, board->get_player(), board->get_num_moves(), *board));
     double UCB1,UCB1_max;
     int child_node,m_try, new_child_node;
 

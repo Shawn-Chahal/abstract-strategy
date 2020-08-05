@@ -1,6 +1,8 @@
 #ifndef H_NODE
 #define H_NODE
 
+#include "GameBoard.h"
+
 #include <vector>
 
 class Node {
@@ -19,8 +21,9 @@ class Node {
         int total;
         int last_result; // for backpropagation
         std::vector<int> children; // index = move, value = child node id for that move
+        GameBoard *board;
         
-        Node(int parent_input, int player_input, const int N_MOVES);
+        Node(int parent_input, int player_input, const int N_MOVES, GameBoard &board_ref);
 
         double get_score(int player_parent);
         double get_UCB1(int player_parent, int total_parent);

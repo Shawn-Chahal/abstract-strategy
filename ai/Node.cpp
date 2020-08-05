@@ -1,11 +1,13 @@
 #include "Node.h"
+#include "GameBoard.h"
 
 #include <iostream>
 #include <vector>
 #include <cmath>
     
-Node::Node(int parent_input, int player_input, const int N_MOVES) {
-
+Node::Node(int parent_input, int player_input, const int N_MOVES, GameBoard &board_ref) {
+    
+    board = board_ref.clone();
     parent = parent_input;
     player = player_input;
     win = 0;
