@@ -10,8 +10,8 @@ int GameBoard::switch_player(int player) { return (player == 1) ? 2 : 1; }
 
 void GameBoard::update(int move) {
     last_move = move;
-    game_state = update_state(game_state, player, move);
-    result = update_result(game_state, player, move);
-    player = next_player(game_state, player);
-    available_moves = update_available_moves(game_state, available_moves, player);
+    game_state = update_game_state(move);
+    result = update_result(move);
+    player = update_player(move);
+    available_moves = update_available_moves(move);
 }

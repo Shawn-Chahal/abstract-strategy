@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 
-
 class TicTacToe: public GameBoard {
     private:
 
@@ -16,34 +15,17 @@ class TicTacToe: public GameBoard {
         const int N_COL = 3;
         const int N_MOVES = N_ROW * N_COL;
 
-
-
     public:
         
         TicTacToe* clone() const { return new TicTacToe(*this); }
 
-   
-        int next_player(std::vector<std::vector<int>> game_state, int previous_player) { return switch_player(previous_player); }
-        
-
-        void initialize_board() {
-            result = -1;
-            player = 1;
-            game_state = initialize_game_state();
-            available_moves = update_available_moves(game_state, available_moves, player);
-            difficulty = {1, 2, 3, 4, 5};
+        std::vector<std::vector<int>> initialize_game_state() {
+            return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         }
 
-
-        int transform_input(std::string user_input) {
-
-            int row = user_input[1] - '1';
-            int col = user_input[0] - 'a';
-            int move = row * N_COL + col;
-
-            return move;
+        std::vector<int> initialize_available_moves() {
+            return std::vector<int>(N_MOVES, 1);
         }
-
 
         int check_input(std::string user_input) {
             
@@ -66,6 +48,31 @@ class TicTacToe: public GameBoard {
             }
         }
 
+        int transform_input(std::string user_input) {
+
+            int row = user_input[1] - '1';
+            int col = user_input[0] - 'a';
+            int move = row * N_COL + col;
+
+            return move;
+        }
+
+        void ai_output(int move) {
+
+            int row = move / N_COL + 1;
+            char col = (move % N_COL) + 'a';
+
+            std::cout << col << row;
+        }
+  
+        void how_to_play() {
+
+            std::cout << "\t" << "Connect three consecutive tiles in a straight line." << std::endl;
+            std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
+            std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
+            std::cout << "\t" << "E.g., if you want to play on column = a and row = 1," << std::endl; 
+            std::cout << "\t" << "then input a1 when prompted." << std::endl;
+        }
 
         void print_board() {
             
@@ -151,47 +158,41 @@ class TicTacToe: public GameBoard {
             std::cout << std::endl;
         }
 
+        void print_name() {
+            std::cout << NAME;
+        }
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_game_state();
+            available_moves = initialize_available_moves();
+            difficulty = {1, 2, 3, 4, 5};
+        }
 
+
+        std::vector<std::vector<int>> update_game_state(int move) {
             game_state[move / N_COL][move % N_COL] = player;
-            
             return game_state;
         }
 
-
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
-            
-            available_moves = std::vector<int>(N_MOVES, 1);
-
-            for (int i = 0; i < N_ROW ; i++) {
-                for (int j = 0; j < N_COL ; j++) {
-                    if (game_state[i][j] > 0) {
-                        available_moves[i * N_COL + j] = 0;
-                    }
-                }
-            }
-            return available_moves;
-        }
-
-
-        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+        int update_result(int move) {
 
             const int CONNECT = 3;
-            int player, count;
+            int local_player, count;
             int check_draw = 0;
 
             /* Check horizontal */
             for (int i = 0; i < N_ROW ; i++) {
                 
-                player = game_state[i][0];
+                local_player = game_state[i][0];
 
-                if (player > 0){
+                if (local_player > 0){
                     count = 1;
 
                     for (int j = 1; j < N_COL ; j++) {
                         
-                        if (game_state[i][j] == player) {
+                        if (game_state[i][j] == local_player) {
                             count++;
                         } else {
                             break;
@@ -199,7 +200,7 @@ class TicTacToe: public GameBoard {
                     }
 
                     if (count == CONNECT) {
-                        return player;
+                        return local_player;
                     }
                 }
             }
@@ -207,14 +208,14 @@ class TicTacToe: public GameBoard {
             /* Check vertical */
             for (int j = 0; j < N_COL ; j++) {
                 
-                player = game_state[0][j];
+                local_player = game_state[0][j];
 
-                if (player > 0){
+                if (local_player > 0){
                     count = 1;
 
                     for (int i = 1; i < N_ROW ; i++) {
                         
-                        if (game_state[i][j] == player) {
+                        if (game_state[i][j] == local_player) {
                             count++;
                         } else {
                             break;
@@ -222,19 +223,19 @@ class TicTacToe: public GameBoard {
                     }
 
                     if (count == CONNECT) {
-                        return player;
+                        return local_player;
                     }
                 }
             }
 
             /* Check top-left to bottom-right diagonal */
-            player = game_state[0][0];
+            local_player = game_state[0][0];
 
-            if (player > 0){
+            if (local_player > 0){
                 count = 1;
 
                 for (int k = 1; k < N_COL; k++){
-                    if (game_state[k][k] == player) {
+                    if (game_state[k][k] == local_player) {
                         count++;
                     
                     } else {
@@ -243,19 +244,19 @@ class TicTacToe: public GameBoard {
                 }
 
                 if (count == CONNECT) {
-                    return player;
+                    return local_player;
                 }
             }
             
 
             /* Check bottom-left to top-right diagonal */
-            player = game_state[N_ROW - 1][0];
+            local_player = game_state[N_ROW - 1][0];
 
-            if (player > 0){
+            if (local_player > 0){
                 count = 1;
 
                 for (int k = 1; k < N_COL; k++){
-                    if (game_state[N_ROW - 1 - k][k] == player) {
+                    if (game_state[N_ROW - 1 - k][k] == local_player) {
                         count++;
                     } else {
                         break;
@@ -263,7 +264,7 @@ class TicTacToe: public GameBoard {
                 }
                 
                 if (count == CONNECT) {
-                    return player;
+                    return local_player;
                 }
             }
 
@@ -285,39 +286,14 @@ class TicTacToe: public GameBoard {
             }
         }
 
-
-        std::vector<std::vector<int>> initialize_game_state() {
-
-            return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-            
-            }
-
-
-        void how_to_play() {
-
-            std::cout << "\t" << "Connect three consecutive tiles in a straight line." << std::endl;
-            std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
-            std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
-            std::cout << "\t" << "E.g., if you want to play on column = a and row = 1," << std::endl; 
-            std::cout << "\t" << "then input a1 when prompted." << std::endl;
-
+        int update_player(int move) {
+            return switch_player(player);
         }
-
-
-        void ai_output(int move) {
-
-            int row = move / N_COL + 1;
-            char col = (move % N_COL) + 'a';
-
-            std::cout << col << row;
-
+        
+        std::vector<int> update_available_moves(int move) {
+            available_moves[move] = 0;
+            return available_moves;
         }
-  
-        void print_name() {
-            std::cout << NAME;
-        }
-
-
 
 };
 

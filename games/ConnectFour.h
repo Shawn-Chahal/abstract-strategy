@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 
-
 class ConnectFour: public GameBoard {
     private:
 
@@ -16,38 +15,24 @@ class ConnectFour: public GameBoard {
         const int N_COL = 7;
         const int N_MOVES = N_COL;
 
-
     public:
         
         ConnectFour* clone() const { return new ConnectFour(*this); }
 
-        int next_player(std::vector<std::vector<int>> game_state, int previous_player) { return switch_player(previous_player); }
-        
-
-        void initialize_board() {
-            result = -1;
-            player = 1;
-            game_state = initialize_game_state();
-            available_moves = update_available_moves(game_state, available_moves, player);
-            difficulty = {3, 5, 10, 15, 30};
+        std::vector<std::vector<int>> initialize_game_state() {
+            return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         }
 
-
-        int transform_input(std::string user_input) {
-
-            int move = user_input[0] - '1';
-
-            return move;
+        std::vector<int> initialize_available_moves() {
+            return std::vector<int>(N_MOVES, 1);
         }
-
 
         int check_input(std::string user_input) {
-            
             if (user_input.length() != 1) {
                 return 0;
             }
 
-            int move = user_input[0] - '1';
+            int move = transform_input(user_input);
 
             if (move >= 0 && move < available_moves.size()) {
                 return available_moves[move];
@@ -56,6 +41,22 @@ class ConnectFour: public GameBoard {
             }
         }
 
+        int transform_input(std::string user_input) {
+            return user_input[0] - '1';
+        }
+
+        void ai_output(int move) {
+            std::cout << move + 1;
+        }
+
+        void how_to_play() {
+
+            std::cout << "\t" << "Connect four consecutive tiles in a straight line." << std::endl;
+            std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
+            std::cout << "\t" << "Token are inserted from the top of the column." << std::endl;
+            std::cout << "\t" << "E.g., if you want to play on column = 1," << std::endl; 
+            std::cout << "\t" << "then input 1 when prompted." << std::endl;
+        }
 
         void print_board() {
             
@@ -106,9 +107,20 @@ class ConnectFour: public GameBoard {
             std::cout << std::endl;
         }
 
+        void print_name() {
+            std::cout << NAME;
+        }
+    
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_game_state();
+            available_moves = initialize_available_moves();
+            difficulty = {3, 5, 10, 15, 30};
+        }
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
 
+        std::vector<std::vector<int>> update_game_state(int move) {
             for (int row = game_state.size() - 1; row >= 0; row--) {
                 if (game_state[row][move] == 0) {
                     game_state[row][move] = player;
@@ -118,28 +130,14 @@ class ConnectFour: public GameBoard {
             return game_state;
         }
 
-
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
-            
-            available_moves = std::vector<int>(N_MOVES, 1);
-
-            for (int j=0; j < available_moves.size(); j++) {
-                if (game_state[0][j] > 0) {
-                    available_moves[j] = 0;
-                }
-            }
-            return available_moves;
-        }
-
-
-        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+        int update_result(int move) {
 
             const int CONNECT = 4;
             int count;
 
             for (int i = 0; i < N_ROW; i++) {
                 for (int j = 0; j < N_COL; j++) {
-                    if (game_state[i][j] == last_player) {
+                    if (game_state[i][j] == player) {
                         
 
                         /* Check right */
@@ -147,7 +145,7 @@ class ConnectFour: public GameBoard {
                             count = 1;
 
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i][j + k] == last_player) {
+                                if (game_state[i][j + k] == player) {
                                     count++;
                                 } else {
                                     break;
@@ -155,7 +153,7 @@ class ConnectFour: public GameBoard {
                             }
                             
                             if (count == CONNECT) {
-                                return last_player;
+                                return player;
                             }
                         }
 
@@ -164,7 +162,7 @@ class ConnectFour: public GameBoard {
                             count = 1;
 
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j] == last_player) {
+                                if (game_state[i + k][j] == player) {
                                     count++;
                                 } else {
                                     break;
@@ -172,7 +170,7 @@ class ConnectFour: public GameBoard {
                             }
 
                             if (count == CONNECT) {
-                                return last_player;
+                                return player;
                             }
                         }
 
@@ -181,7 +179,7 @@ class ConnectFour: public GameBoard {
                             count = 1;
                             
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j + k] == last_player) {
+                                if (game_state[i + k][j + k] == player) {
                                     count++;
                                 } else {
                                     break;
@@ -189,7 +187,7 @@ class ConnectFour: public GameBoard {
                             }
                             
                             if (count == CONNECT) {
-                                return last_player;
+                                return player;
                             }
                         }
 
@@ -198,7 +196,7 @@ class ConnectFour: public GameBoard {
                             count = 1;
                             
                             for (int k = 1; k < CONNECT; k++) {
-                                if (game_state[i + k][j - k] == last_player) {
+                                if (game_state[i + k][j - k] == player) {
                                     count++;
                                 } else {
                                     break;
@@ -206,7 +204,7 @@ class ConnectFour: public GameBoard {
                             }
 
                             if (count == CONNECT) {
-                                return last_player;
+                                return player;
                             }
                         }
                     }
@@ -223,32 +221,17 @@ class ConnectFour: public GameBoard {
 
         }
 
-
-        std::vector<std::vector<int>> initialize_game_state() {
-
-            return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+        int update_player(int move) {
+            return switch_player(player);
+        }
+        
+        std::vector<int> update_available_moves(int move) {
+            if (game_state[0][move] > 0) {
+                available_moves[move] = 0;
+            }
+            return available_moves;
         }
 
-
-        void how_to_play() {
-
-            std::cout << "\t" << "Connect four consecutive tiles in a straight line." << std::endl;
-            std::cout << "\t" << "The tiles can be horizontal, vertical, or diagonal." << std::endl;
-            std::cout << "\t" << "Token are inserted from the top of the column." << std::endl;
-            std::cout << "\t" << "E.g., if you want to play on column = 1," << std::endl; 
-            std::cout << "\t" << "then input 1 when prompted." << std::endl;
-
-        }
-
-
-        void ai_output(int move) {
-            std::cout << move + 1;
-        }
-
-        void print_name() {
-            std::cout << NAME;
-        }
-    
 };
 
 #endif

@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 
-
 class Hex: public GameBoard {
     private:
 
@@ -16,15 +15,12 @@ class Hex: public GameBoard {
         const int N_COL = 7;
         const int N_MOVES = N_ROW * N_COL;
 
-
-
         void print_spaces(int n_spaces) {
 
             for (int i = 0; i < n_spaces; i++) {
                 std::cout << " ";
             }
         }
-
 
         std::string print_tile(int player) {
             std::string tile = "   ";
@@ -54,7 +50,6 @@ class Hex: public GameBoard {
             
         }
 
-        
         int check_link(std::vector<std::vector<int>> game_state, int player, std::vector<std::vector<int>> link_history, int tile_row, int tile_col) {
             
             link_history[tile_row][tile_col] = 1;
@@ -234,35 +229,19 @@ class Hex: public GameBoard {
 
         }
 
-
     public:
                    
         Hex* clone() const { return new Hex(*this); }
 
-        int next_player(std::vector<std::vector<int>> game_state, int previous_player) { return switch_player(previous_player); }
-        
-
-        void initialize_board() {
-            result = -1;
-            player = 1;
-            game_state = initialize_game_state();
-            available_moves = update_available_moves(game_state, available_moves, player);
-            difficulty = {5, 15, 30, 60, 120};
+        std::vector<std::vector<int>> initialize_game_state() {
+            return std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
         }
 
-
-        int transform_input(std::string user_input) {
-
-            int row = 10 * (user_input[1] - '0') + (user_input[2] - '0') - 1;
-            int col = user_input[0] - 'a';
-            int move = row * N_COL + col;
-
-            return move;
+        std::vector<int> initialize_available_moves() {
+            return std::vector<int>(N_MOVES, 1);
         }
-
-
-        int check_input(std::string user_input) {
-            
+    
+        int check_input(std::string user_input) {       
             if (user_input.length() != 3) {
                 return 0;
             }
@@ -282,15 +261,40 @@ class Hex: public GameBoard {
             }
         }
         
+        int transform_input(std::string user_input) {
 
-        std::vector<std::vector<int>> initialize_game_state() {
+            int row = 10 * (user_input[1] - '0') + (user_input[2] - '0') - 1;
+            int col = user_input[0] - 'a';
+            int move = row * N_COL + col;
 
-            std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-
-            return game_state;
+            return move;
         }
 
-        
+        void ai_output(int move) {
+
+            int row = move / N_COL + 1;
+            char col = (move % N_COL) + 'a';
+
+            std::cout << col;
+            
+            if (row < 10) {
+                std::cout << 0 << row;
+            } else {
+                std::cout << row;
+            }
+        }
+
+        void how_to_play() {
+
+            std::cout << "\t" << "Link the two sides of the board maching your token" << std::endl;
+            std::cout << "\t" << "before your opponent. You may play on any empty tile." << std::endl;
+            std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
+            std::cout << "\t" << "E.g., if you want to play on column = a and row = 01," << std::endl; 
+            std::cout << "\t" << "then input a01 when prompted." << std::endl;
+            std::cout << "\t" << "Pay careful attention to the row numbers as the game is" << std::endl;
+            std::cout << "\t" << "played on a hexagonal grid in the shape of a rhombus." << std::endl;
+        }
+
         void print_board() {
             
             char col_index = 'a';
@@ -483,40 +487,28 @@ class Hex: public GameBoard {
             std::cout << "XXXXXXOOO|" << std::endl;
         }
 
+        void print_name() {
+            std::cout << NAME;
+        }
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_game_state();
+            available_moves = initialize_available_moves();
+            difficulty = {5, 15, 30, 60, 120};
+        }
 
-            int row = move / N_COL;
-            int col = move % N_COL;
 
-            game_state[row][col] = player;
-            
+        std::vector<std::vector<int>> update_game_state(int move) {
+            game_state[move / N_COL][move % N_COL] = player;
             return game_state;
         }
 
+        int update_result(int move) {
 
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
-            
-            available_moves = std::vector<int>(N_MOVES, 0);
-
-            for (int m = 0; m < N_MOVES; m++) {
-                if (game_state[m / N_COL][m % N_COL] == 0) {
-                    available_moves[m] = 1;
-                }
-            }
-
-            return available_moves;
-        }
-
-        
-        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
-
-            std::vector<std::vector<int>> link_history = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-            int tile_row = last_move / N_COL;
-            int tile_col = last_move % N_COL;
-
-            if (check_link(game_state, last_player, link_history, tile_row, tile_col) == 3) {
-                return last_player;
+            if (check_link(game_state, player, std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0)), move / N_COL, move % N_COL) == 3) {
+                return player;
             }
 
             for (int i = 0 ; i < N_ROW; i++) {
@@ -530,40 +522,15 @@ class Hex: public GameBoard {
             return 0;
         }
 
-
-       void how_to_play() {
-
-            std::cout << "\t" << "Link the two sides of the board maching your token" << std::endl;
-            std::cout << "\t" << "before your opponent. You may play on any empty tile." << std::endl;
-            std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
-            std::cout << "\t" << "E.g., if you want to play on column = a and row = 01," << std::endl; 
-            std::cout << "\t" << "then input a01 when prompted." << std::endl;
-            std::cout << "\t" << "Pay careful attention to the row numbers as the game is" << std::endl;
-            std::cout << "\t" << "played on a hexagonal grid in the shape of a rhombus." << std::endl;
-
+        int update_player(int move) {
+            return switch_player(player);
+        }
+        
+        std::vector<int> update_available_moves(int move) {
+            available_moves[move] = 0;
+            return available_moves;
         }
 
-
-        void ai_output(int move) {
-
-            int row = move / N_COL + 1;
-            char col = (move % N_COL) + 'a';
-
-            std::cout << col;
-            
-            if (row < 10) {
-                std::cout << 0 << row;
-            } else {
-                std::cout << row;
-            }
-
-        }
-
-        void print_name() {
-            std::cout << NAME;
-        }
-
-    
 };
 
 #endif

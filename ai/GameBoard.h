@@ -22,7 +22,8 @@ class GameBoard {
 
         // Template virtual methods
         virtual std::vector<std::vector<int>> initialize_game_state() = 0;
-        
+        virtual std::vector<int> initialize_available_moves() = 0;
+
         virtual int check_input(std::string user_input) = 0;
         virtual int transform_input(std::string user_input) = 0;
 
@@ -32,10 +33,10 @@ class GameBoard {
         virtual void print_name() = 0;
         virtual void initialize_board() = 0;
 
-        virtual std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) = 0;
-        virtual int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) = 0;
-        virtual int next_player(std::vector<std::vector<int>> game_state, int previous_player) = 0;
-        virtual std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) = 0;
+        virtual std::vector<std::vector<int>> update_game_state(int move) = 0;
+        virtual int update_result(int move) = 0;
+        virtual int update_player(int move) = 0;
+        virtual std::vector<int> update_available_moves(int move) = 0;
         
         // Inherited methods
         double get_difficulty(int d_index);

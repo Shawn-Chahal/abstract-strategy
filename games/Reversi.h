@@ -16,7 +16,6 @@ class Reversi: public GameBoard {
         const int N_COL = 8;
         const int N_MOVES = N_ROW * N_COL;
 
-
         std::vector<int> check_link(std::vector<std::vector<int>> game_state, int row, int col) {
             std::vector<int> link = std::vector<int>(8, 0);
             int player = game_state[row][col];
@@ -138,7 +137,6 @@ class Reversi: public GameBoard {
             return link;
         }
 
-
         int move_available(std::vector<std::vector<int>> game_state, int player, int move) {
             
             int row = move / N_COL;
@@ -253,53 +251,30 @@ class Reversi: public GameBoard {
             
             return 0;
         }
-      
+
+        std::vector<int> update_local_available_moves(int player) {
+            return update_available_moves(-1);
+        }
 
     public:
         
         Reversi* clone() const { return new Reversi(*this); }
 
+        std::vector<std::vector<int>> initialize_game_state() {
 
-        int next_player(std::vector<std::vector<int>> game_state, int previous_player) {
+            game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
+            game_state[N_ROW / 2 - 1][N_COL / 2 - 1] = 2;
+            game_state[N_ROW / 2 - 1][N_COL / 2    ] = 1;
+            game_state[N_ROW / 2    ][N_COL / 2 - 1] = 1;
+            game_state[N_ROW / 2    ][N_COL / 2    ] = 2;
 
-            int player = switch_player(previous_player);
-            std::vector<int> available_moves = update_available_moves(game_state, available_moves, player);
-            int pass = 1;
-
-            for (int m = 0; m < available_moves.size(); m++) {
-                if (available_moves[m]) {
-                    pass = 0;
-                    break;
-                }
-            }
-
-            if (pass) {
-                player = switch_player(player);
-            }
-
-            return player;
+            return game_state;
         }
 
-
-        
-        void initialize_board() {
-            result = -1;
-            player = 1;
-            game_state = initialize_game_state();
-            available_moves = update_available_moves(game_state, available_moves, player);
-            difficulty = {5, 15, 30, 60, 120};
+        std::vector<int> initialize_available_moves() {
+            available_moves = update_available_moves(-1);
+            return available_moves;
         }
-
-
-        int transform_input(std::string user_input) {
-
-            int row = user_input[1] - '1';
-            int col = user_input[0] - 'a';
-            int move = row * N_COL + col;
-
-            return move;
-        }
-
 
         int check_input(std::string user_input) {
             
@@ -322,21 +297,35 @@ class Reversi: public GameBoard {
             }
         }
 
+        int transform_input(std::string user_input) {
 
-        std::vector<std::vector<int>> initialize_game_state() {
+            int row = user_input[1] - '1';
+            int col = user_input[0] - 'a';
+            int move = row * N_COL + col;
 
-            std::vector<std::vector<int>> game_state = std::vector<std::vector<int>>(N_ROW, std::vector<int>(N_COL, 0));
-
-            game_state[N_ROW / 2 - 1][N_COL / 2 - 1] = 2;
-            game_state[N_ROW / 2 - 1][N_COL / 2    ] = 1;
-            game_state[N_ROW / 2    ][N_COL / 2 - 1] = 1;
-            game_state[N_ROW / 2    ][N_COL / 2    ] = 2;
-
-            return game_state;
-
-            
+            return move;
         }
 
+        void ai_output(int move) {
+
+            int row = move / N_COL + 1;
+            char col = (move % N_COL) + 'a';
+
+            std::cout << col << row;
+        }
+
+        void how_to_play() {
+
+            std::cout << "\t" << "Occupy as many tiles as possible before both players run out of moves." << std::endl;
+            std::cout << "\t" << "You may only play on an empty tile which is connected in a straight line" << std::endl;
+            std::cout << "\t" << "to another one of your tiles. However, all the tiles in between your two" << std::endl;
+            std::cout << "\t" << "tiles must be occupied by your opponent. The straight line can be" << std::endl;
+            std::cout << "\t" << "horizontal, vertical, or diagonal. If you have no available moves," << std::endl;
+            std::cout << "\t" << "your turn will be passed." << std::endl;
+            std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
+            std::cout << "\t" << "E.g., if you want to play on column = a and row = 1," << std::endl; 
+            std::cout << "\t" << "then input a1 when prompted." << std::endl;
+        }
 
         void print_board() {
             
@@ -398,8 +387,20 @@ class Reversi: public GameBoard {
             std::cout << std::endl;
         }
 
+        void print_name() {
+            std::cout << NAME;
+        }
 
-        std::vector<std::vector<int>> update_state(std::vector<std::vector<int>> game_state, int player, int move) {
+        void initialize_board() {
+            result = -1;
+            player = 1;
+            game_state = initialize_game_state();
+            available_moves = initialize_available_moves();
+            difficulty = {5, 15, 30, 60, 120};
+        }
+
+
+        std::vector<std::vector<int>> update_game_state(int move) {
 
             int row = move / N_COL;
             int col = move % N_COL;
@@ -499,36 +500,18 @@ class Reversi: public GameBoard {
             return game_state;
         }
 
-
-        std::vector<int> update_available_moves(std::vector<std::vector<int>> game_state, std::vector<int> available_moves, int player) {
-            
-            available_moves = std::vector<int>(N_MOVES, 0);
-
-            for (int m = 0; m < N_MOVES; m++) {
-                if (game_state[m / N_COL][m % N_COL] == 0) {
-                    if (move_available(game_state, player, m)) {
-                        available_moves[m] = 1;
-
-                    }
-                }
-            }
-
-            return available_moves;
-        }
-
-
-        int update_result(std::vector<std::vector<int>> game_state, int last_player, int last_move) {
+        int update_result(int move) {
 
             int player1_score = 0;
             int player2_score = 0;
 
-            std::vector<int> available_moves = std::vector<int>(N_MOVES, 0);
+            std::vector<int> local_available_moves;
 
             for (int p = 1; p <= 2; p++) {
-                available_moves = update_available_moves(game_state, available_moves, p);
+                local_available_moves = update_local_available_moves(p);
 
                 for (int m = 0; m < N_MOVES; m++) {
-                    if (available_moves[m]) {
+                    if (local_available_moves[m]) {
                         return -1;
                     }
                 }
@@ -556,36 +539,33 @@ class Reversi: public GameBoard {
             } else {
                 return 0;
             }
+        }
+
+        int update_player(int move) {
+
+            int local_player = switch_player(player);
+            std::vector<int> local_available_moves = update_local_available_moves(local_player);
+
+            for (int m = 0; m < local_available_moves.size(); m++) {
+                if (local_available_moves[m]) {
+                    return local_player;
+                }
+            }
+
+            return switch_player(local_player);
+        }
+
+        std::vector<int> update_available_moves(int move) {
             
-        }
+            available_moves = std::vector<int>(N_MOVES, 0);
 
+            for (int m = 0; m < N_MOVES; m++) {
+                if (game_state[m / N_COL][m % N_COL] == 0) {
+                    available_moves[m] = move_available(game_state, player, m);
+                }
+            }
 
-       void how_to_play() {
-
-            std::cout << "\t" << "Occupy as many tiles as possible before both players run out of moves." << std::endl;
-            std::cout << "\t" << "You may only play on an empty tile which is connected in a straight line" << std::endl;
-            std::cout << "\t" << "to another one of your tiles. However, all the tiles in between your two" << std::endl;
-            std::cout << "\t" << "tiles must be occupied by your opponent. The straight line can be" << std::endl;
-            std::cout << "\t" << "horizontal, vertical, or diagonal. If you have no available moves," << std::endl;
-            std::cout << "\t" << "your turn will be passed." << std::endl;
-            std::cout << "\t" << "Each tile is represnted by an alphanumeric value." << std::endl;
-            std::cout << "\t" << "E.g., if you want to play on column = a and row = 1," << std::endl; 
-            std::cout << "\t" << "then input a1 when prompted." << std::endl;
-
-        }
-
-
-        void ai_output(int move) {
-
-            int row = move / N_COL + 1;
-            char col = (move % N_COL) + 'a';
-
-            std::cout << col << row;
-
-        }
-
-        void print_name() {
-            std::cout << NAME;
+            return available_moves;
         }
 
 };
