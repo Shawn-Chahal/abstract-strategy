@@ -194,8 +194,8 @@ void StrategyGame::run(GameBoard &board_ref) {
     board->print_rules();
     std::cout << std::endl;
     std::cout << "\t" << "Player markers" << std::endl;
-    std::cout << "\t" << "You:      " << board->P1_MARKER << std::endl;
-    std::cout << "\t" << "Computer: " << board->P2_MARKER << std::endl << std::endl;
+    std::cout << "\t" << "You:      " << board->get_player_marker(1) << std::endl;
+    std::cout << "\t" << "Computer: " << board->get_player_marker(2) << std::endl << std::endl;
 
     std::cout << "\t" << "Select a difficulty [Time AI has to think]" << std::endl << std::endl;
 

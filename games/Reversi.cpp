@@ -366,10 +366,10 @@ void Reversi::print_board() {
                     std::cout << " ";
                     break;
                 case 1:
-                    std::cout << P1_MARKER;
+                    std::cout << get_player_marker(1);
                     break;
                 case 2:
-                    std::cout << P2_MARKER;
+                    std::cout << get_player_marker(2);
                     break;
             }
 

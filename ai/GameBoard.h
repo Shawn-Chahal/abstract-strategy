@@ -7,17 +7,18 @@
 class GameBoard {
     private:
 
-    public:
-     
+    protected:
+
         const char P1_MARKER = 'O';
         const char P2_MARKER = 'X';
-        
         int player, last_move, result;
         std::string name;
         std::vector<std::vector<int>> game_state;
         std::vector<int> available_moves;
         std::vector<double> difficulty;
 
+    public:
+     
         virtual ~GameBoard() {}
         virtual GameBoard* clone() const = 0;
 
@@ -44,9 +45,9 @@ class GameBoard {
         double          get_difficulty(int d_index);
         int             get_player();
         int             get_result();
-        int             get_game_state(int row, int col);
         int             get_available_moves(int move);
         int             get_num_moves();
+        char            get_player_marker(int player);
 
         int switch_player(int player);
         

@@ -20,14 +20,14 @@ std::string Hex::print_tile(int player) {
             break;
         
         case 1:
-            tile[0] = P1_MARKER;
-            tile[2] = P1_MARKER;
+            tile[0] = get_player_marker(1);
+            tile[2] = get_player_marker(1);
             return tile;
             break;
 
         case 2:
-            tile[0] = P2_MARKER;
-            tile[2] = P2_MARKER;
+            tile[0] = get_player_marker(2);
+            tile[2] = get_player_marker(2);
             return tile;
             break;
         
