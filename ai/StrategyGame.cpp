@@ -6,6 +6,9 @@
 #include <random>
 #include <string>
 #include <chrono>
+#include <thread>
+#include <future>
+#include <functional>
 
 int StrategyGame::get_terminal_result(GameBoard &board_ref) {
     
@@ -37,10 +40,9 @@ int StrategyGame::get_terminal_result(GameBoard &board_ref) {
 }
 
 std::vector<Node> StrategyGame::update_tree(GameBoard &board_ref, std::vector<Node> tree, int parent_node, int move) {
-    
-    GameBoard *board = board_ref.clone();
-    
+        
     if (tree[parent_node].child_node_id[move] == -1) {
+        GameBoard *board = board_ref.clone();
         board->update(move);
         int new_child_node = tree.size();
         tree[parent_node].add_child(new_child_node, move);
@@ -94,86 +96,139 @@ std::vector<Node> StrategyGame::update_tree(GameBoard &board_ref, std::vector<No
     return tree;
 }
 
-int StrategyGame::get_move(GameBoard &board_ref, double max_time) {
-
+std::vector<double> StrategyGame::get_score_thread(GameBoard &board_ref, std::vector<std::vector<int>> available_moves_thread, int thread_index, double max_time) {
+    
     GameBoard *board = board_ref.clone();
-    std::cout << "\t" << "Computer is thinking.";
+    
     std::vector<Node> tree;
     tree.push_back(Node(-1, *board));
     double UCB1,UCB1_max;
-    int child_node,m_try, new_child_node;
-    double update_frequency = max_time / 5;
+    int child_node,m_try, new_child_node, m;
+
     std::chrono::duration<double> time;
-    std::chrono::duration<double> update_time;
     auto start = std::chrono::steady_clock::now();
     auto end = std::chrono::steady_clock::now();
-    auto last_update = std::chrono::steady_clock::now();
     time = end - start;
 
     while (time.count() < max_time) {
                
         UCB1_max = -1;
 
-        for (int m = 0; m < board->get_num_moves(); m++) {
-            if (board->get_available_moves(m)) {
-                
-                child_node = tree[0].child_node_id[m];
+        for (int i = 0; i < available_moves_thread[thread_index].size(); i++) {
+            
+            m = available_moves_thread[thread_index][i];    
+            child_node = tree[0].child_node_id[m];
 
-                if (child_node == -1) {
-                    UCB1 = S_INITIAL;
-                } else {
-                    UCB1 = tree[child_node].get_UCB1(tree[0].board->get_player(), tree[0].total);
-                }
-
-                if (UCB1 > UCB1_max) {
-                    UCB1_max = UCB1;
-                    m_try = m;
-                }
+            if (child_node == -1) {
+                UCB1 = S_INITIAL;
+            } else {
+                UCB1 = tree[child_node].get_UCB1(tree[0].board->get_player(), tree[0].total);
             }
+
+            if (UCB1 > UCB1_max) {
+                UCB1_max = UCB1;
+                m_try = m;
+            }
+            
         }
         
         tree = update_tree(*board, tree, 0, m_try);
         
-        auto end = std::chrono::steady_clock::now();
+        end = std::chrono::steady_clock::now();
         time = end - start;
-        update_time = end - last_update;
-
-        if (update_time.count() > update_frequency) {
-            std::cout << ".";
-            last_update = std::chrono::steady_clock::now();
-        }                
+        
     }
     
-    std::cout << std::endl << std::endl;
-
     int move;
     double best_score = -S_INITIAL;
-    double score;
     
-    for (int m = 0; m < board->get_num_moves(); m++) {
+
+    std::vector<double> score = std::vector<double> (board->get_num_moves(), -1.0);
+    
+    for (int m = 0; m < score.size(); m++) {
 
         child_node = tree[0].child_node_id[m];
 
         if (child_node != -1) {
             
-            score = tree[child_node].get_score(board->get_player());
+            score[m] = tree[child_node].get_score(board->get_player());
 
-            if (score > best_score) {
-
-                best_score = score;
-                move = m;
-            }
         } 
+    }
+
+    std::cout << "\tThread: " << thread_index << "\tTree size: " << tree.size() << "\tTotal games: " << tree[0].total << std::endl;
+
+    delete board;
+    return score;
+}
+
+int StrategyGame::get_move(GameBoard &board_ref, double max_time) {
+
+    GameBoard *board = board_ref.clone();
+    std::cout << "\t" << "Computer is thinking..." << std::endl << std::endl;
+
+    unsigned int n_threads = std::thread::hardware_concurrency();
+    std::vector<std::vector<int>> available_moves_thread = std::vector<std::vector<int>>(n_threads, std::vector<int>());
+    int thread_index = 0;
+
+    for (int m = 0; m < board->get_num_moves(); m++) {
+        if (board->get_available_moves(m)) {
+            available_moves_thread[thread_index].push_back(m);
+            thread_index++;
+
+            if (thread_index >= n_threads) {
+                thread_index = 0;
+            }
+        }
+    }
+
+    n_threads = 0;
+
+    for (int i = 0; i < available_moves_thread.size(); i ++) {
+        if (available_moves_thread[i].size() > 0) {
+            n_threads++;
+        }
+    }
+
+    std::vector<std::future<std::vector<double>>> available_moves_future;
+
+    for (int i = 0; i < n_threads; i++) {
+        available_moves_future.push_back(std::async(std::launch::async, &StrategyGame::get_score_thread, this, std::ref(*board), available_moves_thread, i, max_time));
+    }
+
+    std::vector<std::vector<double>> available_moves_all; // i = thread_index, j = move_index
+
+    for (int i = 0; i < n_threads; i++) {
+        available_moves_all.push_back(available_moves_future[i].get());
+    }
+
+    std::vector<double> score = std::vector<double>(board->get_num_moves(), -1);
+
+    for (int j = 0; j < board->get_num_moves(); j++) {
+        for (int i = 0; i < n_threads; i++) {
+            if (available_moves_all[i][j] > score[j]) {
+                score[j] = available_moves_all[i][j];
+            }
+        }
+    }
+
+    int move;
+    double best_score = -1;
+
+    for (int m = 0; m < score.size(); m++) {
+        if (score[m] > best_score) {
+            best_score = score[m];
+            move = m;
+        }
     }
 
     int confidence = 100 * best_score;
 
+    std::cout << std::endl <<  "\t" << "Computer's confidence: " << confidence << "%" << std::endl << std::endl;
     std::cout << "\t" << "Computer's move: ";
     board->print_ai_move(move);
-    std::cout << std::endl << std::endl;
-    std::cout << "\t" << "Confidence:    " << confidence << "%" << std::endl;
-    std::cout << "\t" << "Tree size:     " << tree.size() << std::endl;
-    std::cout << "\t" << "Total games:   " << tree[0].total << std::endl;
+    std::cout << std::endl;
+    
     delete board;
     return move;
 }
