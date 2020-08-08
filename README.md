@@ -12,14 +12,15 @@ Before creating a new game, we must understand the abstract base class `GameBoar
 The `GameBoard` is an abstract class which is to be inherited by new games that are created. The GameBoard is essentially a representation of the current state of the game. It sepcifies the required variables and methods that must be defined by the derived class and also provides a few of its own:
 
 ### Variables
+* `const char P1_MARKER = 'O'` and `const char P2_MARKER = 'X'` are the symbols that will represent players 1 and 2, respectively.
+* `int player`: The current player. Can have a value of `1` or `2`. 
+* `std::string name`: A string containing the name of the game.
+* `std::vector<double> difficulty`: A vector containing five `double`s where each double represents a the amount of time in seconds the AI has to make a decision. The values should be increasing in size, with `difficulty[2]` being the average turn length for the game being created.
 * `std::vector<std::vector<int>> game_state`: A matrix which represents the current state of the pieces on the board. Typically, `game_state[i][j]` (representing a tile in row `i` and column `j`) contains three possible values: `0`: The tile is empty, `1`: Player 1 occupys the tile, `2` Player 2 occupys the tile.
 * `std::vector<int> available_moves`: A vector that represents every possible move that can be played. For a given move `m`, `available_moves[m]`, can have two values: `0`: move `m` is unvailable, `1`: move `m` is available.
 * `int last_move`: The last move that was played. It's value represnts the index of a move found in `std::vector<int> available_moves`.
-* `const char P1_MARKER = 'O'` and `const char P2_MARKER = 'X'` are the symbols that will represent players 1 and 2, respectively.
-* `int player`: The current player. Can have a value of `1` or `2`. 
 * `int result`: The current result of the game. Can have values of: `-1`: The game has not ended yet, `0`: Draw, `1`: Player 1 wins, `2`: Player 2 wins.
-* `std::string name`: A string containing the name of the game.
-* `std::vector<double> difficulty`: A vector containing five `double`s where each double represents a the amount of time in seconds the AI has to make a decision. The values should be increasing in size, with `difficulty[2]` being the average turn length for the game being created.
+
 
 ### Pure Virtual Methods
 Keep in mind that when defining these Virtual Methods, you will have access to all the variables just mentioned.
@@ -51,7 +52,34 @@ Keep in mind that when defining these Virtual Methods, you will have access to a
 ## Creating a new game
 New strategy games can be created by writing a new class which inherits `class GameBoard`. Several examples can be found in the [games](./games) directory.
 
-Here is an example of creating Tic-Tac-Toe:
+Let's assume you are creating a game called `MyGame`. After writing your `MyGame.h` and `MyGame.cpp` files in the [games](./games) directory, the last step is to include it in [main.cpp](./main.cpp) as follows:
 
-1. Create a file called [TicTacToe.h](./games/TicTacToe.h).
+...
+```
+#include "games/TicTacToe.h"
+#include "games/MyGame.h"
 
+#include <iostream>
+```
+...
+```
+StrategyGame app;
+
+std::vector<std::string> games_list = {"My Game", "Connect Four", "Hex (7 x 7)", "Reversi (Othello)", "Tic-Tac-Toe"};
+asg::line_break(30);
+```
+...
+```
+} else if (games_list[g_index - 1] == "Hex (7 x 7)") {
+    Hex game;
+    app.run(game);
+} else if (games_list[g_index - 1] == "My Game") {
+    MyGame game;
+    app.run(game);
+}
+std::vector<std::string> options = {"Return to main menu", "Exit"};
+```
+...
+
+
+Thats it! The API takes care of the rest. Your game will appear in the main menu with a functioning AI.
