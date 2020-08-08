@@ -24,6 +24,9 @@ The `GameBoard` is an abstract class which is to be inherited by new games that 
 ### Pure Virtual Methods
 Keep in mind that when defining these Virtual Methods, you will have access to all the variables just mentioned.
 
+#### Cloning
+* `virtual GameBoard* clone() const`: Allows for the creation of copies of the derived class. This is required by the AI.
+
 #### Initialization
 * `virtual std::string initialize_name()`: Should return `std::string name`.
 * `virtual std::vector<double> initialize_difficulty()`: Should return `std::vector<double> difficulty`.
